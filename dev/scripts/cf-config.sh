@@ -9,4 +9,4 @@ tile-config-generator generate --base-directory=${tmpdir} --do-not-include-produ
 cat ${tmpdir}/product.yml
 bosh int ${tmpdir}/product.yml \
   -o ${tmpdir}/features/haproxy_forward_tls-disable.yml \
-  -o ${tmpdir}/resource/router_additional_vm_extensions.yml > ../config/cf.yml
+  -o ${tmpdir}/resource/router_additional_vm_extensions.yml > ../config/templates/cf.yml

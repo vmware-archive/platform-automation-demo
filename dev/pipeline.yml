@@ -112,8 +112,8 @@ jobs:
       vars: configuaration
     params:
       STATE_FILE: state/state.yml
-      OPSMAN_CONFIG_FILE: ((foundation))/config/opsman.yml
-      VARS_FILES: config/((foundation))/vars/common.yml config/((foundation))/vars/opsman.yml
+      OPSMAN_CONFIG_FILE: ((foundation))/config/templates/opsman.yml
+      VARS_FILES: config/((foundation))/config/vars/common.yml config/((foundation))/config/vars/opsman.yml
   - task: add-timestamp
     image: pcf-automation-image
     config:
@@ -141,8 +141,8 @@ jobs:
       config: configuration
       vars: configuaration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
-      AUTH_CONFIG_FILE: ((foundation))/config/auth.yml
+      ENV_FILE: ((foundation))/config/templates/env.yml
+      AUTH_CONFIG_FILE: ((foundation))/config/templates/auth.yml
   - task: configure-director
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/configure-director.yml
@@ -151,9 +151,9 @@ jobs:
       env: configuration
       vars: configuaration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
-      DIRECTOR_CONFIG_FILE: ((foundation))/config/director.yml
-      VARS_FILES: config/((foundation))/vars/common.yml config/((foundation))/vars/director.yml
+      ENV_FILE: ((foundation))/config/templates/env.yml
+      DIRECTOR_CONFIG_FILE: ((foundation))/config/templates/director.yml
+      VARS_FILES: config/((foundation))/config/vars/common.yml config/((foundation))/config/vars/director.yml
   - task: apply-director-changes
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/apply-director-changes.yml
@@ -161,7 +161,7 @@ jobs:
       env: configuration
       vars: configuaration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: ((foundation))/config/templates/env.yml
 
 - name: export-installation
   serial: true
@@ -204,7 +204,7 @@ jobs:
     input_mapping:
       env: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
+      ENV_FILE: ((foundation))/config/templates/env.yml
   - task: add-timestamp
     image: pcf-automation-image
     config:
@@ -297,9 +297,9 @@ jobs:
       installation: timestamp-installation
       vars: configuration
     params:
-      ENV_FILE: ((foundation))/config/env.yml
-      OPSMAN_CONFIG_FILE: ((foundation))/config/opsman.yml
-      VARS_FILES: config/((foundation))/vars/common.yml config/((foundation))/vars/opsman.yml
+      ENV_FILE: ((foundation))/config/templates/env.yml
+      OPSMAN_CONFIG_FILE: ((foundation))/config/templates/opsman.yml
+      VARS_FILES: config/((foundation))/config/vars/common.yml config/((foundation))/config/vars/opsman.yml
       STATE_FILE: state.yml
   - task: add-timestamp
     image: pcf-automation-image
