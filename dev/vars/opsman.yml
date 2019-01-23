@@ -1,4 +1,4 @@
-vsphere_resource_pool: /Datacenter/host/Cluser/Resources/dev-az1
+vsphere_resource_pool: /Datacenter/host/Cluster/Resources/dev-az1
 opsman_vm_name: dev-opsman
 opsman_private_ip: 192.168.1.10
 opsman_netmask: 255.255.255.0

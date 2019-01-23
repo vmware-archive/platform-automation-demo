@@ -96,22 +96,24 @@ jobs:
     output_mapping:
       interpolated-files: configuration
   - task: download-opsman-image
-    image: platform-automation-image
-    file: platform-automation-tasks/tasks/download-product.yml
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/download-product.yml
+    input_mapping:
+      config: configuration
     params:
       CONFIG_FILE: ((foundation))/versions/opsman.yml
   - task: create-vm
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/create-vm.yml
     input_mapping:
-      image: opsman-product
+      image: downloaded-product
       state: timestamp-state
       config: configuration
       vars: configuaration
     params:
       STATE_FILE: state/state.yml
       OPSMAN_CONFIG_FILE: ((foundation))/config/opsman.yml
-      VARS_FILES: ((foundation))/vars/common.yml ((foundation))/vars/opsman.yml
+      VARS_FILES: vars/((foundation))/vars/common.yml vars/((foundation))/vars/opsman.yml
   - task: add-timestamp
     image: pcf-automation-image
     config:
@@ -151,7 +153,7 @@ jobs:
     params:
       ENV_FILE: ((foundation))/config/env.yml
       DIRECTOR_CONFIG_FILE: ((foundation))/config/director.yml
-      VARS_FILES: ((foundation))/vars/common.yml ((foundation))/vars/director.yml
+      VARS_FILES: vars/((foundation))/vars/common.yml vars/((foundation))/vars/director.yml
   - task: apply-director-changes
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/apply-director-changes.yml
@@ -277,11 +279,18 @@ jobs:
         - |
           mv state/*state.yml timestamp-state/state.yml
           mv installation/*installation.zip timestamp-installation/installation.zip
+  - task: download-opsman-image
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/download-product.yml
+    input_mapping:
+      config: configuration
+    params:
+      CONFIG_FILE: ((foundation))/versions/opsman.yml
   - task: upgrade-opsman
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/upgrade-opsman.yml
     input_mapping:
-      image: opsman-product
+      image: downloaded-product
       state: timestamp-state
       config: configuration
       env: configuration
