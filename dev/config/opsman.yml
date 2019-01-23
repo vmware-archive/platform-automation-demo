@@ -18,5 +18,5 @@ opsman-configuration:
     hostname: ((opsman_host))
     network: ((infrastructure_network))               # vcenter network to deploy to
     netmask: ((opsman_netmask))
-    gateway: ((gateway))
+    gateway: ((infrastructure_gateway))
     vm_name: ((opsman_vm_name))

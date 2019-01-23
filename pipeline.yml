@@ -113,7 +113,7 @@ jobs:
     params:
       STATE_FILE: state/state.yml
       OPSMAN_CONFIG_FILE: ((foundation))/config/opsman.yml
-      VARS_FILES: vars/((foundation))/vars/common.yml vars/((foundation))/vars/opsman.yml
+      VARS_FILES: config/((foundation))/vars/common.yml config/((foundation))/vars/opsman.yml
   - task: add-timestamp
     image: pcf-automation-image
     config:
@@ -153,7 +153,7 @@ jobs:
     params:
       ENV_FILE: ((foundation))/config/env.yml
       DIRECTOR_CONFIG_FILE: ((foundation))/config/director.yml
-      VARS_FILES: vars/((foundation))/vars/common.yml vars/((foundation))/vars/director.yml
+      VARS_FILES: config/((foundation))/vars/common.yml config/((foundation))/vars/director.yml
   - task: apply-director-changes
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/apply-director-changes.yml

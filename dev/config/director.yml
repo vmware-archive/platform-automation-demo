@@ -48,7 +48,7 @@ networks-configuration:
       cidr: ((infrastructure_network_cidr))
       reserved_ip_ranges: ((infrastructure_network_reserved))
       dns: ((dns))
-      gateway: ((gateway))
+      gateway: ((infrastructure_gateway))
       availability_zone_names:
       - AZ1
   - name: deployment
@@ -58,7 +58,7 @@ networks-configuration:
       cidr: ((deployment_network_cidr))
       reserved_ip_ranges: ((deployment_network_reserved))
       dns: ((dns))
-      gateway: ((gateway))
+      gateway: ((deployment_gateway))
       availability_zone_names:
       - AZ1
       - AZ2

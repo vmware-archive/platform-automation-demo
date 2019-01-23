@@ -11,3 +11,4 @@ infrastructure_network_cidr: 192.168.1.0/24
 infrastructure_network_reserved: 192.168.1.1-192.168.1.10
 deployment_network_cidr: 192.168.2.0/24
 deployment_network_reserved: 192.168.2.1-192.168.2.10
+deployment_gateway: 192.168.2.1
