@@ -319,3 +319,137 @@ jobs:
   - put: state
     params:
       file: timestamp-state/*-state.yml
+
+- name: pas
+  serial: true
+  plan:
+  - aggregate:
+    - get: configuration
+      trigger: true
+      passed: [ upgrade-opsman ]
+      params:
+        unpack: true
+    - get: pcf-automation-image
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: pcf-automation-tasks
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+    - get: pcf-automation-image-fixes
+
+  - task: credhub-interpolate
+    image: pcf-automation-image-fixes
+    file: configuration/fixes/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      CREDHUB_CA_CERT: ((credhub-ca))
+      PREFIX: '/((foundation))'
+      INTERPOLATION_PATH: "((foundation))/config"
+    input_mapping:
+      files: configuration
+    output_mapping:
+      interpolated-files: configuration
+  - task: download-cf
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/download-product.yml
+    input_mapping:
+      config: configuration
+    params:
+      CONFIG_FILE: ((foundation))/config/versions/cf.yml
+
+  - task: upload-product
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/upload-product.yml
+    input_mapping:
+      product: downloaded-product
+      env: configuration
+    params:
+      ENV_FILE: ((foundation))/config/templates/env.yml
+
+  - task: stage-product
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/stage-product.yml
+    input_mapping:
+      product: downloaded-product
+      env: configuration
+    params:
+      ENV_FILE: ((foundation))/config/templates/env.yml
+
+  - task: upload-pas-stemcell
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/upload-stemcell.yml
+    input_mapping:
+      env: configuration
+      stemcell: downloaded-stemcell
+    params:
+      ENV_FILE: ((foundation))/config/templates/env.yml
+
+  - task: assign-stemcell
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/upload-stemcell.yml
+    input_mapping:
+      env: configuration
+      config: assign-stemcell-config
+    params:
+      ENV_FILE: ((foundation))/config/templates/env.yml
+
+  - task: configure-pas
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/configure-product.yml
+    input_mapping:
+      config: configuration
+      env: configuration
+      vars: configuration
+    params:
+      CONFIG_FILE: ((foundation))/config/templates/cf.yml
+      VARS_FILES: vars/((foundation))/config/vars/cf.yml
+      ENV_FILE: ((foundation))/config/templates/env.yml
+
+- name: apply-product-changes
+  serial: true
+  plan:
+  - aggregate:
+    - get: configuration
+      trigger: true
+      passed: [ pas ]
+      params:
+        unpack: true
+    - get: pcf-automation-image
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: pcf-automation-tasks
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+    - get: pcf-automation-image-fixes
+  - task: credhub-interpolate
+    image: pcf-automation-image-fixes
+    file: configuration/fixes/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CLIENT: ((credhub-client))
+      CREDHUB_SECRET: ((credhub-secret))
+      CREDHUB_SERVER: ((credhub-server))
+      CREDHUB_CA_CERT: ((credhub-ca))
+      PREFIX: '/((foundation))'
+      INTERPOLATION_PATH: "((foundation))/config"
+    input_mapping:
+      files: configuration
+    output_mapping:
+      interpolated-files: configuration
+      
+  - task: apply-product-changes
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/apply-changes.yml
+    input_mapping:
+      env: configuration
+    params:
+      ENV_FILE: ((foundation))/config/templates/env.yml

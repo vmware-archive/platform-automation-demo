@@ -64,6 +64,8 @@ product-properties:
     value: ((cloud_controller/staging_timeout_in_seconds))
   .cloud_controller.system_domain:
     value: ((cloud_controller/system_domain))
+  .control.static_ips:
+    value: ((control/static_ips))
   .diego_brain.starting_container_count_maximum:
     value: ((diego_brain/starting_container_count_maximum))
   .doppler.message_drain_buffer_size:
@@ -301,6 +303,8 @@ product-properties:
     value: ((router/lb_healthy_threshold))
   .router.request_timeout_in_seconds:
     value: ((router/request_timeout_in_seconds))
+  .router.static_ips:
+    value: ((router/static_ips))
   .uaa.apps_manager_access_token_lifetime:
     value: ((uaa/apps_manager_access_token_lifetime))
   .uaa.apps_manager_refresh_token_lifetime:
@@ -353,7 +357,6 @@ resource-config:
       id: ((mysql_monitor_instance_type))
     instances: ((mysql_monitor_instances))
   router:
-    additional_vm_extensions: ((router_additional_vm_extensions))
     instance_type:
       id: ((router_instance_type))
     instances: ((router_instances))

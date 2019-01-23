@@ -1,0 +1,9 @@
+cloud_controller/apps_domain: cfapps.haas-163.pez.pivotal.io
+cloud_controller/system_domain: run.haas-163.pez.pivotal.io
+mysql_monitor/recipient_email: cwashburn@pivotal.io
+network_name: deployment
+security_acknowledgement: X
+singleton_availability_zone: AZ1
+ha_proxy/skip_cert_verify: false
+router/static_ips: 192.168.2.12,192.168.2.13
+control/static_ips: 192.168.2.14,192.168.2.15
