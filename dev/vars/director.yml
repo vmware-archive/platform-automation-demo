@@ -1,0 +1,13 @@
+vsphere_templates_folder: dev-templates
+vsphere_disks_folder: dev-disks
+vsphere_az1_cluster: Cluster
+vsphere_az1_resource_pool: dev-az1
+vsphere_az2_cluster: Cluster
+vsphere_az2_resource_pool: dev-az2
+vsphere_az3_cluster: Cluster
+vsphere_az3_resource_pool: dev-az3
+deployment_network: PAS-Deployment
+infrastructure_network_cidr: 192.168.1.0/24
+infrastructure_network_reserved: 192.168.1.1-192.168.1.10
+deployment_network_cidr: 192.168.2.0/24
+deployment_network_reserved: 192.168.2.1-192.168.2.10

@@ -1,0 +1,251 @@
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tags: latest-final
+
+resources:
+- name: pcf-automation
+  type: pivnet
+  source:
+    api_token: {{pivnet_token}}
+    product_slug: platform-automation
+
+- name: installation
+  type: s3
+  source:
+    access_key_id: {{access_key}}
+    bucket: state
+    region_name: us-east-1
+    secret_access_key: {{secret_key}}
+    regexp: pas/(.*)-installation.zip
+    skip_ssl_verification: true
+    endpoint: {{s3_endpoint}}
+
+- name: state
+  type: s3
+  source:
+    access_key_id: {{access_key}}
+    bucket: state
+    region_name: us-east-1
+    secret_access_key: {{secret_key}}
+    regexp: pas/(.*)-state.yml
+    skip_ssl_verification: true
+    endpoint: {{s3_endpoint}}
+
+- name: configuration
+  type: git
+  source:
+    uri: git@github.com:calebwashburn/platform-automation-example.git
+    private_key: {{git_private_key}}
+
+jobs:
+- name: install-opsman
+  serial: true
+  serial_groups: [ install ]
+  plan:
+  - aggregate:
+    - get: configuration
+      trigger: true
+      params:
+        unpack: true
+    - get: pcf-automation-image
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: pcf-automation-tasks
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+    - get: opsman-product
+    - get: state
+  - task: remove-timestamp
+    image: pcf-automation-image
+    config:
+      platform: linux
+      inputs:
+      - name: state
+      outputs:
+      - name: timestamp-state
+      run:
+        path: /bin/bash
+        args:
+        - -c
+        - |
+          mv state/*state.yml timestamp-state/state.yml
+  - task: create-vm
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/create-vm.yml
+    input_mapping:
+      image: opsman-product
+      state: timestamp-state
+      config: configuration
+    params:
+      STATE_FILE: state/state.yml
+      OPSMAN_CONFIG_FILE: opsman.yml
+  - task: add-timestamp
+    image: pcf-automation-image
+    config:
+      platform: linux
+      inputs:
+      - name: generated-state
+      outputs:
+      - name: timestamp-state
+      run:
+        path: /bin/bash
+        args:
+        - -c
+        - |
+          ts=$(date +"%Y%m%M%S%N")
+          mv generated-state/state.yml timestamp-state/${ts}-state.yml
+  - put: state
+    params:
+      file: timestamp-state/*-state.yml
+  - task: configure-authentication
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/configure-authentication.yml
+    attempts: 20
+    input_mapping:
+      env: configuration
+      config: configuration
+    params:
+      ENV_FILE: env.yml
+      AUTH_CONFIG_FILE: auth.yml
+  - task: configure-director
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/configure-director.yml
+    input_mapping:
+      config: configuration
+      env: configuration
+    params:
+      ENV_FILE: env.yml
+      DIRECTOR_CONFIG_FILE: director.yml
+  - task: apply-director-changes
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/apply-director-changes.yml
+    input_mapping:
+      env: configuration
+    params:
+      ENV_FILE: env.yml
+
+- name: export-installation
+  serial: true
+  serial_groups: [ install ]
+  plan:
+  - aggregate:
+    - get: configuration
+      trigger: true
+      passed: [ install-opsman ]
+      params:
+        unpack: true
+    - get: pcf-automation-image
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: pcf-automation-tasks
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+  - task: export-installation
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/export-installation.yml
+    input_mapping:
+      env: configuration
+    params:
+      ENV_FILE: env.yml
+  - task: add-timestamp
+    image: pcf-automation-image
+    config:
+      platform: linux
+      inputs:
+      - name: installation
+      outputs:
+      - name: timestamp-installation
+      run:
+        path: /bin/bash
+        args:
+        - -c
+        - |
+          ts=$(date +"%Y%m%M%S%N")
+          mv installation/installation.zip timestamp-installation/${ts}-installation.zip
+  - put: installation
+    params:
+      file: timestamp-installation/*-installation.zip
+
+- name: upgrade-opsman
+  serial: true
+  serial_groups: [ install ]
+  plan:
+  - aggregate:
+    - get: configuration
+      trigger: true
+      passed: [ export-installation ]
+      params:
+        unpack: true
+    - get: pcf-automation-image
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: pcf-automation-tasks
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+    - get: opsman-product
+    - get: installation
+      passed: [ export-installation ]
+    - get: state
+  - task: remove-timestamp
+    image: pcf-automation-image
+    config:
+      platform: linux
+      inputs:
+      - name: state
+      - name: installation
+      outputs:
+      - name: timestamp-state
+      - name: timestamp-installation
+      run:
+        path: /bin/bash
+        args:
+        - -c
+        - |
+          mv state/*state.yml timestamp-state/state.yml
+          mv installation/*installation.zip timestamp-installation/installation.zip
+  - task: upgrade-opsman
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/upgrade-opsman.yml
+    input_mapping:
+      image: opsman-product
+      state: timestamp-state
+      config: configuration
+      env: configuration
+      installation: timestamp-installation
+    params:
+      ENV_FILE: env.yml
+      OPSMAN_CONFIG_FILE: opsman.yml
+      STATE_FILE: state.yml
+  - task: add-timestamp
+    image: pcf-automation-image
+    config:
+      platform: linux
+      inputs:
+      - name: generated-state
+      outputs:
+      - name: timestamp-state
+      run:
+        path: /bin/bash
+        args:
+        - -c
+        - |
+          ts=$(date +"%Y%m%M%S%N")
+          mv generated-state/state.yml timestamp-state/${ts}-state.yml
+  - put: state
+    params:
+      file: timestamp-state/*-state.yml

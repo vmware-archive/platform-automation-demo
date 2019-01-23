@@ -1,0 +1,65 @@
+iaas-configuration:
+  vcenter_host: ((vcenter_hostname))
+  vcenter_username: ((vcenter_userid))
+  vcenter_password: ((vcenter_password))
+  datacenter: ((vsphere_datacenter))
+  ssl_verification_enabled: false
+  disk_type: thin
+  ephemeral_datastores_string: ((vsphere_datastore))
+  persistent_datastores_string: ((vsphere_datastore))
+  bosh_vm_folder: ((vsphere_vms_folder))
+  bosh_template_folder: ((vsphere_templates_folder))
+  bosh_disk_path: ((vsphere_disks_folder))
+  nsx_networking_enabled: true
+  nsx_mode: nsx-t
+  nsx_address: ((nsx_hostname))
+  nsx_username: ((nsx_admin_user))
+  nsx_password: ((nsx_admin_password))
+  nsx_ca_certificate: ((nsx_ca_cert))
+director-configuration:
+  ntp_servers_string: ((ntp))
+  resurrector_enabled: true
+  post_deploy_enabled: false
+az-configuration:
+- name: AZ1
+  clusters:
+  - cluster: ((vsphere_az1_cluster))
+    resource_pool: ((vsphere_az1_resource_pool))
+- name: AZ2
+  clusters:
+  - cluster: ((vsphere_az2_cluster))
+    resource_pool: ((vsphere_az2_resource_pool))
+- name: AZ3
+  clusters:
+  - cluster: ((vsphere_az3_cluster))
+    resource_pool: ((vsphere_az3_resource_pool))
+network-assignment:
+  singleton_availability_zone:
+    name: AZ1
+  network:
+    name: infrastructure
+networks-configuration:
+  icmp_checks_enabled: false
+  networks:
+  - name: infrastructure
+    service_network: false
+    subnets:
+    - iaas_identifier: ((infrastructure_network))
+      cidr: ((infrastructure_network_cidr))
+      reserved_ip_ranges: ((infrastructure_network_reserved))
+      dns: ((dns))
+      gateway: ((gateway))
+      availability_zone_names:
+      - AZ1
+  - name: deployment
+    service_network: false
+    subnets:
+    - iaas_identifier: ((deployment_network))
+      cidr: ((deployment_network_cidr))
+      reserved_ip_ranges: ((deployment_network_reserved))
+      dns: ((dns))
+      gateway: ((gateway))
+      availability_zone_names:
+      - AZ1
+      - AZ2
+      - AZ3
