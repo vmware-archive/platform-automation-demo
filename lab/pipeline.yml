@@ -392,7 +392,7 @@ jobs:
 
   - task: assign-stemcell
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/upload-stemcell.yml
+    file: pcf-automation-tasks/tasks/assign-stemcell.yml
     input_mapping:
       env: configuration
       config: assign-stemcell-config

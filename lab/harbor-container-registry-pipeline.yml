@@ -25,7 +25,7 @@ resources:
 
 jobs:
 
-- name: upload-and-stage-harbor
+- name: upload-and-stage-product
   serial: true
   plan:
   - aggregate:
@@ -97,7 +97,7 @@ jobs:
 
   - task: assign-stemcell
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/upload-stemcell.yml
+    file: pcf-automation-tasks/tasks/assign-stemcell.yml
     input_mapping:
       env: configuration
       config: assign-stemcell-config
@@ -113,7 +113,7 @@ jobs:
       vars: configuration
     params:
       CONFIG_FILE: ((foundation))/config/templates/harbor-container-registry.yml
-      VARS_FILES: vars/((foundation))/config/vars/harbor-container-registry.yml
+      VARS_FILES: vars/((foundation))/config/defaults/harbor-container-registry.yml vars/((foundation))/config/vars/harbor-container-registry.yml
       ENV_FILE: ((foundation))/config/templates/env.yml
 
 - name: apply-product-changes
@@ -123,7 +123,7 @@ jobs:
   - aggregate:
     - get: configuration
       trigger: true
-      passed: [ upload-and-stage-harbor ]
+      passed: [ upload-and-stage-product ]
       params:
         unpack: true
     - get: pcf-automation-image
