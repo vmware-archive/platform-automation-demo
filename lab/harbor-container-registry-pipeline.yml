@@ -44,6 +44,7 @@ jobs:
         unpack: true
         globs: ["*tasks*"]
     - get: pcf-automation-image-fixes
+  
   - task: credhub-interpolate
     image: pcf-automation-image-fixes
     file: configuration/fixes/tasks/credhub-interpolate.yml
@@ -145,7 +146,7 @@ jobs:
       CREDHUB_SECRET: ((concourse_to_credhub_secret))
       CREDHUB_SERVER: ((credhub_server))
       CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
-      PREFIX: '/((foundation))-foundation/harbor-container-registry'
+      PREFIX: '/((foundation))-foundation'
       INTERPOLATION_PATH: "((foundation))/config"
     input_mapping:
       files: configuration

@@ -1,3 +1,6 @@
 hostname: harbor.lab.winterfell.live
 network_name: infrastructure
 singleton_availability_zone: az1
+server_cert_key/certificate: ((harbor-container-registry/server_cert_key/certificate))
+server_cert_key/privatekey': ((harbor-container-registry/server_cert_key/privatekey))
+admin_password: ((harbor-container-registry/server_cert_key/privatekey))
