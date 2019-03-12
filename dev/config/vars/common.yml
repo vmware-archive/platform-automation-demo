@@ -1,7 +1,0 @@
-vsphere_datastore: LUN01
-vsphere_datacenter: Datacenter
-infrastructure_network: PAS-Infrastructure
-infrastructure_gateway: 192.168.1.1
-dns: 10.193.227.2
-ntp: 10.193.227.2
-vsphere_vms_folder: dev-vms

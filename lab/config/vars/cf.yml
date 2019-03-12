@@ -1,0 +1,28 @@
+cloud_controller/apps_domain: apps.lab.winterfell.live
+cloud_controller/system_domain: sys.lab.winterfell.live
+mysql_monitor/recipient_email: dpfeffer@pivotal.io
+network_name: deployment
+security_acknowledgement: X
+singleton_availability_zone: AZ1
+ha_proxy/skip_cert_verify: false
+router/static_ips: 192.168.7.32
+control/static_ips: 192.168.7.31
+
+properties_credhub_key_encryption_passwords_0_key.secret: ((properties_credhub_key_encryption_passwords_0_key_secret))
+
+properties_smtp_credentials.identity:
+properties_smtp_credentials.password:
+
+uaa_service_provider_key_password.secret:
+
+uaa_ldap_url: ldap://ldap.jumpcloud.com:389
+uaa_ldap_username: uid=servicebind,ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
+uaa_ldap_password: ((uaa_ldap_password))
+uaa_ldap_search_base: ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
+uaa_ldap_search_filter: (&(objectClass=inetOrgPerson)(uid={0}))
+uaa_ldap_group_search_base: ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
+uaa_ldap_group_search_filter: member={0}
+uaa_ldap_first_name_attribute: givenName
+uaa_ldap_last_name_attribute: sn
+uaa_ldap_mail_attribute_name: mail
+uaa_ldap_external_groups_whitelist: pks_*

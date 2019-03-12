@@ -1,0 +1,4 @@
+vsphere_resource_pool: pcf
+opsman_vm_name: dev-opsman
+opsman_private_ip: 192.168.7.10
+opsman_netmask: 255.255.255.0

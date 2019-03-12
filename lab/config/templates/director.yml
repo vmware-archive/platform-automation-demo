@@ -25,14 +25,6 @@ az-configuration:
   clusters:
   - cluster: ((vsphere_az1_cluster))
     resource_pool: ((vsphere_az1_resource_pool))
-- name: AZ2
-  clusters:
-  - cluster: ((vsphere_az2_cluster))
-    resource_pool: ((vsphere_az2_resource_pool))
-- name: AZ3
-  clusters:
-  - cluster: ((vsphere_az3_cluster))
-    resource_pool: ((vsphere_az3_resource_pool))
 network-assignment:
   singleton_availability_zone:
     name: AZ1
@@ -61,5 +53,12 @@ networks-configuration:
       gateway: ((deployment_gateway))
       availability_zone_names:
       - AZ1
-      - AZ2
-      - AZ3
+  - name: services
+    subnets:
+    - iaas_identifier: ((services_network))
+      cidr: ((services_network_cidr))
+      reserved_ip_ranges: ((services_network_reserved))
+      dns: ((dns))
+      gateway: ((services_gateway))
+      availability_zone_names:
+      - AZ1
