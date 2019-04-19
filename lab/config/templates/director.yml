@@ -45,11 +45,11 @@ networks-configuration:
       - az1
 
 properties-configuration: 
-  director-configuration:
+  director_configuration:
     ntp_servers_string: ((ntp))
     resurrector_enabled: true
     post_deploy_enabled: false
-  iaas-configuration:
+  iaas_configuration:
     vcenter_host: ((vcenter_hostname))
     vcenter_username: ((vcenter_userid))
     vcenter_password: ((vcenter_password))
