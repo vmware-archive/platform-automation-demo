@@ -1,0 +1,11 @@
+s3:
+  region_name: us-east-2
+  buckets: 
+    pcf_automation: lab-winterfell-live-platform-automation-for-pcf
+    product: lab-winterfell-live-platform-automation-product
+    stemcell: lab-winterfell-live-platform-automation-stemcell
+    installation: lab-winterfell-live-platform-automation-installation
+    pcf_automation_output: lab-winterfell-live-platform-automation-output
+    state: lab-winterfell-live-platform-automation-state
+credhub_server: https://ci.lab.winterfell.live:8844
+foundation: lab 

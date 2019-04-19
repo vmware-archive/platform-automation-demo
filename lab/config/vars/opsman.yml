@@ -2,3 +2,8 @@ vsphere_resource_pool: pcf
 opsman_vm_name: dev-opsman
 opsman_private_ip: 192.168.7.10
 opsman_netmask: 255.255.255.0
+opsman_ssh_password: ((vsphere_ssh_password))
+opsman_ssh.public_key: ((vsphere_ssh_public_key))
+vcenter_hostname: ((vsphere_vcenter.url))
+vcenter_password: ((vsphere_vcenter.password))
+vcenter_userid: ((vsphere_vcenter.username))
