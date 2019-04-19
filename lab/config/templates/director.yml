@@ -10,12 +10,7 @@ iaas-configuration:
   bosh_vm_folder: ((vsphere_vms_folder))
   bosh_template_folder: ((vsphere_templates_folder))
   bosh_disk_path: ((vsphere_disks_folder))
-  nsx_networking_enabled: true
-  nsx_mode: nsx-t
-  nsx_address: ((nsx_hostname))
-  nsx_username: ((nsx_admin_user))
-  nsx_password: ((nsx_admin_password))
-  nsx_ca_certificate: ((nsx_ca_cert))
+  nsx_networking_enabled: false
 director-configuration:
   ntp_servers_string: ((ntp))
   resurrector_enabled: true
