@@ -185,11 +185,11 @@ jobs:
     image: pcf-automation-image-fixes
     file: configuration/fixes/tasks/credhub-interpolate.yml
     params:
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      CREDHUB_CA_CERT: ((credhub-ca))
-      PREFIX: '/((foundation))'
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+      PREFIX: '/((foundation))-foundation'
       INTERPOLATION_PATH: "((foundation))/config"
     input_mapping:
       files: configuration
@@ -216,7 +216,7 @@ jobs:
         - -c
         - |
           ts=$(date +"%Y%m%M%S%N")
-          mv installation/installation.zip timestamp-installation/${ts}-installation.zip
+          mv installation/installation-*.zip timestamp-installation/${ts}-installation.zip
   - put: installation
     params:
       file: timestamp-installation/*-installation.zip
@@ -249,11 +249,11 @@ jobs:
     image: pcf-automation-image-fixes
     file: configuration/fixes/tasks/credhub-interpolate.yml
     params:
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      CREDHUB_CA_CERT: ((credhub-ca))
-      PREFIX: '/((foundation))'
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+      PREFIX: '/((foundation))-foundation'
       INTERPOLATION_PATH: "((foundation))/config"
     input_mapping:
       files: configuration
@@ -341,11 +341,11 @@ jobs:
     image: pcf-automation-image-fixes
     file: configuration/fixes/tasks/credhub-interpolate.yml
     params:
-      CREDHUB_CLIENT: ((credhub-client))
-      CREDHUB_SECRET: ((credhub-secret))
-      CREDHUB_SERVER: ((credhub-server))
-      CREDHUB_CA_CERT: ((credhub-ca))
-      PREFIX: '/((foundation))'
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+      PREFIX: '/((foundation))-foundation'
       INTERPOLATION_PATH: "((foundation))/config"
     input_mapping:
       files: configuration
