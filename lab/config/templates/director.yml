@@ -23,7 +23,7 @@ networks-configuration:
       dns: ((dns))
       gateway: ((infrastructure_gateway))
       availability_zone_names:
-      - AZ1
+      - az1
   - name: deployment
     service_network: false
     subnets:
@@ -33,7 +33,7 @@ networks-configuration:
       dns: ((dns))
       gateway: ((deployment_gateway))
       availability_zone_names:
-      - AZ1
+      - az1
   - name: services
     subnets:
     - iaas_identifier: ((services_network))
@@ -42,7 +42,7 @@ networks-configuration:
       dns: ((dns))
       gateway: ((services_gateway))
       availability_zone_names:
-      - AZ1
+      - az1
 
 properties-configuration: 
   director-configuration:
