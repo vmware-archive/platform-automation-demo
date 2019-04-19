@@ -4,4 +4,4 @@ infrastructure_network: "VM Network"
 infrastructure_gateway: 192.168.7.1
 dns: 192.168.7.1
 ntp: time.nist.gov
-vsphere_vms_folder: /Datacenter/vm/pivotal_cf
+vsphere_vms_folder: pcf_vms
