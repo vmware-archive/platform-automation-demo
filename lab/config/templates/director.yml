@@ -1,30 +1,15 @@
-iaas-configuration:
-  vcenter_host: ((vcenter_hostname))
-  vcenter_username: ((vcenter_userid))
-  vcenter_password: ((vcenter_password))
-  datacenter: ((vsphere_datacenter))
-  ssl_verification_enabled: false
-  disk_type: thin
-  ephemeral_datastores_string: ((vsphere_datastore))
-  persistent_datastores_string: ((vsphere_datastore))
-  bosh_vm_folder: ((vsphere_vms_folder))
-  bosh_template_folder: ((vsphere_templates_folder))
-  bosh_disk_path: ((vsphere_disks_folder))
-  nsx_networking_enabled: false
-director-configuration:
-  ntp_servers_string: ((ntp))
-  resurrector_enabled: true
-  post_deploy_enabled: false
 az-configuration:
 - name: AZ1
   clusters:
   - cluster: ((vsphere_az1_cluster))
     resource_pool: ((vsphere_az1_resource_pool))
+
 network-assignment:
   singleton_availability_zone:
     name: AZ1
   network:
     name: infrastructure
+
 networks-configuration:
   icmp_checks_enabled: false
   networks:
@@ -57,3 +42,40 @@ networks-configuration:
       gateway: ((services_gateway))
       availability_zone_names:
       - AZ1
+
+properties-configuration: 
+  director-configuration:
+    ntp_servers_string: ((ntp))
+    resurrector_enabled: true
+    post_deploy_enabled: false
+  iaas-configuration:
+    vcenter_host: ((vcenter_hostname))
+    vcenter_username: ((vcenter_userid))
+    vcenter_password: ((vcenter_password))
+    datacenter: ((vsphere_datacenter))
+    ssl_verification_enabled: false
+    disk_type: thin
+    ephemeral_datastores_string: ((vsphere_datastore))
+    persistent_datastores_string: ((vsphere_datastore))
+    bosh_vm_folder: ((vsphere_vms_folder))
+    bosh_template_folder: ((vsphere_templates_folder))
+    bosh_disk_path: ((vsphere_disks_folder))
+    nsx_networking_enabled: false
+  security_configuration:
+    generate_vm_passwords: true
+  syslog_configuration:
+    enabled: false
+
+resource-configuration:
+  compilation:
+    instances: automatic
+    instance_type:
+      id: automatic
+  director:
+    instances: automatic
+    persistent_disk:
+      size_mb: automatic
+    instance_type:
+      id: automatic
+
+vmextensions-configuration: []
