@@ -17,6 +17,12 @@ resources:
   source:
     repository: cwashburn/platform-automation-fixes
 
+- name: pcf-automation-extension-tasks
+  type: git
+  source:
+    uri: https://github.com/doddatpivotal/platform-automation-extensions.git
+    branch: master
+
 - name: configuration
   type: git
   source:
@@ -207,6 +213,7 @@ jobs:
         unpack: true
         globs: ["*tasks*"]
     - get: pcf-automation-image-fixes
+    - get: pcf-automation-extension-tasks
 
   - task: credhub-interpolate
     image: pcf-automation-image-fixes
@@ -237,8 +244,9 @@ jobs:
 
   - task: apply-product-changes
     image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/apply-changes.yml
+    file: pcf-automation-extension-tasks/tasks/apply-single-product-changes.yml
     input_mapping:
       env: configuration
     params:
       ENV_FILE: ((foundation))/config/templates/env.yml
+      PRODUCT_NAME: cf

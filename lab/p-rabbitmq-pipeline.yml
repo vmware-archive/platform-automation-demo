@@ -167,5 +167,5 @@ jobs:
       env: configuration
     params:
       ENV_FILE: ((foundation))/config/templates/env.yml
-      PRODUCT_NAME: pivotal-container-service
+      PRODUCT_NAME: p-rabbitmq
 
