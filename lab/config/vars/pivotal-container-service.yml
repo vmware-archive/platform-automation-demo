@@ -21,10 +21,6 @@ uaa/ldap/last_name_attribute: sn
 uaa/ldap/mail_attribute_name: mail
 uaa/ldap/ldap_referrals:
 uaa/ldap/external_groups_whitelist: pks_*
-telemetry_selector/enabled/billing_polling_interval:
-telemetry_selector/enabled/environment_provider:
-telemetry_selector/enabled/telemetry_polling_interval:
-telemetry_selector/enabled/telemetry_url: https://vcsa.vmware.com
 service_network_name: services
 singleton_availability_zone: az1
 

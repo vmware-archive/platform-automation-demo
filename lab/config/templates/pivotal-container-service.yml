@@ -121,15 +121,7 @@ product-properties:
   .properties.syslog_selector:
     value: disabled
   .properties.telemetry_selector:
-    value: enabled
-  .properties.telemetry_selector.enabled.billing_polling_interval:
-    value: ((telemetry_selector/enabled/billing_polling_interval))
-  .properties.telemetry_selector.enabled.environment_provider:
-    value: ((telemetry_selector/enabled/environment_provider))
-  .properties.telemetry_selector.enabled.telemetry_polling_interval:
-    value: ((telemetry_selector/enabled/telemetry_polling_interval))
-  .properties.telemetry_selector.enabled.telemetry_url:
-    value: ((telemetry_selector/enabled/telemetry_url))
+    value: disabled
   .properties.uaa:
     value: ldap
   .properties.uaa.ldap.credentials:

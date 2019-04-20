@@ -14,7 +14,7 @@ bosh int ${tmpdir}/product.yml \
   -o ${tmpdir}/optional/add-uaa-ldap-last_name_attribute.yml \
   -o ${tmpdir}/optional/add-uaa-ldap-group_search_base.yml \
   -o ${tmpdir}/optional/add-uaa-ldap-external_groups_whitelist.yml \
-  -o ${tmpdir}/features/telemetry_selector-enabled.yml \
+  -o ${tmpdir}/features/telemetry_selector-disabled.yml \
   -o ${tmpdir}/optional/add-plan1_selector-active-master_vm_type.yml \
   -o ${tmpdir}/optional/add-plan1_selector-active-master_persistent_disk_type.yml \
   -o ${tmpdir}/optional/add-plan1_selector-active-worker_vm_type.yml \
