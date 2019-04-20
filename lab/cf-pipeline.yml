@@ -175,8 +175,8 @@ jobs:
             {
               DOMAINS="*.$CORE_DOMAIN,*.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.$CLOUD_CONTROLLER_APPS_DOMAIN,*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
               CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
-              export OM_VAR_properties_networking_poe_ssl_certs_0_certificate_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
-              export OM_VAR_properties_networking_poe_ssl_certs_0_certificate_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
+              export OM_VAR_networking_poe_ssl_certs_0_certificate_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
+              export OM_VAR_networking_poe_ssl_certs_0_certificate_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
 
               DOMAINS="*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
               CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
