@@ -33,8 +33,8 @@ pivotal-container-service/pks_tls/privatekey: ((pivotal-container-service/pks_tl
 
 plan1_selector/active/name: "very-small-priv"
 plan1_selector/active/description: "1 master, 1 worker with privileged containers"
-plan1_selector/active/master_az_placement: az1
-plan1_selector/active/worker_az_placement: az1
+plan1_selector/active/master_az_placement: [az1]
+plan1_selector/active/worker_az_placement: [az1]
 plan1_selector/active/errand_vm_type: micro
 plan1_selector/active/master_persistent_disk_type: "10240"
 plan1_selector/active/master_vm_type: medium.disk
@@ -46,8 +46,8 @@ plan1_selector/active/worker_instances: 1
 
 plan2_selector/active/name: "very-small-non-priv"
 plan2_selector/active/description: "1 master, 1 worker with non-privileged containers"
-plan2_selector/active/master_az_placement: az1
-plan2_selector/active/worker_az_placement: az1
+plan2_selector/active/master_az_placement: [az1]
+plan2_selector/active/worker_az_placement: [az1]
 plan2_selector/active/errand_vm_type: micro
 plan2_selector/active/master_persistent_disk_type: "10240"
 plan2_selector/active/master_vm_type: medium.disk
