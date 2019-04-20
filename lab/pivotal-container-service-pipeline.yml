@@ -152,8 +152,6 @@ jobs:
         VARS_FILES: configuration/((foundation))/config/defaults/cf.yml configuration/((foundation))/config/vars/cf.yml
         ENV_FILE: configuration/((foundation))/config/templates/env.yml
         CORE_DOMAIN: ((core_domain))
-        CLOUD_CONTROLLER_SYSTEM_DOMAIN: ((cloud_controller_system_domain))
-        CLOUD_CONTROLLER_APPS_DOMAIN: ((cloud_controller_apps_domain))
         CREDHUB_CLIENT: concourse_to_credhub
         CREDHUB_SECRET: ((concourse_to_credhub_secret))
         CREDHUB_SERVER: ((credhub_server))
@@ -172,8 +170,7 @@ jobs:
 
             DOMAINS="*.pks.$CORE_DOMAIN,*.api.pks.$CORE_DOMAIN"
             CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
-            export OM_VAR_server_cert_pem=`
-            echo $CERTIFICATE | ./jq ".certificate" -r > pks_tls.certificate.certificate
+            echo $CERTIFICATE | ./jq ".certificate" -r > pks_tls.certificate
             echo $CERTIFICATE | ./jq ".key" -r > pks_tls.private_key
             export OM_VAR_CRED_1_NAME="${PREFIX}/pivotal-container-service/pks_tls" 
             credhub set -t certificate -n $OM_VAR_CRED_1_NAME -c ./pks_tls.certificate -p ./pks_tls.private_key

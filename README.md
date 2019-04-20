@@ -24,6 +24,12 @@ fly -t lab set-pipeline -p deploy-harbor -c lab/harbor-container-registry-pipeli
 
 fly -t lab unpause-pipeline -p deploy-harbor
 
+## PKS
+
+fly -t lab set-pipeline -p deploy-pks -c lab/pivotal-container-service-pipeline.yml -l lab/common.yml
+
+fly -t lab unpause-pipeline -p deploy-pks
+
 ## Setting up for a new tile
 
 When creating configuration for a product for the first time

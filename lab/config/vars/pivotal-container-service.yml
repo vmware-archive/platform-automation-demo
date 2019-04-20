@@ -1,5 +1,5 @@
 pks_api_hostname: api.pks.lab.winterfell.live
-network_name: az1
+network_name: infrastructure
 cloud_provider/vsphere/vcenter_master_creds_identity: administrator@vsphere.local
 cloud_provider/vsphere/vcenter_master_creds_password: ((vsphere_vcenter_password))
 cloud_provider/vsphere/vcenter_ip: 192.168.7.105
