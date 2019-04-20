@@ -23,6 +23,12 @@ resources:
     uri: git@github.com:doddatpivotal/platform-automation-example.git
     private_key: ((configuration_git_repo.private_key))
 
+- name: configuration2
+  type: git
+  source:
+    uri: git@github.com:doddatpivotal/platform-automation-example.git
+    private_key: ((configuration_git_repo.private_key))
+
 jobs:
 
 - name: upload-and-stage-product
@@ -114,6 +120,9 @@ jobs:
       passed: [ upload-and-stage-product ]
       params:
         unpack: true
+    - get: configuration2
+      params:
+        unpack: true
     - get: pcf-automation-image
       resource: pcf-automation
       params:
@@ -137,9 +146,9 @@ jobs:
       PREFIX: '/((foundation))-foundation'
       INTERPOLATION_PATH: "((foundation))/config"
     input_mapping:
-      files: configuration
+      files: configuration2
     output_mapping:
-      interpolated-files: configuration
+      interpolated-files: configuration2
       
 
   - task: configure-product
@@ -148,10 +157,11 @@ jobs:
       platform: linux
       inputs:
         - name: configuration
+        - name: configuration2
       params:
         CONFIG_FILE: ((foundation))/config/templates/cf.yml
-        VARS_FILES: configuration/((foundation))/config/defaults/cf.yml configuration/((foundation))/config/vars/cf.yml
-        ENV_FILE: configuration/((foundation))/config/templates/env.yml
+        VARS_FILES: configuration2/((foundation))/config/defaults/cf.yml configuration2/((foundation))/config/vars/cf.yml
+        ENV_FILE: configuration2/((foundation))/config/templates/env.yml
         CORE_DOMAIN: ((core_domain))
         CLOUD_CONTROLLER_SYSTEM_DOMAIN: ((cloud_controller_system_domain))
         CLOUD_CONTROLLER_APPS_DOMAIN: ((cloud_controller_apps_domain))
@@ -211,6 +221,6 @@ jobs:
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/apply-changes.yml
     input_mapping:
-      env: configuration
+      env: configuration2
     params:
       ENV_FILE: ((foundation))/config/templates/env.yml

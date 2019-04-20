@@ -62,8 +62,59 @@ networking_poe_ssl_certs_0/privatekey: |
   tDmmt0xHUW9xYs0GdFzPVRJWtqJFpvnmS7y5PxUCkcYZC/NdBhwKyMYoidynCYKF
   BC2gLPB1AY4zG9SxFCViD0k2ZhRvbnP2Gvo2xRzaQhFv6KOzp5GHJA==
   -----END RSA PRIVATE KEY-----  
-uaa/service_provider_key_credentials/certificate: ((uaa_service_provider_key_credentials_cert_pem))
-uaa/service_provider_key_credentials/privatekey: ((uaa_service_provider_key_credentials_private_key_pem))
+# uaa/service_provider_key_credentials/certificate: ((uaa_service_provider_key_credentials_cert_pem))
+uaa/service_provider_key_credentials/certificate: |
+  -----BEGIN CERTIFICATE-----
+  MIIDtTCCAp2gAwIBAgIVAK5ZCdzOdfsJhfzuMCKn23B7/99EMA0GCSqGSIb3DQEB
+  CwUAMB8xCzAJBgNVBAYTAlVTMRAwDgYDVQQKDAdQaXZvdGFsMB4XDTE5MDQxOTA0
+  NDEzMFoXDTIxMDQxOTA0NDEzMFowSTELMAkGA1UEBhMCVVMxEDAOBgNVBAoMB1Bp
+  dm90YWwxKDAmBgNVBAMMHyoubG9naW4uc3lzLmxhYi53aW50ZXJmZWxsLmxpdmUw
+  ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC97c9b+ZbkYF6CvgZPxHuU
+  vc8hGm6015RX42nMvwPXbAucpphLP1q3LYnhx72w8dSouk3g1LTd+Owx9qEbj0Gg
+  rjAaQkdp8fZ0h7LCbhiZ6/fDAEe3qyxeAny+OS/rfjdWN9fxodCrI7dytE79rMhY
+  AIdtZcvIcuV1OpaMjnOWcZ6kv7Lz88otda5ahbUgugSudtSQ2LomljRlJpN/MMwT
+  fim5UPTphFXIBdT0SzGklQ+lyWXaREvRvP2HPWfLU4cn513XiOtyjs/zqWpLOdIo
+  ie15h3PkruKx57BnIfhq3PO57gsQNjHjiUs8Agx6NAzl7uhFaxtVIU8Mb63hMalt
+  AgMBAAGjgb0wgbowHQYDVR0OBBYEFErqVmfutSUg9BUSq1wOzJ5vxs4IMB8GA1Ud
+  IwQYMBaAFNIdVXsCOGpCYC98Xad/MD+j/+2uMB0GA1UdJQQWMBQGCCsGAQUFBwMC
+  BggrBgEFBQcDATAOBgNVHQ8BAf8EBAMCB4AwSQYDVR0RBEIwQIIfKi5sb2dpbi5z
+  eXMubGFiLndpbnRlcmZlbGwubGl2ZYIdKi51YWEuc3lzLmxhYi53aW50ZXJmZWxs
+  LmxpdmUwDQYJKoZIhvcNAQELBQADggEBAGrbz7ME/dhdz5KAAbHx9m8hpp77m9Gp
+  Mx+4kGT8WRHaUQodjioL6yiJ7klIvF1kBXx6slWohBRQAxMHKOoHiqKpQVTUKPMJ
+  JoPOWcVdnBPy6r1TYhlOucyE6FkryV8avCDwh0Vc36LX8e1t5+AC9UJGv8P7VFsC
+  BGqhL0K+co3ISCxheii4Uz259NM5ewuvG2zDybsIK5y09tWnkc36/MzdNDhL8nAH
+  lQ00omhNy5SvL3nxIvs908lHun5ECpATzmbJQ5PXbmC3Z5hTCs3XmRB9M5zr/4kW
+  sEfDReih47WBjsnpiR+aXNPNQJP7dgfOqk9MtwzWENNTHXjj/nyLJnQ=
+  -----END CERTIFICATE-----
+# uaa/service_provider_key_credentials/privatekey: ((uaa_service_provider_key_credentials_private_key_pem))
+uaa/service_provider_key_credentials/privatekey: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEowIBAAKCAQEAve3PW/mW5GBegr4GT8R7lL3PIRputNeUV+NpzL8D12wLnKaY
+  Sz9aty2J4ce9sPHUqLpN4NS03fjsMfahG49BoK4wGkJHafH2dIeywm4Ymev3wwBH
+  t6ssXgJ8vjkv6343VjfX8aHQqyO3crRO/azIWACHbWXLyHLldTqWjI5zlnGepL+y
+  8/PKLXWuWoW1ILoErnbUkNi6JpY0ZSaTfzDME34puVD06YRVyAXU9EsxpJUPpcll
+  2kRL0bz9hz1ny1OHJ+dd14jrco7P86lqSznSKInteYdz5K7iseewZyH4atzzue4L
+  EDYx44lLPAIMejQM5e7oRWsbVSFPDG+t4TGpbQIDAQABAoIBAF/p4HXKLXFXWWMd
+  I4LU7rPGxvsopg+dbsSTi7JiJEZ9wb9yQiZ98AnhbWgfvqPE/GfY7ctEn7IZKu5w
+  ZhvM1I+YZ6JbJkVSc+uVO6kEgFf62jwXwB/4yYcQKn7F0nVSYA+iU+MqnH5QoyvB
+  8sIYp3QJkFqmtaqcm1QAKlcA+U5XYch8aOhnWTldRlzgFKBMvAWUFf2CG8oIxG8P
+  A7dralWh2O//r4xEmS7gknq478dEhu25jvPN4MwLOPwNUuAgONwYnt4FWvG03qqu
+  AuvtVzQDuJGkFqvLvJo7Rog2K/JUjtqEokIJOdc/MXpGjHLbe22YnA+1TPcwTD6c
+  /liVaAECgYEA/J5dNNNARQGDTFgRBzUJXu0ZlQXvc907T9kfvFcHsWN9tqLtTX1j
+  dRN7+nM8LYPfYjTLQ3ZDDIRnThazNlwZB9hOIccttRAVbhL2eHVh0EMq1EVS2k/k
+  ueAnZBbrJ4h9ZuRWvDtuamBtroCsO9oDclyuWKS24LjzLzUQehRcAK0CgYEAwHih
+  WkL7KlNQgV3NtsRC9i6lAIkthNDWmpncfh9xLnsvbZDYnJ/j8fFqWIeHmh/vDgUB
+  33TMjSIMkMCgWspaypYRsXY9sBxtQDfaQeTRHUxxIdNjYRXKxnHmKcHKXnaSxzHj
+  0TlPNLpMHvqji/1CQL0zXh7uDRfWuPE6eALjo8ECgYBSgPY39nabEu9q06hcDjpN
+  QmqEfTfDQ5HHdkYjINlmWfQI3hVapYUCC6cGGPSieNtQG6X3Fny3bda/bjKBonqa
+  UU7TQVXwOJyHIrJUjSGw/v7R7QIuQsGU41x6F/IdKzqpjBG30EEzhOLNh0C5G27c
+  vuBCGymPI1hpJo+HD3cs0QKBgHvWYcLIq//8oSTLbQu2VXs+Yc3pdU8qa5oHezXv
+  FwyYF9kARE7qFWjbMtiJQzdoapBzqlPTO7Vm/fy447Pm1OnaCsJK2MASWjzictzI
+  079tKrFf6GZT9iceq7+cP4/t7NybfgBlRlAfudCI5Wex6MnssjtR3UqxVueh1kPX
+  YA5BAoGBAKxgwZ0Jmnc1TDqETNmgueWdmTDdvueIC2DK7MUUtDwPWa/6r2hsAeXy
+  f5I3sH5WEcIL4mX/xfoNI5gd5mGdsqg2xJLGkQrRbLFfUaBteadl0g+LZN8GQzTv
+  pegKJ1u++teEGrfFqNkOqharnje1/BxhIUhNAwnmnsBIWDCrzJ/U
+  -----END RSA PRIVATE KEY-----
 uaa/ldap/url: ldap://ldap.jumpcloud.com:389
 uaa/ldap/credentials_identity: uid=servicebind,ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
 uaa/ldap/credentials_password: ((uaa_ldap_password))
