@@ -23,12 +23,6 @@ resources:
     uri: git@github.com:doddatpivotal/platform-automation-example.git
     private_key: ((configuration_git_repo.private_key))
 
-- name: configuration2
-  type: git
-  source:
-    uri: git@github.com:doddatpivotal/platform-automation-example.git
-    private_key: ((configuration_git_repo.private_key))
-
 jobs:
 
 - name: upload-and-stage-product
@@ -192,9 +186,6 @@ jobs:
       passed: [ generate-certs ]
       params:
         unpack: true
-    - get: configuration2
-      params:
-        unpack: true
     - get: pcf-automation-image
       resource: pcf-automation
       params:
@@ -218,17 +209,17 @@ jobs:
       PREFIX: '/((foundation))-foundation'
       INTERPOLATION_PATH: "((foundation))/config"
     input_mapping:
-      files: configuration2
+      files: configuration
     output_mapping:
-      interpolated-files: configuration2
+      interpolated-files: configuration
   
   - task: configure-product
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/configure-product.yml
     input_mapping:
-      config: configuration2
-      env: configuration2
-      vars: configuration2
+      config: configuration
+      env: configuration
+      vars: configuration
     params:
       CONFIG_FILE: ((foundation))/config/templates/pivotal-container-service.yml
       VARS_FILES: vars/((foundation))/config/defaults/pivotal-container-service.yml vars/((foundation))/config/vars/pivotal-container-service.yml
