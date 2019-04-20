@@ -7,8 +7,61 @@ credhub_key_encryption_passwords_0/key: ((properties_credhub_key_encryption_pass
 credhub_key_encryption_passwords_0/name: credhub-encryption-key
 credhub_key_encryption_passwords_0/primary: true
 networking_poe_ssl_certs_0/name: pas-cert
-networking_poe_ssl_certs_0/certificate: ((networking_poe_ssl_certs_0_certificate_cert_pem))
-networking_poe_ssl_certs_0/privatekey: ((networking_poe_ssl_certs_0_certificate_private_key_pem))
+# networking_poe_ssl_certs_0/certificate: ((networking_poe_ssl_certs_0_certificate_cert_pem))
+networking_poe_ssl_certs_0/certificate: |
+  -----BEGIN CERTIFICATE-----
+  MIID/jCCAuagAwIBAgIVALuy6O9ZIJ9lPIyHc584Y7YLTJWQMA0GCSqGSIb3DQEB
+  CwUAMB8xCzAJBgNVBAYTAlVTMRAwDgYDVQQKDAdQaXZvdGFsMB4XDTE5MDQxOTA0
+  MzEwNVoXDTIxMDQxOTA0MzEwNVowPzELMAkGA1UEBhMCVVMxEDAOBgNVBAoMB1Bp
+  dm90YWwxHjAcBgNVBAMMFSoubGFiLndpbnRlcmZlbGwubGl2ZTCCASIwDQYJKoZI
+  hvcNAQEBBQADggEPADCCAQoCggEBAM6C3jfLMHhg/hR1YuErRm/PiSqgN4ffo35/
+  XXu6qjZe68SOnvdEtsv348UbsYCNwZ+NMeacuElIr+Ws1E/Kueo8gCTLbRyhV2vj
+  oym7JqyG08Gh8lJut+peSQ9APNDfbTFsfKG8xb8V0x6AP/I+MWxilvCIogtMN2AO
+  m/7eLwrAQwwLUUb8UaUR+UouD/W5Ai22D20Lfn++xa/Ma6n869kgo7ymDknKDDi3
+  anyLu4sArwYzmmRGWVDEmHyuOWPWnt5A6qk48y16zrwpmqjioWtNRdO4UuD5VXoF
+  gmXvHW/yDzte/5X/wQjUGuW4mPA7q7LBTO1sG8/wGjYjhedV5+cCAwEAAaOCAQ8w
+  ggELMB0GA1UdDgQWBBRRbs7RPY9mSt4XGudQzFnzlIJwdjAfBgNVHSMEGDAWgBTS
+  HVV7AjhqQmAvfF2nfzA/o//trjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUH
+  AwEwDgYDVR0PAQH/BAQDAgeAMIGZBgNVHREEgZEwgY6CFSoubGFiLndpbnRlcmZl
+  bGwubGl2ZYIZKi5zeXMubGFiLndpbnRlcmZlbGwubGl2ZYIaKi5hcHBzLmxhYi53
+  aW50ZXJmZWxsLmxpdmWCHyoubG9naW4uc3lzLmxhYi53aW50ZXJmZWxsLmxpdmWC
+  HSoudWFhLnN5cy5sYWIud2ludGVyZmVsbC5saXZlMA0GCSqGSIb3DQEBCwUAA4IB
+  AQBOlntDWDKEMu5ouxBpv0AbTBsv7PTSitEE1MqaYNwS0wmxeojjWswviHwLub0X
+  Fnw5Ov0DrpNVFVBwZyg45K9Xb6D03tlrfHG0LGLJ5TSx+viR89w5OWibV3dVKjLE
+  8PATyA2AasR3vPO9p1xRvJ+CDYz3xF17kO6iyRFDELf/WIsgDp/v7mYjhRYDAe6E
+  e2VtCIVqCUUx9L+TmBFttgG6OQDoEV0zohgwZGMk+j9pd0Lhnj4ytDZIWG3L3HC6
+  EVv7iG7uoLUcxZgAJ0Wt/4f+PW1T/ISj+LJFNde1NbRSGSboIz7L7SZhgsTFBlEn
+  FeuCU5vADoGFah+wZGv2qWmX
+  -----END CERTIFICATE-----
+# networking_poe_ssl_certs_0/privatekey: ((networking_poe_ssl_certs_0_certificate_private_key_pem))
+networking_poe_ssl_certs_0/privatekey: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEpAIBAAKCAQEAzoLeN8sweGD+FHVi4StGb8+JKqA3h9+jfn9de7qqNl7rxI6e
+  90S2y/fjxRuxgI3Bn40x5py4SUiv5azUT8q56jyAJMttHKFXa+OjKbsmrIbTwaHy
+  Um636l5JD0A80N9tMWx8obzFvxXTHoA/8j4xbGKW8IiiC0w3YA6b/t4vCsBDDAtR
+  RvxRpRH5Si4P9bkCLbYPbQt+f77Fr8xrqfzr2SCjvKYOScoMOLdqfIu7iwCvBjOa
+  ZEZZUMSYfK45Y9ae3kDqqTjzLXrOvCmaqOKha01F07hS4PlVegWCZe8db/IPO17/
+  lf/BCNQa5biY8DurssFM7Wwbz/AaNiOF51Xn5wIDAQABAoIBAQCyXnrNuiTtdOlA
+  hnuXfSdjn+Ab/zK3m0S+GAiIvBwUxjviFEXd0W4KEtya/WZ9YPNiejQluiu6sJut
+  R3BCUxnt5b/RCBwAZKL7vyzI+KtYzUPNtbF13cfhGPsFvzhIORM5YzjrAf/TImit
+  qZySAYHy2d0BeSJtm7EguL2okAQVxZkaKTgy5vdL/ooIqpPoBKAs9i2fCNEjSP+B
+  AH7d5UE19bUERYBGCru0hHE+kXjh3Q1oV9TJypiqjkLwrwfkYSYqx8cdGz9r92Fv
+  KMSHfGZxjbkI0yTtyl4fwchZNh2+Fs8/3dUU70SJSckFYomzNCepJWQfHpWftf5n
+  0Dlz4AzxAoGBAO+p3TbG4QEGtUdzAzWiwYYBghMlkOI6XRNQGheSt3S1OAfCLhua
+  ugLnylfn4mD78UQZN1DZ0r/Bw61mEQQHuqQJ9u6EohN5VvK98nFsbbpTai531MHC
+  p/NFn9OOh0abb7vPZ2aCr+ij20/bfFJqyUhfrGt+s3CrEw3Ng7WzRd91AoGBANyW
+  fqpeiRfI380v4wYpkxNstdLPwfTZGDPoLR+qGRFQwi6LFhsikk2lMDuMxWVKB30Q
+  Sp7mZYPF6VTPkOClr3uaWN1JWLSQDAdOlpZFr/d7pwVZEOtkYivl58IhPyjbq5Lu
+  ubws70rkbFUPoNUnFxx4JvSti2nD/ASYPkQ7XTprAoGBAMNg1CFawoVmpZQo093+
+  4AtR4WugfVugPs6Gx66eAgcX0SSqDZKdcbT6p39AX9G2snpUoD6+RMvkt5P9mDOT
+  5XjjUrYh1EtR6Ssc5K/IuC9k3zQgpoaLHQX6pY//KpLKFq2iKGZudd+O7TRN9yzt
+  N0hUDqjXcouQO4lOGGihTH4dAoGADSrOlMzf0hOjiFP7cTq6FMbAc70DDuKGl1Kc
+  nu9AX9A6Rxz2TNhbc1cQ8f0NK2an28dFLQcDuEHwE6fwNfit6Orlsw/Vw7F1hloi
+  kwXF4zf2WFNgtyxez9ABbY0egAnczACEBb+I6SeJb+pm51JWBtUFPkW9tKqGOJ/9
+  14TTo9ECgYA1+ldeTA9sWRHBU6/AtUFwb63gK5ohc6l7rr24iX9s/Ip4BiOEm9DN
+  tDmmt0xHUW9xYs0GdFzPVRJWtqJFpvnmS7y5PxUCkcYZC/NdBhwKyMYoidynCYKF
+  BC2gLPB1AY4zG9SxFCViD0k2ZhRvbnP2Gvo2xRzaQhFv6KOzp5GHJA==
+  -----END RSA PRIVATE KEY-----  
 uaa/service_provider_key_credentials/certificate: ((uaa_service_provider_key_credentials_cert_pem))
 uaa/service_provider_key_credentials/privatekey: ((uaa_service_provider_key_credentials_private_key_pem))
 uaa/ldap/url: ldap://ldap.jumpcloud.com:389

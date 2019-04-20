@@ -174,14 +174,19 @@ jobs:
 
             {
               DOMAINS="*.$CORE_DOMAIN,*.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.$CLOUD_CONTROLLER_APPS_DOMAIN,*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
+              echo "domains: $DOMAINS"
               CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
+              echo "certificates: $CERTIFICATE"
               export OM_VAR_networking_poe_ssl_certs_0_certificate_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
               export OM_VAR_networking_poe_ssl_certs_0_certificate_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
-
+              echo "cert_perm: $OM_VAR_networking_poe_ssl_certs_0_certificate_cert_pem"
+              echo "private_key: $OM_VAR_networking_poe_ssl_certs_0_certificate_private_key_pem"
               DOMAINS="*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
               CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
               export OM_VAR_uaa_service_provider_key_credentials_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
               export OM_VAR_uaa_service_provider_key_credentials_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
+              echo "cert_perm: $OM_VAR_uaa_service_provider_key_credentials_cert_pem"
+              echo "private_key: $OM_VAR_uaa_service_provider_key_credentials_private_key_pem"
             } 2> /dev/null
 
             # ${vars_files_args[@] needs to be globbed in order to pass through properly
