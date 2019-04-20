@@ -7,10 +7,10 @@ credhub_key_encryption_passwords_0/key: ((properties_credhub_key_encryption_pass
 credhub_key_encryption_passwords_0/name: credhub-encryption-key
 credhub_key_encryption_passwords_0/primary: true
 networking_poe_ssl_certs_0/name: pas-cert
-networking_poe_ssl_certs_0/certificate: networking_poe_ssl_certs_0_certificate_cert_pem
-networking_poe_ssl_certs_0/privatekey: networking_poe_ssl_certs_0_certificate_private_key_pem
-uaa/service_provider_key_credentials/certificate: uaa_service_provider_key_credentials_cert_pem
-uaa/service_provider_key_credentials/privatekey: uaa_service_provider_key_credentials_private_key_pem
+networking_poe_ssl_certs_0/certificate: ((networking_poe_ssl_certs_0_certificate_cert_pem))
+networking_poe_ssl_certs_0/privatekey: ((networking_poe_ssl_certs_0_certificate_private_key_pem))
+uaa/service_provider_key_credentials/certificate: ((uaa_service_provider_key_credentials_cert_pem))
+uaa/service_provider_key_credentials/privatekey: ((uaa_service_provider_key_credentials_private_key_pem))
 uaa/ldap/url: ldap://ldap.jumpcloud.com:389
 uaa/ldap/credentials_identity: uid=servicebind,ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
 uaa/ldap/credentials_password: ((uaa_ldap_password))
