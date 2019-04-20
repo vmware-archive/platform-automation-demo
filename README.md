@@ -12,7 +12,7 @@ fly -t lab set-pipeline -p deploy-om-and-director -c lab/om-and-director-pipelin
 
 fly -t lab unpause-pipeline -p deploy-om-and-director
 
-## Harbor
+## PAS
 
 fly -t lab set-pipeline -p deploy-cf -c lab/cf-pipeline.yml -l lab/common.yml
 
