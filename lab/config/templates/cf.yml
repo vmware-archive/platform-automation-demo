@@ -272,21 +272,29 @@ product-properties:
   .properties.tcp_routing:
     value: disable
   .properties.uaa:
-    value: internal
-  .properties.uaa.internal.password_expires_after_months:
-    value: ((uaa/internal/password_expires_after_months))
-  .properties.uaa.internal.password_max_retry:
-    value: ((uaa/internal/password_max_retry))
-  .properties.uaa.internal.password_min_length:
-    value: ((uaa/internal/password_min_length))
-  .properties.uaa.internal.password_min_lowercase:
-    value: ((uaa/internal/password_min_lowercase))
-  .properties.uaa.internal.password_min_numeric:
-    value: ((uaa/internal/password_min_numeric))
-  .properties.uaa.internal.password_min_special:
-    value: ((uaa/internal/password_min_special))
-  .properties.uaa.internal.password_min_uppercase:
-    value: ((uaa/internal/password_min_uppercase))
+    value: ldap
+  .properties.uaa.ldap.credentials:
+    value:
+      identity: ((uaa/ldap/credentials_identity))
+      password: ((uaa/ldap/credentials_password))
+  .properties.uaa.ldap.first_name_attribute:
+    value: ((uaa/ldap/first_name_attribute))
+  .properties.uaa.ldap.group_search_base:
+    value: ((uaa/ldap/group_search_base))
+  .properties.uaa.ldap.group_search_filter:
+    value: ((uaa/ldap/group_search_filter))
+  .properties.uaa.ldap.last_name_attribute:
+    value: ((uaa/ldap/last_name_attribute))
+  .properties.uaa.ldap.ldap_referrals:
+    value: ((uaa/ldap/ldap_referrals))
+  .properties.uaa.ldap.mail_attribute_name:
+    value: ((uaa/ldap/mail_attribute_name))
+  .properties.uaa.ldap.search_base:
+    value: ((uaa/ldap/search_base))
+  .properties.uaa.ldap.search_filter:
+    value: ((uaa/ldap/search_filter))
+  .properties.uaa.ldap.url:
+    value: ((uaa/ldap/url))
   .properties.uaa_database:
     value: internal_mysql
   .properties.uaa_session_cookie_max_age:

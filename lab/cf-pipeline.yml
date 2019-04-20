@@ -151,7 +151,7 @@ jobs:
       interpolated-files: configuration2
       
 
-  - task: configure-product
+  - task: create-certs
     image: pcf-automation-image
     config:
       platform: linux
@@ -165,6 +165,11 @@ jobs:
         CORE_DOMAIN: ((core_domain))
         CLOUD_CONTROLLER_SYSTEM_DOMAIN: ((cloud_controller_system_domain))
         CLOUD_CONTROLLER_APPS_DOMAIN: ((cloud_controller_apps_domain))
+        CREDHUB_CLIENT: concourse_to_credhub
+        CREDHUB_SECRET: ((concourse_to_credhub_secret))
+        CREDHUB_SERVER: ((credhub_server))
+        CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+        PREFIX: '/((foundation))-foundation'
       run:
         path: bash
         args:
@@ -176,55 +181,56 @@ jobs:
             curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
             chmod +x jq
 
-            vars_files_args=("")
-            for vf in ${VARS_FILES}
-            do
-              vars_files_args+=("--vars-file ${vf}")
-            done
-
             {
               DOMAINS="*.$CORE_DOMAIN,*.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.$CLOUD_CONTROLLER_APPS_DOMAIN,*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
               CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
               export OM_VAR_networking_poe_ssl_certs_0_certificate_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
               export OM_VAR_networking_poe_ssl_certs_0_certificate_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
-              # echo $OM_VAR_networking_poe_ssl_certs_0_certificate_cert_pem > test.yml
-              # cat test.yml
-              echo "networking_poe_ssl_certs_0_certificate_cert_pem: $OM_VAR_networking_poe_ssl_certs_0_certificate_cert_pem" >> adhoc-vars.yml
-              echo "networking_poe_ssl_certs_0_certificate_private_key_pem: $OM_VAR_networking_poe_ssl_certs_0_certificate_private_key_pem" >> adhoc-vars.yml
-
-              echo "adhoc-vars.yml"
-              cat adhoc-vars.yml
 
               DOMAINS="*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
               CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
               export OM_VAR_uaa_service_provider_key_credentials_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
               export OM_VAR_uaa_service_provider_key_credentials_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
 
-              echo "uaa_service_provider_key_credentials_cert_pem: $OM_VAR_uaa_service_provider_key_credentials_cert_pem" >> adhoc-vars.yml
-              echo "uaa_service_provider_key_credentials_private_key_pem: $OM_VAR_uaa_service_provider_key_credentials_private_key_pem" >> adhoc-vars.yml
-
-              echo "adhoc-vars.yml"
-              cat adhoc-vars.yml
-
             } 2> /dev/null
 
-            # ${vars_files_args[@] needs to be globbed in order to pass through properly
-            # shellcheck disable=SC2068
-            om --env "${ENV_FILE}" configure-product --vars-env OM_VAR \
-              --config "configuration/${CONFIG_FILE}" ${vars_files_args[@]} -l adhoc-vars.yml
+            credhub api $CREDHUB_SERVER --ca-cert $CREDHUB_CA_CERT
+            credhub login -u $CREDHUB_CLIENT -p $CREDHUB_SECRET
 
+            credhub set -t certificate -n '/$PREFIX/cf/networking_poe_ssl_certs_0_certificate' \
+              -c $OM_VAR_networking_poe_ssl_certs_0_certificate_cert_pem\
+              -p $OM_VAR_networking_poe_ssl_certs_0_certificate_private_key_pem
 
-# - task: configure-product
-#     image: pcf-automation-image
-#     file: pcf-automation-tasks/tasks/configure-product.yml
-#     input_mapping:
-#       config: configuration
-#       env: configuration
-#       vars: configuration
-#     params:
-#       CONFIG_FILE: ((foundation))/config/templates/cf.yml
-#       VARS_FILES: vars/((foundation))/config/defaults/cf.yml vars/((foundation))/config/vars/cf.yml
-#       ENV_FILE: ((foundation))/config/templates/env.yml
+            credhub set -t certificate -n '/$PREFIX/cf/uaa_service_provider_key_credentials' \
+              -c $OM_VAR_uaa_service_provider_key_credentials_cert_pem\
+              -p $OM_VAR_uaa_service_provider_key_credentials_private_key_pem
+
+  - task: credhub-interpolate-again
+    image: pcf-automation-image-fixes
+    file: configuration/fixes/tasks/credhub-interpolate.yml
+    params:
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+      PREFIX: '/((foundation))-foundation'
+      INTERPOLATION_PATH: "((foundation))/config"
+    input_mapping:
+      files: configuration2
+    output_mapping:
+      interpolated-files: configuration2
+
+  - task: configure-product
+      image: pcf-automation-image
+      file: pcf-automation-tasks/tasks/configure-product.yml
+      input_mapping:
+        config: configuration
+        env: configuration
+        vars: configuration
+      params:
+        CONFIG_FILE: ((foundation))/config/templates/cf.yml
+        VARS_FILES: vars/((foundation))/config/defaults/cf.yml vars/((foundation))/config/vars/cf.yml
+        ENV_FILE: ((foundation))/config/templates/env.yml
 
   - task: apply-product-changes
     image: pcf-automation-image
