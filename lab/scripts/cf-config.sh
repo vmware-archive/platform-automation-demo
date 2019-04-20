@@ -8,12 +8,17 @@ mkdir -p cf-tcg
 tmpdir=cf-tcg
 tile-config-generator generate --base-directory=${tmpdir} --do-not-include-product-version --include-errands pivnet --token ${PIVNET_TOKEN} --product-slug ${slug} --product-version ${version} --product-glob ${glob}
 bosh int ${tmpdir}/product.yml \
+  -o ${tmpdir}/features/uaa-ldap.yml \
+  -o ${tmpdir}/optional/add-uaa-ldap-group_search_base.yml \
+  -o ${tmpdir}/optional/add-uaa-ldap-first_name_attribute.yml \
+  -o ${tmpdir}/optional/add-uaa-ldap-last_name_attribute.yml \
   -o ${tmpdir}/features/haproxy_forward_tls-disable.yml \
   -o ${tmpdir}/optional/add-control-static_ips.yml \
-  -o ${tmpdir}/optional/add-router-static_ips.yml > ../config/templates/cf.yml
+  -o ${tmpdir}/optional/add-router-static_ips.yml
+#    > ../config/templates/cf.yml
 
-rm -rf ../config/defaults/cf.yml
-touch ../config/defaults/cf.yml
-cat ${tmpdir}/product-default-vars.yml >> ../config/defaults/cf.yml
-cat ${tmpdir}/errand-vars.yml >> ../config/defaults/cf.yml
-cat ${tmpdir}/resource-vars.yml >> ../config/defaults/cf.yml
+# rm -rf ../config/defaults/cf.yml
+# touch ../config/defaults/cf.yml
+# cat ${tmpdir}/product-default-vars.yml >> ../config/defaults/cf.yml
+# cat ${tmpdir}/errand-vars.yml >> ../config/defaults/cf.yml
+# cat ${tmpdir}/resource-vars.yml >> ../config/defaults/cf.yml

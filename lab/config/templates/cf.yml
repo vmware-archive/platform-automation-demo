@@ -74,6 +74,8 @@ product-properties:
     value: ((ha_proxy/skip_cert_verify))
   .mysql.cli_history:
     value: ((mysql/cli_history))
+  .mysql.max_connections:
+    value: ((mysql/max_connections))
   .mysql.prevent_node_auto_rejoin:
     value: ((mysql/prevent_node_auto_rejoin))
   .mysql.remote_admin_access:
@@ -94,6 +96,8 @@ product-properties:
     value: ((autoscale_api_disable_connection_pooling))
   .properties.autoscale_api_instance_count:
     value: ((autoscale_api_instance_count))
+  .properties.autoscale_enable_notifications:
+    value: ((autoscale_enable_notifications))
   .properties.autoscale_enable_verbose_logging:
     value: ((autoscale_enable_verbose_logging))
   .properties.autoscale_instance_count:
@@ -114,6 +118,8 @@ product-properties:
     value: ((cf_networking_enable_space_developer_self_service))
   .properties.cf_networking_internal_domain:
     value: ((cf_networking_internal_domain))
+  .properties.cloud_controller_completed_tasks_cutoff_age_in_days:
+    value: ((cloud_controller_completed_tasks_cutoff_age_in_days))
   .properties.cloud_controller_default_health_check_timeout:
     value: ((cloud_controller_default_health_check_timeout))
   .properties.cloud_controller_default_stack:
@@ -147,8 +153,6 @@ product-properties:
     value: rfc3339
   .properties.enable_cf_metric_name:
     value: ((enable_cf_metric_name))
-  .properties.enable_log_cache:
-    value: ((enable_log_cache))
   .properties.enable_smb_volume_driver:
     value: ((enable_smb_volume_driver))
   .properties.enable_tls_to_internal_pxc:
@@ -217,6 +221,8 @@ product-properties:
     value: enable
   .properties.route_services.enable.ignore_ssl_cert_verification:
     value: ((route_services/enable/ignore_ssl_cert_verification))
+  .properties.route_services.enable.internal_lookup:
+    value: ((route_services/enable/internal_lookup))
   .properties.router_backend_max_conn:
     value: ((router_backend_max_conn))
   .properties.router_client_cert_validation:

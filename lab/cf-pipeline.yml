@@ -66,7 +66,7 @@ jobs:
     input_mapping:
       config: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/versions/harbor-container-registry.yml
+      CONFIG_FILE: ((foundation))/config/versions/cf.yml
 
   - task: upload-product
     image: pcf-automation-image
@@ -86,7 +86,7 @@ jobs:
     params:
       ENV_FILE: ((foundation))/config/templates/env.yml
 
-  - task: upload-cf-stemcell
+  - task: upload-product-stemcell
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/upload-stemcell.yml
     input_mapping:
@@ -112,8 +112,8 @@ jobs:
       env: configuration
       vars: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/templates/harbor-container-registry.yml
-      VARS_FILES: vars/((foundation))/config/defaults/harbor-container-registry.yml vars/((foundation))/config/vars/harbor-container-registry.yml
+      CONFIG_FILE: ((foundation))/config/templates/cf.yml
+      VARS_FILES: vars/((foundation))/config/defaults/cf.yml vars/((foundation))/config/vars/cf.yml
       ENV_FILE: ((foundation))/config/templates/env.yml
 
 - name: apply-product-changes
