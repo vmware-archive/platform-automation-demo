@@ -30,6 +30,12 @@ fly -t lab set-pipeline -p deploy-pks -c lab/pivotal-container-service-pipeline.
 
 fly -t lab unpause-pipeline -p deploy-pks
 
+## PKS
+
+fly -t lab set-pipeline -p deploy-rabbit -c lab/p-rabbitmq-pipeline.yml -l lab/common.yml
+
+fly -t lab unpause-pipeline -p deploy-rabbit
+
 ## Setting up for a new tile
 
 When creating configuration for a product for the first time

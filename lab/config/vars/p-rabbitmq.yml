@@ -1,0 +1,4 @@
+network_name: deployment
+on_demand_broker_plan_1_rabbitmq_az_placement: az1
+service_network_name: services
+singleton_availability_zone: az

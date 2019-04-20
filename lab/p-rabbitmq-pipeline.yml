@@ -72,7 +72,7 @@ jobs:
     input_mapping:
       config: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/versions/pivotal-container-service.yml
+      CONFIG_FILE: ((foundation))/config/versions/p-rabbitmq.yml
 
   - task: upload-product
     image: pcf-automation-image
@@ -110,78 +110,6 @@ jobs:
     params:
       ENV_FILE: ((foundation))/config/templates/env.yml
 
-
-- name: generate-certs
-  serial: true
-  plan:
-
-  - aggregate:
-    - get: configuration
-      trigger: true
-      passed: [ upload-and-stage-product ]
-      params:
-        unpack: true
-    - get: pcf-automation-image
-      resource: pcf-automation
-      params:
-        unpack: true
-        globs: ["*image*"]
-    - get: pcf-automation-tasks
-      resource: pcf-automation
-      params:
-        unpack: true
-        globs: ["*tasks*"]
-    - get: pcf-automation-image-fixes
-
-  - task: credhub-interpolate
-    image: pcf-automation-image-fixes
-    file: configuration/fixes/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CLIENT: concourse_to_credhub
-      CREDHUB_SECRET: ((concourse_to_credhub_secret))
-      CREDHUB_SERVER: ((credhub_server))
-      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
-      PREFIX: '/((foundation))-foundation'
-      INTERPOLATION_PATH: "((foundation))/config"
-    input_mapping:
-      files: configuration
-    output_mapping:
-      interpolated-files: configuration
-      
-  - task: create-certs
-    image: pcf-automation-image
-    config:
-      platform: linux
-      inputs:
-        - name: configuration
-      params:
-        CONFIG_FILE: ((foundation))/config/templates/cf.yml
-        VARS_FILES: configuration/((foundation))/config/defaults/cf.yml configuration/((foundation))/config/vars/cf.yml
-        ENV_FILE: configuration/((foundation))/config/templates/env.yml
-        CORE_DOMAIN: ((core_domain))
-        CREDHUB_CLIENT: concourse_to_credhub
-        CREDHUB_SECRET: ((concourse_to_credhub_secret))
-        CREDHUB_SERVER: ((credhub_server))
-        CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
-        PREFIX: '/((foundation))-foundation'
-      run:
-        path: bash
-        args:
-          - -c
-          - |
-            p-automator -v
-            # set -eux
-
-            curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
-            chmod +x jq
-
-            DOMAINS="*.pks.$CORE_DOMAIN,*.api.pks.$CORE_DOMAIN"
-            CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
-            echo $CERTIFICATE | ./jq ".certificate" -r > pks_tls.certificate
-            echo $CERTIFICATE | ./jq ".key" -r > pks_tls.private_key
-            export OM_VAR_CRED_1_NAME="${PREFIX}/pivotal-container-service/pks_tls" 
-            credhub set -t certificate -n $OM_VAR_CRED_1_NAME -c ./pks_tls.certificate -p ./pks_tls.private_key
-
 - name: configure-and-apply-product-changes
   serial: true
   plan:
@@ -189,7 +117,7 @@ jobs:
   - aggregate:
     - get: configuration
       trigger: true
-      passed: [ generate-certs ]
+      passed: [ upload-and-stage-product ]
       params:
         unpack: true
     - get: pcf-automation-image
@@ -228,8 +156,8 @@ jobs:
       env: configuration
       vars: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/templates/pivotal-container-service.yml
-      VARS_FILES: vars/((foundation))/config/defaults/pivotal-container-service.yml vars/((foundation))/config/vars/pivotal-container-service.yml
+      CONFIG_FILE: ((foundation))/config/templates/p-rabbitmq.yml
+      VARS_FILES: vars/((foundation))/config/defaults/p-rabbitmq.yml vars/((foundation))/config/vars/p-rabbitmq.yml
       ENV_FILE: ((foundation))/config/templates/env.yml
       
   - task: apply-product-changes
@@ -240,3 +168,4 @@ jobs:
     params:
       ENV_FILE: ((foundation))/config/templates/env.yml
       PRODUCT_NAME: pivotal-container-service
+
