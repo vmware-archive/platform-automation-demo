@@ -225,10 +225,10 @@ jobs:
       VARS_FILES: vars/((foundation))/config/defaults/pivotal-container-service.yml vars/((foundation))/config/vars/pivotal-container-service.yml
       ENV_FILE: ((foundation))/config/templates/env.yml
       
-  # - task: apply-product-changes
-  #   image: pcf-automation-image
-  #   file: pcf-automation-tasks/tasks/apply-changes.yml
-  #   input_mapping:
-  #     env: configuration
-  #   params:
-  #     ENV_FILE: ((foundation))/config/templates/env.yml
+  - task: apply-product-changes
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/apply-changes.yml
+    input_mapping:
+      env: configuration
+    params:
+      ENV_FILE: ((foundation))/config/templates/env.yml

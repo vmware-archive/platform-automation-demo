@@ -9,6 +9,7 @@ cloud_provider/vsphere/vcenter_vms: pks_vms
 wavefront/enabled/wavefront_token: ((wavefront_token))
 wavefront/enabled/wavefront_api_url: https://surf.wavefront.com/api
 wavefront/enabled/wavefront_alert_targets: dpfeffer@pivotal.io
+uaa_oidc: true
 uaa/ldap/url: ldap://ldap.jumpcloud.com:389
 uaa/ldap/credentials_identity: uid=servicebind,ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
 uaa/ldap/credentials_password: ((uaa_ldap_password))
