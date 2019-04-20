@@ -95,28 +95,16 @@ jobs:
     params:
       ENV_FILE: ((foundation))/config/templates/env.yml
 
-  - task: assign-stemcell
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/assign-stemcell.yml
-    input_mapping:
-      env: configuration
-      config: assign-stemcell-config
-    params:
-      ENV_FILE: ((foundation))/config/templates/env.yml
+  # - task: assign-stemcell
+  #   image: pcf-automation-image
+  #   file: pcf-automation-tasks/tasks/assign-stemcell.yml
+  #   input_mapping:
+  #     env: configuration
+  #     config: assign-stemcell-config
+  #   params:
+  #     ENV_FILE: ((foundation))/config/templates/env.yml
 
-  - task: configure-product
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/configure-product.yml
-    input_mapping:
-      config: configuration
-      env: configuration
-      vars: configuration
-    params:
-      CONFIG_FILE: ((foundation))/config/templates/cf.yml
-      VARS_FILES: vars/((foundation))/config/defaults/cf.yml vars/((foundation))/config/vars/cf.yml
-      ENV_FILE: ((foundation))/config/templates/env.yml
-
-- name: apply-product-changes
+- name: configure-and-apply-product-changes
   serial: true
   plan:
 
@@ -153,6 +141,67 @@ jobs:
     output_mapping:
       interpolated-files: configuration
       
+
+  - task: configure-product
+    image: pcf-automation-image
+    config:
+      platform: linux
+      inputs:
+        - name: configuration
+      params:
+        CONFIG_FILE: ((foundation))/config/templates/cf.yml
+        VARS_FILES: configuration/((foundation))/config/defaults/cf.yml configuration/((foundation))/config/vars/cf.yml
+        ENV_FILE: configuration/((foundation))/config/templates/env.yml
+        CORE_DOMAIN: ((core_domain))
+        CLOUD_CONTROLLER_SYSTEM_DOMAIN: ((cloud_controller_system_domain))
+        CLOUD_CONTROLLER_APPS_DOMAIN: ((cloud_controller_apps_domain))
+      run:
+        path: bash
+        args:
+          - -c
+          - |
+            p-automator -v
+            # set -eux
+
+            curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+            chmod +x jq
+
+            vars_files_args=("")
+            for vf in ${VARS_FILES}
+            do
+              vars_files_args+=("--vars-file ${vf}")
+            done
+
+            {
+              DOMAINS="*.$CORE_DOMAIN,*.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.$CLOUD_CONTROLLER_APPS_DOMAIN,*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
+              CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
+              export OM_VAR_properties_networking_poe_ssl_certs_0_certificate_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
+              export OM_VAR_properties_networking_poe_ssl_certs_0_certificate_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
+
+              DOMAINS="*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
+              CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
+              export OM_VAR_uaa_service_provider_key_credentials_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
+              export OM_VAR_uaa_service_provider_key_credentials_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
+            } 2> /dev/null
+
+            # ${vars_files_args[@] needs to be globbed in order to pass through properly
+            # shellcheck disable=SC2068
+            om --env "${ENV_FILE}" configure-product --vars-env OM_VAR \
+              --config "configuration/${CONFIG_FILE}" ${vars_files_args[@]}
+
+
+# - task: configure-product
+#     image: pcf-automation-image
+#     file: pcf-automation-tasks/tasks/configure-product.yml
+#     input_mapping:
+#       config: configuration
+#       env: configuration
+#       vars: configuration
+#     params:
+#       CONFIG_FILE: ((foundation))/config/templates/cf.yml
+#       VARS_FILES: vars/((foundation))/config/defaults/cf.yml vars/((foundation))/config/vars/cf.yml
+#       ENV_FILE: ((foundation))/config/templates/env.yml
+
   - task: apply-product-changes
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/apply-changes.yml
