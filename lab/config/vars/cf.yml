@@ -22,6 +22,7 @@ uaa/ldap/first_name_attribute: givenName
 uaa/ldap/last_name_attribute: sn
 uaa/ldap/mail_attribute_name: mail
 uaa/ldap/external_groups_whitelist: pks_*
+uaa/ldap/ldap_referrals: 
 
 network_name: deployment
 

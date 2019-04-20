@@ -150,7 +150,6 @@ jobs:
     output_mapping:
       interpolated-files: configuration2
       
-
   - task: create-certs
     image: pcf-automation-image
     config:
@@ -184,26 +183,20 @@ jobs:
             {
               DOMAINS="*.$CORE_DOMAIN,*.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.$CLOUD_CONTROLLER_APPS_DOMAIN,*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
               CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
-              export OM_VAR_networking_poe_ssl_certs_0_certificate_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
-              export OM_VAR_networking_poe_ssl_certs_0_certificate_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
+              echo $CERTIFICATE | ./jq ".certificate" -r > networking_poe_ssl_certs_0_certificate.certificate
+              echo $CERTIFICATE | ./jq ".key" -r > networking_poe_ssl_certs_0_certificate.private_key
+              export OM_VAR_CRED_1_NAME="${PREFIX}/cf/networking_poe_ssl_certs_0_certificate" 
 
               DOMAINS="*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
               CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
-              export OM_VAR_uaa_service_provider_key_credentials_cert_pem=`echo $CERTIFICATE | ./jq ".certificate" -r`
-              export OM_VAR_uaa_service_provider_key_credentials_private_key_pem=`echo $CERTIFICATE | ./jq ".key" -r`
+              echo $CERTIFICATE | ./jq ".certificate" -r > uaa_service_provider_key_credentials.certificate
+              echo $CERTIFICATE | ./jq ".key" -r > uaa_service_provider_key_credentials.private_key
+              export OM_VAR_CRED_2_NAME="${PREFIX}/cf/uaa_service_provider_key_credentials" 
 
             } 2> /dev/null
 
-            credhub api $CREDHUB_SERVER --ca-cert $CREDHUB_CA_CERT
-            credhub login -u $CREDHUB_CLIENT -p $CREDHUB_SECRET
-
-            credhub set -t certificate -n '/$PREFIX/cf/networking_poe_ssl_certs_0_certificate' \
-              -c $OM_VAR_networking_poe_ssl_certs_0_certificate_cert_pem\
-              -p $OM_VAR_networking_poe_ssl_certs_0_certificate_private_key_pem
-
-            credhub set -t certificate -n '/$PREFIX/cf/uaa_service_provider_key_credentials' \
-              -c $OM_VAR_uaa_service_provider_key_credentials_cert_pem\
-              -p $OM_VAR_uaa_service_provider_key_credentials_private_key_pem
+            credhub set -t certificate -n $OM_VAR_CRED_1_NAME -c ./networking_poe_ssl_certs_0_certificate.certificate -p ./networking_poe_ssl_certs_0_certificate.private_key
+            credhub set -t certificate -n $OM_VAR_CRED_2_NAME -c ./uaa_service_provider_key_credentials.certificate -p ./uaa_service_provider_key_credentials.private_key
 
   - task: credhub-interpolate-again
     image: pcf-automation-image-fixes
@@ -221,16 +214,16 @@ jobs:
       interpolated-files: configuration2
 
   - task: configure-product
-      image: pcf-automation-image
-      file: pcf-automation-tasks/tasks/configure-product.yml
-      input_mapping:
-        config: configuration
-        env: configuration
-        vars: configuration
-      params:
-        CONFIG_FILE: ((foundation))/config/templates/cf.yml
-        VARS_FILES: vars/((foundation))/config/defaults/cf.yml vars/((foundation))/config/vars/cf.yml
-        ENV_FILE: ((foundation))/config/templates/env.yml
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/configure-product.yml
+    input_mapping:
+      config: configuration2
+      env: configuration2
+      vars: configuration2
+    params:
+      CONFIG_FILE: ((foundation))/config/templates/cf.yml
+      VARS_FILES: vars/((foundation))/config/defaults/cf.yml vars/((foundation))/config/vars/cf.yml
+      ENV_FILE: ((foundation))/config/templates/env.yml
 
   - task: apply-product-changes
     image: pcf-automation-image
