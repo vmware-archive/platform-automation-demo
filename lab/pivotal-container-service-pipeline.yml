@@ -66,7 +66,7 @@ jobs:
     input_mapping:
       config: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/versions/harbor-container-registry.yml
+      CONFIG_FILE: ((foundation))/config/versions/pivotal-container-service.yml
 
   - task: upload-product
     image: pcf-automation-image
@@ -170,13 +170,13 @@ jobs:
             curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
             chmod +x jq
 
-            DOMAINS="*.$CORE_DOMAIN"
+            DOMAINS="*.pks.$CORE_DOMAIN,*.api.pks.$CORE_DOMAIN"
             CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
             export OM_VAR_server_cert_pem=`
-            echo $CERTIFICATE | ./jq ".certificate" -r > server_cert_key.certificate
-            echo $CERTIFICATE | ./jq ".key" -r > server_cert_key.private_key
-            export OM_VAR_CRED_1_NAME="${PREFIX}/harbor-container-registry/server_cert_key" 
-            credhub set -t certificate -n $OM_VAR_CRED_1_NAME -c ./server_cert_key.certificate -p ./server_cert_key.private_key
+            echo $CERTIFICATE | ./jq ".certificate" -r > pks_tls.certificate.certificate
+            echo $CERTIFICATE | ./jq ".key" -r > pks_tls.private_key
+            export OM_VAR_CRED_1_NAME="${PREFIX}/pivotal-container-service/pks_tls" 
+            credhub set -t certificate -n $OM_VAR_CRED_1_NAME -c ./pks_tls.certificate -p ./pks_tls.private_key
 
 - name: configure-and-apply-product-changes
   serial: true
@@ -223,8 +223,8 @@ jobs:
       env: configuration
       vars: configuration
     params:
-      CONFIG_FILE: ((foundation))/config/templates/harbor-container-registry.yml
-      VARS_FILES: vars/((foundation))/config/defaults/harbor-container-registry.yml vars/((foundation))/config/vars/harbor-container-registry.yml
+      CONFIG_FILE: ((foundation))/config/templates/pivotal-container-service.yml
+      VARS_FILES: vars/((foundation))/config/defaults/pivotal-container-service.yml vars/((foundation))/config/vars/pivotal-container-service.yml
       ENV_FILE: ((foundation))/config/templates/env.yml
       
   - task: apply-product-changes

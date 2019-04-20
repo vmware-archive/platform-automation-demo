@@ -23,3 +23,16 @@ fly -t lab unpause-pipeline -p deploy-cfr
 fly -t lab set-pipeline -p deploy-harbor -c lab/harbor-container-registry-pipeline.yml -l lab/common.yml
 
 fly -t lab unpause-pipeline -p deploy-harbor
+
+## Setting up for a new tile
+
+When creating configuration for a product for the first time
+
+- Start with the example platformation automation config
+- Copy version file and update
+- Copy config script and update based upon product name
+- Run tile config generator
+- Review options and update interpolate
+- Run the tile config generator again
+- Run `om interpolate` passing in --config template --vars-files defaults to identify what values - need to be set
+- Create a vars file for the remaining values (or add them to credhub)

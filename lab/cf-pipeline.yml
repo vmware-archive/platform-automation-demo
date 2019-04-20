@@ -23,12 +23,6 @@ resources:
     uri: git@github.com:doddatpivotal/platform-automation-example.git
     private_key: ((configuration_git_repo.private_key))
 
-- name: configuration2
-  type: git
-  source:
-    uri: git@github.com:doddatpivotal/platform-automation-example.git
-    private_key: ((configuration_git_repo.private_key))
-
 jobs:
 
 - name: upload-and-stage-product
@@ -110,7 +104,7 @@ jobs:
   #   params:
   #     ENV_FILE: ((foundation))/config/templates/env.yml
 
-- name: configure-and-apply-product-changes
+- name: generate-certs
   serial: true
   plan:
 
@@ -118,9 +112,6 @@ jobs:
     - get: configuration
       trigger: true
       passed: [ upload-and-stage-product ]
-      params:
-        unpack: true
-    - get: configuration2
       params:
         unpack: true
     - get: pcf-automation-image
@@ -146,9 +137,9 @@ jobs:
       PREFIX: '/((foundation))-foundation'
       INTERPOLATION_PATH: "((foundation))/config"
     input_mapping:
-      files: configuration2
+      files: configuration
     output_mapping:
-      interpolated-files: configuration2
+      interpolated-files: configuration
       
   - task: create-certs
     image: pcf-automation-image
@@ -156,11 +147,10 @@ jobs:
       platform: linux
       inputs:
         - name: configuration
-        - name: configuration2
       params:
         CONFIG_FILE: ((foundation))/config/templates/cf.yml
-        VARS_FILES: configuration2/((foundation))/config/defaults/cf.yml configuration2/((foundation))/config/vars/cf.yml
-        ENV_FILE: configuration2/((foundation))/config/templates/env.yml
+        VARS_FILES: configuration/((foundation))/config/defaults/cf.yml configuration/((foundation))/config/vars/cf.yml
+        ENV_FILE: configuration/((foundation))/config/templates/env.yml
         CORE_DOMAIN: ((core_domain))
         CLOUD_CONTROLLER_SYSTEM_DOMAIN: ((cloud_controller_system_domain))
         CLOUD_CONTROLLER_APPS_DOMAIN: ((cloud_controller_apps_domain))
@@ -180,25 +170,45 @@ jobs:
             curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
             chmod +x jq
 
-            {
-              DOMAINS="*.$CORE_DOMAIN,*.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.$CLOUD_CONTROLLER_APPS_DOMAIN,*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
-              CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
-              echo $CERTIFICATE | ./jq ".certificate" -r > networking_poe_ssl_certs_0_certificate.certificate
-              echo $CERTIFICATE | ./jq ".key" -r > networking_poe_ssl_certs_0_certificate.private_key
-              export OM_VAR_CRED_1_NAME="${PREFIX}/cf/networking_poe_ssl_certs_0_certificate" 
+            DOMAINS="*.$CORE_DOMAIN,*.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.$CLOUD_CONTROLLER_APPS_DOMAIN,*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
+            CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
+            echo $CERTIFICATE | ./jq ".certificate" -r > networking_poe_ssl_certs_0_certificate.certificate
+            echo $CERTIFICATE | ./jq ".key" -r > networking_poe_ssl_certs_0_certificate.private_key
+            export OM_VAR_CRED_1_NAME="${PREFIX}/cf/networking_poe_ssl_certs_0_certificate" 
 
-              DOMAINS="*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
-              CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
-              echo $CERTIFICATE | ./jq ".certificate" -r > uaa_service_provider_key_credentials.certificate
-              echo $CERTIFICATE | ./jq ".key" -r > uaa_service_provider_key_credentials.private_key
-              export OM_VAR_CRED_2_NAME="${PREFIX}/cf/uaa_service_provider_key_credentials" 
-
-            } 2> /dev/null
+            DOMAINS="*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
+            CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
+            echo $CERTIFICATE | ./jq ".certificate" -r > uaa_service_provider_key_credentials.certificate
+            echo $CERTIFICATE | ./jq ".key" -r > uaa_service_provider_key_credentials.private_key
+            export OM_VAR_CRED_2_NAME="${PREFIX}/cf/uaa_service_provider_key_credentials" 
 
             credhub set -t certificate -n $OM_VAR_CRED_1_NAME -c ./networking_poe_ssl_certs_0_certificate.certificate -p ./networking_poe_ssl_certs_0_certificate.private_key
             credhub set -t certificate -n $OM_VAR_CRED_2_NAME -c ./uaa_service_provider_key_credentials.certificate -p ./uaa_service_provider_key_credentials.private_key
 
-  - task: credhub-interpolate-again
+
+- name: configure-and-apply-product-changes
+  serial: true
+  plan:
+
+  - aggregate:
+    - get: configuration
+      trigger: true
+      passed: [ generate-certs ]
+      params:
+        unpack: true
+    - get: pcf-automation-image
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: pcf-automation-tasks
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+    - get: pcf-automation-image-fixes
+
+  - task: credhub-interpolate
     image: pcf-automation-image-fixes
     file: configuration/fixes/tasks/credhub-interpolate.yml
     params:
@@ -209,17 +219,17 @@ jobs:
       PREFIX: '/((foundation))-foundation'
       INTERPOLATION_PATH: "((foundation))/config"
     input_mapping:
-      files: configuration2
+      files: configuration
     output_mapping:
-      interpolated-files: configuration2
+      interpolated-files: configuration
 
   - task: configure-product
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/configure-product.yml
     input_mapping:
-      config: configuration2
-      env: configuration2
-      vars: configuration2
+      config: configuration
+      env: configuration
+      vars: configuration
     params:
       CONFIG_FILE: ((foundation))/config/templates/cf.yml
       VARS_FILES: vars/((foundation))/config/defaults/cf.yml vars/((foundation))/config/vars/cf.yml
@@ -229,6 +239,6 @@ jobs:
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/apply-changes.yml
     input_mapping:
-      env: configuration2
+      env: configuration
     params:
       ENV_FILE: ((foundation))/config/templates/env.yml
