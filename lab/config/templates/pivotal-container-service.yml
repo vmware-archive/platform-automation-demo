@@ -46,6 +46,10 @@ product-properties:
       password: ((cloud_provider/vsphere/vcenter_master_creds_password))
   .properties.cloud_provider.vsphere.vcenter_vms:
     value: ((cloud_provider/vsphere/vcenter_vms))
+  .properties.log_sink_resources_deploy:
+    value: ((log_sink_resources_deploy))
+  .properties.metric_sink_resources_deploy:
+    value: ((metric_sink_resources_deploy))
   .properties.network_selector:
     value: flannel
   .properties.network_selector.flannel.pod_network_cidr:
@@ -53,6 +57,8 @@ product-properties:
   .properties.network_selector.flannel.service_cluster_cidr:
     value: ((network_selector/flannel/service_cluster_cidr))
   .properties.pks-vrli:
+    value: disabled
+  .properties.pks-vrops:
     value: disabled
   .properties.pks_api_hostname:
     value: ((pks_api_hostname))
@@ -116,8 +122,6 @@ product-properties:
     value: Plan Inactive
   .properties.proxy_selector:
     value: Disabled
-  .properties.sink_resources_selector:
-    value: enabled
   .properties.syslog_selector:
     value: disabled
   .properties.telemetry_selector:

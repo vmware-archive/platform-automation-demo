@@ -1,9 +1,10 @@
+log_sink_resources_deploy: true
+metric_sink_resources_deploy: true
 network_selector/flannel/pod_network_cidr: 10.200.0.0/16
 network_selector/flannel/service_cluster_cidr: 10.100.200.0/24
 plan1_selector/active/allow_privileged_containers: false
 plan1_selector/active/description: 'Example: This plan will configure a lightweight
   kubernetes cluster. Not recommended for production workloads.'
-plan1_selector/active/disable_deny_escalating_exec: false
 plan1_selector/active/master_instances: 1
 plan1_selector/active/max_worker_instances: 50
 plan1_selector/active/name: small
