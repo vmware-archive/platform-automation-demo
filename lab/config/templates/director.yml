@@ -3,7 +3,6 @@ az-configuration:
   clusters:
   - cluster: ((vsphere_az1_cluster))
     resource_pool: ((vsphere_az1_resource_pool))
-  iaas_configuration_guid: 72eccc2a38050593beee
 
 network-assignment:
   singleton_availability_zone:
