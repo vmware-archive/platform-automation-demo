@@ -8,6 +8,7 @@ on_demand_broker_plan_1_description: This plan provides a single dedicated Rabbi
 on_demand_broker_plan_1_features: RabbitMQ 3.7
 on_demand_broker_plan_1_instance_quota: 10
 on_demand_broker_plan_1_name: single-node-3.7
+on_demand_broker_plan_1_paid: false
 on_demand_broker_plan_1_rabbitmq_cluster_partition_handling_strategy: pause_minority
 on_demand_broker_plan_1_rabbitmq_number_of_nodes: 1
 syslog_selector/enabled/syslog_tls: false

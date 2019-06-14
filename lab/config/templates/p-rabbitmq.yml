@@ -66,6 +66,8 @@ product-properties:
     value: ((on_demand_broker_plan_1_instance_quota))
   .properties.on_demand_broker_plan_1_name:
     value: ((on_demand_broker_plan_1_name))
+  .properties.on_demand_broker_plan_1_paid:
+    value: ((on_demand_broker_plan_1_paid))
   .properties.on_demand_broker_plan_1_rabbitmq_az_placement:
     value: ((on_demand_broker_plan_1_rabbitmq_az_placement))
   .properties.on_demand_broker_plan_1_rabbitmq_cluster_partition_handling_strategy:
