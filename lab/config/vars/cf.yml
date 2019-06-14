@@ -29,3 +29,8 @@ network_name: deployment
 security_acknowledgement: X
 singleton_availability_zone: az1
 ha_proxy/skip_cert_verify: true
+
+stack_migration_acknowledgement: X
+
+nfsbrokerpush_post_deploy_state: on
+nfsbrokerpush_pre_delete_state: on

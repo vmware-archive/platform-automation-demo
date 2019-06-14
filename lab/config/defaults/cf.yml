@@ -25,6 +25,7 @@ cloud_controller_completed_tasks_cutoff_age_in_days: 31
 cloud_controller_default_health_check_timeout: 60
 cloud_controller_temporary_disable_deployments: false
 container_networking_interface_plugin/silk/enable_log_traffic: false
+container_networking_interface_plugin/silk/enable_policy_enforcement: true
 container_networking_interface_plugin/silk/iptables_accepted_udp_logs_per_sec: 100
 container_networking_interface_plugin/silk/iptables_denied_logs_per_sec: 1
 container_networking_interface_plugin/silk/network_mtu: 1454
@@ -33,8 +34,6 @@ credhub_key_encryption_passwords_0/primary: false
 credhub_key_encryption_passwords_0/provider: internal
 diego_brain/starting_container_count_maximum: 200
 diego_database_max_open_connections: 100
-doppler/message_drain_buffer_size: 10000
-enable_cf_metric_name: false
 enable_smb_volume_driver: false
 enable_tls_to_internal_pxc: false
 experimental_dynamic_egress_enforcement: false
@@ -44,6 +43,7 @@ ha_proxy/skip_cert_verify: false
 haproxy_max_buffer_size: 16384
 haproxy_ssl_ciphers: DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384
 locket_database_max_open_connections: 200
+log_cache_max_per_source: 100000
 metric_registrar_blacklisted_tags: deployment,job,index,id
 metric_registrar_enabled: false
 metric_registrar_scrape_interval_in_seconds: 35
@@ -89,7 +89,6 @@ syslog_use_tcp_for_file_forwarding_local_transport: false
 system_blobstore_ccdroplet_max_staged_droplets_stored: 2
 system_blobstore_ccpackage_max_valid_packages_stored: 2
 uaa/apps_manager_access_token_lifetime: 3600
-uaa/apps_manager_refresh_token_lifetime: 3600
 uaa/cf_cli_access_token_lifetime: 7200
 uaa/cf_cli_refresh_token_lifetime: 1209600
 uaa/customize_password_label: Password
@@ -126,6 +125,7 @@ test-autoscaling_post_deploy_state: default
 test-autoscaling_pre_delete_state: default
 backup_restore_instance_type: automatic
 backup_restore_instances: automatic
+backup_restore_persistent_disk_size: automatic
 blobstore_instance_type: automatic
 blobstore_instances: automatic
 blobstore_persistent_disk_size: automatic
@@ -138,8 +138,14 @@ database_instances: automatic
 database_persistent_disk_size: automatic
 ha_proxy_instance_type: automatic
 ha_proxy_instances: automatic
+istio_control_instance_type: automatic
+istio_control_instances: automatic
+istio_router_instance_type: automatic
+istio_router_instances: automatic
 mysql_monitor_instance_type: automatic
 mysql_monitor_instances: automatic
+route_syncer_instance_type: automatic
+route_syncer_instances: automatic
 router_instance_type: automatic
 router_instances: automatic
 tcp_router_instance_type: automatic

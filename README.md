@@ -53,3 +53,4 @@ When creating configuration for a product for the first time
 
 1. Update the product version
 2. Run the scripts and identify any changes to the configurations
+3. Run om interpolate passing in the tile config, defaults, and vars to see if there are any new vars you have to supply
