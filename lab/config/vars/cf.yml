@@ -34,3 +34,10 @@ stack_migration_acknowledgement: X
 
 nfsbrokerpush_post_deploy_state: on
 nfsbrokerpush_pre_delete_state: on
+
+
+istio_control_instances: 0
+istio_router_instances: 0
+route_syncer_instances: 0
+tcp_router_instances: 0
+backup_restore_instances: 0
