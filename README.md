@@ -8,7 +8,7 @@ fly -t lab login -k
 
 ## Ops Manager and Director
 
-fly -t lab set-pipeline -p deploy-om-and-director -c lab/om-and-director-pipeline.yml -l lab/common.yml -n
+fly -t lab set-pipeline -p deploy-om-and-director -c environments/vsphere/om-and-director-pipeline.yml -n
 
 fly -t lab unpause-pipeline -p deploy-om-and-director
 
