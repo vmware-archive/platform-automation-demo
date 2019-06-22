@@ -111,7 +111,7 @@ jobs:
             export OM_VAR_CRED_1_NAME="${PREFIX}/harbor-container-registry/server_cert_key" 
             credhub set -t certificate -n $OM_VAR_CRED_1_NAME -c ./server_cert_key.certificate -p ./server_cert_key.private_key
 
-- name: harbor-container-registry
+- name: download-stage-tile-stemcell
   serial: true
   plan:
   - aggregate:
@@ -153,9 +153,32 @@ jobs:
       ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
       VARS_FILES: secrets/environments/((iaas))/((foundation))/config/secrets/pivnet.yml
 
+- name: configure-and-apply
+  serial: true
+  plan:
+  - aggregate:
+    - get: configuration
+      passed: [ download-stage-tile-stemcell ]
+      trigger: true
+    - get: platform-automation-image
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: platform-automation-tasks
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
 
-
-
+  - task: credhub-interpolate
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params: *credhub_interpolate_params
+    input_mapping:
+      files: configuration
+    output_mapping:
+      interpolated-files: interpolated-files
 
   - task: configure
     image: platform-automation-image
@@ -169,7 +192,6 @@ jobs:
       CONFIG_FILE: environments/((iaas))/((foundation))/config/templates/harbor-container-registry.yml
       VARS_FILES: |
         vars/environments/((iaas))/((foundation))/config/defaults/harbor-container-registry.yml
-        vars/environments/((iaas))/common/p-healthwatch.yml
         vars/environments/((iaas))/((foundation))/config/vars/harbor-container-registry.yml
         secrets/environments/((iaas))/((foundation))/config/secrets/harbor-container-registry.yml
       ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
