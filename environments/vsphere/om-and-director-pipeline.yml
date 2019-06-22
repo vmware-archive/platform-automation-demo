@@ -90,7 +90,7 @@ jobs:
     input_mapping:
       files: director-configuration
     output_mapping:
-      interpolated-files: configuration
+      interpolated-files: interpolated-files
   
   - task: download-create-opsman
     image: platform-automation-image
@@ -108,6 +108,7 @@ jobs:
       VARS_FILES: |
         vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/opsman.yml
+        secrets/environments/((iaas))/((foundation))/config-director/secrets/opsman.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/pivnet.yml
 
     ensure: &make-state-commit
@@ -136,8 +137,8 @@ jobs:
     file: platform-automation-tasks/tasks/configure-authentication.yml
     attempts: 20
     input_mapping:
-      env: configuration
-      config: configuration
+      env: interpolated-files
+      config: interpolated-files
     params:
       ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
       AUTH_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/secrets/auth.yml
@@ -155,7 +156,6 @@ jobs:
       ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
       DIRECTOR_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/director.yml
       VARS_FILES: |
-        vars/environments/((iaas))/common-director/director.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/director.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/director.yml
@@ -164,7 +164,7 @@ jobs:
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml
     input_mapping:
-      env: configuration
+      env: director-configuration
     params:
       ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
 
@@ -244,15 +244,12 @@ jobs:
       STATE_FILE: environments/((iaas))/((foundation))/state/state.yml
       OPSMAN_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/opsman.yml
       VARS_FILES: |
-        vars/environments/((iaas))/common-director/opsman.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/opsman.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/opsman.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/pivnet.yml
       ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
     ensure: *make-state-commit
-    tags:
-    - {{foundation}}
   - task: apply-director-changes
     image: platform-automation-image
     file: platform-automation-tasks/tasks/apply-director-changes.yml

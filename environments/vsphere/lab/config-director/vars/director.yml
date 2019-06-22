@@ -2,7 +2,6 @@ dns: 192.168.7.1
 ntp: time.nist.gov
 
 vcenter_hostname: 192.168.7.105
-vcenter_password: ((vsphere_vcenter_password))
 vcenter_userid: administrator@vsphere.local
 vsphere_templates_folder: pcf_templates
 vsphere_disks_folder: pcf_disk
