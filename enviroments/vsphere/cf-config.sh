@@ -7,6 +7,8 @@ slug=$(bosh interpolate ../config/versions/cf.yml --path /pivnet-product-slug)
 mkdir -p cf-tcg
 tmpdir=cf-tcg
 tile-config-generator generate --base-directory=${tmpdir} --do-not-include-product-version --include-errands pivnet --token ${PIVNET_TOKEN} --product-slug ${slug} --product-version ${version} --product-glob ${glob}
+om config-template --output-directory=${tmpdir} --pivnet-api-token ${PIVNET_TOKEN} --pivnet-product-slug  ${slug} --product-version ${version} --product-file-glob ${glob}
+
 bosh int ${tmpdir}/product.yml \
   -o ${tmpdir}/features/uaa-ldap.yml \
   -o ${tmpdir}/optional/add-uaa-ldap-group_search_base.yml \

@@ -1,0 +1,278 @@
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tags: latest-final
+
+resources:
+- name: pcf-automation
+  type: pivnet
+  source:
+    api_token: ((pivnet_token))
+    product_slug: platform-automation
+
+- name: installation
+  type: s3
+  source:
+
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3.buckets.installation))
+    region_name: ((s3.region_name))
+    secret_access_key: ((s3_secret_access_key))
+    regexp: ((foundation))/(.*)-installation.zip
+
+- name: state
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:doddatpivotal/platform-automation-example.git
+    
+- name: configuration
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:doddatpivotal/platform-automation-example.git
+    paths:
+    - "environments/((iaas))/((foundation))/pipeline.yml"
+    - "environments/((iaas))/((foundation))/config"
+    private_key: ((configuration_git_repo.private_key))
+
+- name: director-configuration
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:doddatpivotal/platform-automation-example.git
+    paths:
+    - "environments/((iaas))/((foundation))/config-director"
+    private_key: ((configuration_git_repo.private_key))
+
+jobs:
+- name: validate-director-configuration
+  plan:
+  - aggregate:
+    - get: director-configuration
+    - get: platform-automation-image
+    - get: platform-automation-tasks
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+
+  - task: credhub-interpolate
+    image: platform-automation-image
+    file: director-configuration/proposed-tasks/credhub-interpolate.yml
+    params: &director_credhub_interpolate_params
+      CREDHUB_SERVER: ((concourse_url))
+      CREDHUB_CA_CERT: ((concourse_credhub_ca))
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_credhub_client_secret))
+      PREFIX: '/concourse/((foundation))'
+      INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config-director/secrets"
+    input_mapping:
+      files: director-configuration
+
+- name: install-opsman
+  plan:
+  - aggregate:
+    - get: director-configuration
+      trigger: true
+      passed: ["validate-director-configuration"]
+    - get: state
+    - get: pcf-automation-image
+    - get: pcf-automation-tasks
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+  - task: credhub-interpolate
+    image: pcf-automation-image
+    file: configuration/fixes/tasks/credhub-interpolate.yml
+    params: *director_credhub_interpolate_params
+    input_mapping:
+      files: director-configuration
+    output_mapping:
+      interpolated-files: configuration
+  
+  - task: download-create-opsman
+    image: platform-automation-image
+    file: director-configuration/proposed-tasks/download-create-opsman.yml
+    input_mapping:
+      download-config: director-configuration
+      state: state
+      config: director-configuration
+      vars: director-configuration
+      secrets: interpolated-files
+    params:
+      DOWNLOAD_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/versions/opsman.yml
+      STATE_FILE: environments/((iaas))/((foundation))/state/state.yml
+      OPSMAN_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/opsman.yml
+      VARS_FILES: |
+        vars/environments/((iaas))/common-director/opsman.yml
+        vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
+        vars/environments/((iaas))/((foundation))/config-director/vars/opsman.yml
+        secrets/environments/((iaas))/((foundation))/config-director/secrets/opsman.yml
+        secrets/environments/((iaas))/((foundation))/config-director/secrets/pivnet.yml
+
+    tags:
+    - {{foundation}}
+
+    ensure: &make-state-commit
+      do:
+        - task: make-commit
+          image: platform-automation-image
+          file: director-configuration/proposed-tasks/make-commit.yml
+          input_mapping:
+            repository: state
+            file-source: generated-state
+          output_mapping:
+            repository-commit: state-commit
+          params:
+            FILE_SOURCE_PATH: state.yml
+            FILE_DESTINATION_PATH: environments/((iaas))/((foundation))/state/state.yml
+            GIT_AUTHOR_EMAIL: "dpfeffer-homelab@pivotal.io"
+            GIT_AUTHOR_NAME: "dpfeffer-homelab"
+            COMMIT_MESSAGE: 'Update state file'
+        - put: state
+          params:
+            repository: state-commit
+            merge: true
+  
+  - task: configure-authentication
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/configure-authentication.yml
+    attempts: 20
+    input_mapping:
+      env: interpolated-files
+      config: interpolated-files
+    params:
+      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+      AUTH_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/secrets/auth.yml
+
+
+  - task: configure-director
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/configure-director.yml
+    input_mapping:
+      config: director-configuration
+      env: interpolated-files
+      vars: director-configuration
+      secrets: interpolated-files
+    params:
+      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+      DIRECTOR_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/director.yml
+      VARS_FILES: |
+        vars/environments/((iaas))/common-director/director.yml
+        vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
+        vars/environments/((iaas))/((foundation))/config-director/vars/director.yml
+        secrets/environments/((iaas))/((foundation))/config-director/secrets/director.yml
+
+- task: apply-director-changes
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/apply-director-changes.yml
+    input_mapping:
+      env: configuration
+    params:
+      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+
+- name: export-installation
+  plan:
+  - aggregate:
+    - get: director-configuration
+      trigger: true
+      passed: [ install-opsman ]
+    - get: pcf-automation-image
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: pcf-automation-tasks
+      resource: pcf-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+  - task: credhub-interpolate
+    image: platform-automation-image
+    file: director-configuration/proposed-tasks/credhub-interpolate.yml
+    params: *director_credhub_interpolate_params
+    input_mapping:
+      files: director-configuration      
+  - task: export-installation
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/export-installation.yml
+    input_mapping:
+      env: interpolated-files
+    params:
+      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+    - put: installation
+    params:
+      file: installation/installation-*.zip
+
+- name: upgrade-opsman
+  plan:
+  - aggregate:
+    - get: director-configuration
+      trigger: true
+      passed: [ export-installation ]
+    - get: state
+    - get: platform-automation-image
+    - get: platform-automation-tasks
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+    - get: installation
+      passed: [ export-installation ]
+
+  - task: credhub-interpolate
+    image: platform-automation-image
+    file: director-configuration/proposed-tasks/credhub-interpolate.yml
+    params: *director_credhub_interpolate_params
+    input_mapping:
+      files: director-configuration
+
+  - task: download-upgrade-opsman
+    image: platform-automation-image
+    file: director-configuration/proposed-tasks/download-upgrade-opsman.yml
+    input_mapping:
+      download-config: director-configuration
+      state: state
+      config: director-configuration
+      vars: director-configuration
+      secrets: interpolated-files
+      installation: installation
+      env: interpolated-files
+    params:
+      DOWNLOAD_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/versions/opsman.yml
+      STATE_FILE: environments/((iaas))/((foundation))/state/state.yml
+      OPSMAN_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/opsman.yml
+      VARS_FILES: |
+        vars/environments/((iaas))/common-director/opsman.yml
+        vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
+        vars/environments/((iaas))/((foundation))/config-director/vars/opsman.yml
+        secrets/environments/((iaas))/((foundation))/config-director/secrets/opsman.yml
+        secrets/environments/((iaas))/((foundation))/config-director/secrets/pivnet.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+    ensure: *make-state-commit
+    tags:
+    - {{foundation}}
+  - task: apply-director-changes
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/apply-director-changes.yml
+    input_mapping:
+      env: interpolated-files
+    params:
+      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+
+
+
+
+
+
+
+    image: pcf-automation-image
+    file: pcf-automation-tasks/tasks/apply-changes.yml
+    input_mapping:
+      env: configuration
+    params:
+      ENV_FILE: ((foundation))/config/templates/env.yml

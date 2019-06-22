@@ -1,17 +1,29 @@
+dns: 192.168.7.1
+ntp: time.nist.gov
+
+vcenter_hostname: 192.168.7.105
+vcenter_password: ((vsphere_vcenter_password))
+vcenter_userid: administrator@vsphere.local
 vsphere_templates_folder: pcf_templates
 vsphere_disks_folder: pcf_disk
 vsphere_az1_cluster: Cluster1
 vsphere_az1_resource_pool: pcf
+vsphere_datastore: datastore1
+vsphere_datacenter: Datacenter
+vsphere_vms_folder: pcf_vms
+
+infrastructure_network: "VM Network"
 infrastructure_network_cidr: 192.168.7.0/24
 infrastructure_network_reserved: 192.168.7.0-192.168.7.10,192.168.7.30-192.168.7.255
+infrastructure_gateway: 192.168.7.1
+
 deployment_network: VM Network
 deployment_network_cidr: 192.168.7.0/24
 deployment_network_reserved: 192.168.7.0-192.168.7.29,192.168.7.80-192.168.7.255
 deployment_gateway: 192.168.7.1
+
 services_network: VM Network
 services_network_cidr: 192.168.7.0/24
 services_network_reserved: 192.168.7.0-192.168.7.159,192.168.7.180-192.168.7.255
 services_gateway: 192.168.7.1
-vcenter_hostname: 192.168.7.105
-vcenter_password: ((vsphere_vcenter_password))
-vcenter_userid: administrator@vsphere.local
+

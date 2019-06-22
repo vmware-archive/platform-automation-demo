@@ -1,9 +1,5 @@
-vsphere_resource_pool: pcf
 opsman_vm_name: pivotal-ops-manager
 opsman_private_ip: 192.168.7.10
 opsman_netmask: 255.255.255.0
 opsman_ssh_password: ((vsphere_ssh_password))
 opsman_ssh.public_key: ((vsphere_ssh_public_key))
-vcenter_hostname: 192.168.7.105
-vcenter_password: ((vsphere_vcenter_password))
-vcenter_userid: administrator@vsphere.local

@@ -1,34 +1,24 @@
 errand-config:
   deploy-autoscaler:
     post-deploy-state: ((deploy-autoscaler_post_deploy_state))
-    pre-delete-state: ((deploy-autoscaler_pre_delete_state))
   deploy-notifications:
     post-deploy-state: ((deploy-notifications_post_deploy_state))
-    pre-delete-state: ((deploy-notifications_pre_delete_state))
   deploy-notifications-ui:
     post-deploy-state: ((deploy-notifications-ui_post_deploy_state))
-    pre-delete-state: ((deploy-notifications-ui_pre_delete_state))
   metric_registrar_smoke_test:
     post-deploy-state: ((metric_registrar_smoke_test_post_deploy_state))
-    pre-delete-state: ((metric_registrar_smoke_test_pre_delete_state))
   nfsbrokerpush:
     post-deploy-state: ((nfsbrokerpush_post_deploy_state))
-    pre-delete-state: ((nfsbrokerpush_pre_delete_state))
   push-apps-manager:
     post-deploy-state: ((push-apps-manager_post_deploy_state))
-    pre-delete-state: ((push-apps-manager_pre_delete_state))
   push-usage-service:
     post-deploy-state: ((push-usage-service_post_deploy_state))
-    pre-delete-state: ((push-usage-service_pre_delete_state))
   smbbrokerpush:
     post-deploy-state: ((smbbrokerpush_post_deploy_state))
-    pre-delete-state: ((smbbrokerpush_pre_delete_state))
   smoke_tests:
     post-deploy-state: ((smoke_tests_post_deploy_state))
-    pre-delete-state: ((smoke_tests_pre_delete_state))
   test-autoscaling:
     post-deploy-state: ((test-autoscaling_post_deploy_state))
-    pre-delete-state: ((test-autoscaling_pre_delete_state))
 network-properties:
   network:
     name: ((network_name))
@@ -162,6 +152,7 @@ product-properties:
   .properties.haproxy_client_cert_validation:
     value: none
   .properties.haproxy_forward_tls:
+    selected_option: disable
     value: disable
   .properties.haproxy_hsts_support:
     value: disable
@@ -274,6 +265,7 @@ product-properties:
   .properties.tcp_routing:
     value: disable
   .properties.uaa:
+    selected_option: ldap
     value: ldap
   .properties.uaa.ldap.credentials:
     value:
@@ -319,8 +311,6 @@ product-properties:
     value: ((router/lb_healthy_threshold))
   .router.request_timeout_in_seconds:
     value: ((router/request_timeout_in_seconds))
-  .router.static_ips:
-    value: ((router/static_ips))
   .uaa.apps_manager_access_token_lifetime:
     value: ((uaa/apps_manager_access_token_lifetime))
   .uaa.cf_cli_access_token_lifetime:
