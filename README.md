@@ -20,7 +20,7 @@ fly -t lab unpause-pipeline -p deploy-cf
 
 ## Harbor
 
-fly -t lab set-pipeline -p deploy-harbor -c lab/harbor-container-registry-pipeline.yml -l lab/common.yml -n
+fly -t lab set-pipeline -p deploy-harbor -c environments/vsphere/harbor-container-registry-pipeline.yml -l environments/vsphere/common.yml -n
 
 fly -t lab unpause-pipeline -p deploy-harbor
 

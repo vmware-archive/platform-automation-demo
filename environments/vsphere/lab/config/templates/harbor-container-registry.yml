@@ -1,9 +1,7 @@
 errand-config:
   smoke-testing:
     post-deploy-state: ((smoke-testing_post_deploy_state))
-    pre-delete-state: ((smoke-testing_pre_delete_state))
   uaa-deregistration:
-    post-deploy-state: ((uaa-deregistration_post_deploy_state))
     pre-delete-state: ((uaa-deregistration_pre_delete_state))
 network-properties:
   network:
