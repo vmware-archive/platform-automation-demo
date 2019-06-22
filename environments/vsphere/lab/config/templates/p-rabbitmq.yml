@@ -1,31 +1,22 @@
 errand-config:
   broker-deregistrar:
-    post-deploy-state: ((broker-deregistrar_post_deploy_state))
     pre-delete-state: ((broker-deregistrar_pre_delete_state))
   broker-registrar:
     post-deploy-state: ((broker-registrar_post_deploy_state))
-    pre-delete-state: ((broker-registrar_pre_delete_state))
   delete-all-service-instances:
-    post-deploy-state: ((delete-all-service-instances_post_deploy_state))
     pre-delete-state: ((delete-all-service-instances_pre_delete_state))
   deregister-broker:
-    post-deploy-state: ((deregister-broker_post_deploy_state))
     pre-delete-state: ((deregister-broker_pre_delete_state))
   on-demand-broker-smoke-tests:
     post-deploy-state: ((on-demand-broker-smoke-tests_post_deploy_state))
-    pre-delete-state: ((on-demand-broker-smoke-tests_pre_delete_state))
   recreate-all-service-instances:
     post-deploy-state: ((recreate-all-service-instances_post_deploy_state))
-    pre-delete-state: ((recreate-all-service-instances_pre_delete_state))
   register-broker:
     post-deploy-state: ((register-broker_post_deploy_state))
-    pre-delete-state: ((register-broker_pre_delete_state))
   smoke-tests:
     post-deploy-state: ((smoke-tests_post_deploy_state))
-    pre-delete-state: ((smoke-tests_pre_delete_state))
   upgrade-all-service-instances:
     post-deploy-state: ((upgrade-all-service-instances_post_deploy_state))
-    pre-delete-state: ((upgrade-all-service-instances_pre_delete_state))
 network-properties:
   network:
     name: ((network_name))
@@ -83,6 +74,7 @@ product-properties:
   .properties.on_demand_broker_plan_5_selector:
     value: disabled
   .properties.syslog_selector:
+    selected_option: disabled
     value: disabled
 resource-config:
   on-demand-broker:

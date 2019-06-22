@@ -6,166 +6,143 @@ resource_types:
     tags: latest-final
 
 resources:
-- name: pcf-automation
+- name: platform-automation
   type: pivnet
   source:
     api_token: ((pivnet_token))
     product_slug: platform-automation
 
-- name: pcf-automation-image-fixes
-  type: docker-image
-  source:
-    repository: cwashburn/platform-automation-fixes
-
-- name: pcf-automation-extension-tasks
-  type: git
-  source:
-    uri: https://github.com/doddatpivotal/platform-automation-extensions.git
-    branch: master
-
 - name: configuration
   type: git
   source:
     uri: git@github.com:doddatpivotal/platform-automation-example.git
-    private_key: ((configuration_git_repo.private_key))
-
+    private_key: ((platform_automation_example_git_repo.private_key))
+    paths:
+    - "environments/((iaas))/((foundation))/p-rabbitmq-pipeline.yml"
+    - "environments/((iaas))/((foundation))/config"
 jobs:
 
-- name: upload-and-stage-product
-  serial: true
+- name: validate-tile-configuration
   plan:
   - aggregate:
     - get: configuration
-      # trigger: true
-      params:
-        unpack: true
-    - get: pcf-automation-image
-      resource: pcf-automation
+    - get: platform-automation-image
+      resource: platform-automation
       params:
         unpack: true
         globs: ["*image*"]
-    - get: pcf-automation-tasks
-      resource: pcf-automation
+    - get: platform-automation-tasks
+      resource: platform-automation
       params:
         unpack: true
         globs: ["*tasks*"]
-    - get: pcf-automation-image-fixes
-  
+
   - task: credhub-interpolate
-    image: pcf-automation-image-fixes
-    file: configuration/fixes/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CLIENT: concourse_to_credhub
-      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+    image: platform-automation-image
+    file: configuration/proposed-tasks/credhub-interpolate.yml
+    params: &credhub_interpolate_params
       CREDHUB_SERVER: ((credhub_server))
       CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
       PREFIX: '/((foundation))-foundation'
-      INTERPOLATION_PATH: "((foundation))/config"
+      INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config/secrets"
     input_mapping:
       files: configuration
-    output_mapping:
-      interpolated-files: configuration
 
-  - task: download-product
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/download-product.yml
-    input_mapping:
-      config: configuration
-    params:
-      CONFIG_FILE: ((foundation))/config/versions/p-rabbitmq.yml
-
-  - task: upload-product
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/upload-product.yml
-    input_mapping:
-      product: downloaded-product
-      env: configuration
-    params:
-      ENV_FILE: ((foundation))/config/templates/env.yml
-
-  - task: stage-product
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/stage-product.yml
-    input_mapping:
-      product: downloaded-product
-      env: configuration
-    params:
-      ENV_FILE: ((foundation))/config/templates/env.yml
-
-  - task: upload-cf-stemcell
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/upload-stemcell.yml
-    input_mapping:
-      env: configuration
-      stemcell: downloaded-stemcell
-    params:
-      ENV_FILE: ((foundation))/config/templates/env.yml
-
-  - task: assign-stemcell
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/assign-stemcell.yml
-    input_mapping:
-      env: configuration
-      config: assign-stemcell-config
-    params:
-      ENV_FILE: ((foundation))/config/templates/env.yml
-
-- name: configure-and-apply-product-changes
+- name: download-stage-tile-stemcell
   serial: true
   plan:
-
   - aggregate:
     - get: configuration
+      passed: [ validate-tile-configuration ]
       trigger: true
-      passed: [ upload-and-stage-product ]
-      params:
-        unpack: true
-    - get: pcf-automation-image
-      resource: pcf-automation
+    - get: platform-automation-image
+      resource: platform-automation
       params:
         unpack: true
         globs: ["*image*"]
-    - get: pcf-automation-tasks
-      resource: pcf-automation
+    - get: platform-automation-tasks
+      resource: platform-automation
       params:
         unpack: true
         globs: ["*tasks*"]
-    - get: pcf-automation-image-fixes
-    - get: pcf-automation-extension-tasks
 
   - task: credhub-interpolate
-    image: pcf-automation-image-fixes
-    file: configuration/fixes/tasks/credhub-interpolate.yml
-    params:
-      CREDHUB_CLIENT: concourse_to_credhub
-      CREDHUB_SECRET: ((concourse_to_credhub_secret))
-      CREDHUB_SERVER: ((credhub_server))
-      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
-      PREFIX: '/((foundation))-foundation'
-      INTERPOLATION_PATH: "((foundation))/config"
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params: *credhub_interpolate_params
     input_mapping:
       files: configuration
     output_mapping:
-      interpolated-files: configuration
-  
-  - task: configure-product
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/configure-product.yml
+      interpolated-files: interpolated-files
+
+  - task: download-stage-tile-stemcell
+    image: platform-automation-image
+    file: configuration/proposed-tasks/download-stage-tile-stemcell.yml
     input_mapping:
       config: configuration
-      env: configuration
-      vars: configuration
+      download-config: configuration
+      env: interpolated-files
+      secrets: interpolated-files
     params:
-      CONFIG_FILE: ((foundation))/config/templates/p-rabbitmq.yml
-      VARS_FILES: vars/((foundation))/config/defaults/p-rabbitmq.yml vars/((foundation))/config/vars/p-rabbitmq.yml
-      ENV_FILE: ((foundation))/config/templates/env.yml
-      
-  - task: apply-product-changes
-    image: pcf-automation-image
-    file: pcf-automation-extension-tasks/tasks/apply-single-product-changes.yml
+      DOWNLOAD_CONFIG_FILE: environments/((iaas))/((foundation))/config/versions/p-rabbitmq.yml
+      DOWNLOAD_STEMCELL_CONFIG_FILE: environments/((iaas))/((foundation))/config/versions/p-rabbitmq-stemcell.yml
+      CONFIG_FILE: environments/((iaas))/((foundation))/config/templates/p-rabbitmq.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
+      VARS_FILES: secrets/environments/((iaas))/((foundation))/config/secrets/pivnet.yml
+
+- name: configure-and-apply
+  serial: true
+  plan:
+  - aggregate:
+    - get: configuration
+      passed: [ download-stage-tile-stemcell ]
+      trigger: true
+    - get: platform-automation-image
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: platform-automation-tasks
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+
+  - task: credhub-interpolate
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params: *credhub_interpolate_params
     input_mapping:
-      env: configuration
+      files: configuration
+    output_mapping:
+      interpolated-files: interpolated-files
+
+  - task: configure
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/configure-product.yml
+    input_mapping:
+      config: configuration
+      env: interpolated-files
+      vars: configuration
+      secrets: interpolated-files
     params:
-      ENV_FILE: ((foundation))/config/templates/env.yml
-      PRODUCT_NAME: p-rabbitmq
+      CONFIG_FILE: environments/((iaas))/((foundation))/config/templates/p-rabbitmq.yml
+      VARS_FILES: |
+        vars/environments/((iaas))/((foundation))/config/defaults/p-rabbitmq.yml
+        vars/environments/((iaas))/((foundation))/config/vars/p-rabbitmq.yml
+        secrets/environments/((iaas))/((foundation))/config/secrets/p-rabbitmq.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
+
+  - task: apply-product-changes
+    image: platform-automation-image
+    file: configuration/proposed-tasks/apply-product-changes.yml
+    attempts: 10
+    input_mapping:
+      config: configuration
+      env: interpolated-files
+    params:
+      CONFIG_FILE: environments/((iaas))/((foundation))/config/templates/p-rabbitmq.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
 

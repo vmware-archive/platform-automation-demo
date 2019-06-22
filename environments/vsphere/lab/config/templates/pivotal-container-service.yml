@@ -1,21 +1,15 @@
 errand-config:
   delete-all-clusters:
-    post-deploy-state: ((delete-all-clusters_post_deploy_state))
     pre-delete-state: ((delete-all-clusters_pre_delete_state))
   pks-nsx-t-precheck:
     post-deploy-state: ((pks-nsx-t-precheck_post_deploy_state))
-    pre-delete-state: ((pks-nsx-t-precheck_pre_delete_state))
   smoke-tests:
     post-deploy-state: ((smoke-tests_post_deploy_state))
-    pre-delete-state: ((smoke-tests_pre_delete_state))
   upgrade-all-service-instances:
     post-deploy-state: ((upgrade-all-service-instances_post_deploy_state))
-    pre-delete-state: ((upgrade-all-service-instances_pre_delete_state))
   wavefront-alert-creation:
     post-deploy-state: ((wavefront-alert-creation_post_deploy_state))
-    pre-delete-state: ((wavefront-alert-creation_pre_delete_state))
   wavefront-alert-deletion:
-    post-deploy-state: ((wavefront-alert-deletion_post_deploy_state))
     pre-delete-state: ((wavefront-alert-deletion_pre_delete_state))
 network-properties:
   network:
@@ -33,6 +27,7 @@ product-properties:
       cert_pem: ((pivotal-container-service/pks_tls/certificate))
       private_key_pem: ((pivotal-container-service/pks_tls/privatekey))
   .properties.cloud_provider:
+    selected_option: vsphere
     value: vSphere
   .properties.cloud_provider.vsphere.vcenter_dc:
     value: ((cloud_provider/vsphere/vcenter_dc))
@@ -89,6 +84,7 @@ product-properties:
   .properties.plan1_selector.active.worker_vm_type:
     value: ((plan1_selector/active/worker_vm_type))
   .properties.plan2_selector:
+    selected_option: active
     value: Plan Active
   .properties.plan2_selector.active.description:
     value: ((plan2_selector/active/description))
@@ -125,8 +121,10 @@ product-properties:
   .properties.syslog_selector:
     value: disabled
   .properties.telemetry_selector:
+    selected_option: disabled
     value: disabled
   .properties.uaa:
+    selected_option: ldap
     value: ldap
   .properties.uaa.ldap.credentials:
     value:
@@ -159,9 +157,8 @@ product-properties:
   .properties.uaa_pks_cli_refresh_token_lifetime:
     value: ((uaa_pks_cli_refresh_token_lifetime))
   .properties.wavefront:
+    selected_option: enabled
     value: enabled
-  .properties.wavefront.enabled.wavefront_alert_targets:
-    value: ((wavefront/enabled/wavefront_alert_targets))
   .properties.wavefront.enabled.wavefront_api_url:
     value: ((wavefront/enabled/wavefront_api_url))
   .properties.wavefront.enabled.wavefront_token:

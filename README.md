@@ -14,7 +14,7 @@ fly -t lab unpause-pipeline -p deploy-om-and-director
 
 ## PAS
 
-fly -t lab set-pipeline -p deploy-cf -c lab/cf-pipeline.yml -l lab/common.yml -n
+fly -t lab set-pipeline -p deploy-cf -c environments/vsphere/cf-pipeline.yml -l environments/vsphere/cf.yml -n
 
 fly -t lab unpause-pipeline -p deploy-cf
 
@@ -26,13 +26,13 @@ fly -t lab unpause-pipeline -p deploy-harbor
 
 ## PKS
 
-fly -t lab set-pipeline -p deploy-pks -c lab/pivotal-container-service-pipeline.yml -l lab/common.yml -n
+fly -t lab set-pipeline -p deploy-pks -c environments/vsphere/pivotal-container-service-pipeline.yml -l environments/vsphere/common.yml -n
 
 fly -t lab unpause-pipeline -p deploy-pks
 
 ## Rabbit MQ
 
-fly -t lab set-pipeline -p deploy-rabbit -c lab/p-rabbitmq-pipeline.yml -l lab/common.yml -n
+fly -t lab set-pipeline -p deploy-rabbit -c environments/vsphere/p-rabbitmq-pipeline.yml -l environments/vsphere/common.yml -n
 
 fly -t lab unpause-pipeline -p deploy-rabbit
 

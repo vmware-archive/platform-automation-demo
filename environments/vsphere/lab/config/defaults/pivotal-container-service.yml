@@ -13,17 +13,11 @@ uaa_oidc: false
 uaa_pks_cli_access_token_lifetime: 600
 uaa_pks_cli_refresh_token_lifetime: 21600
 worker_max_in_flight: 1
-delete-all-clusters_post_deploy_state: default
 delete-all-clusters_pre_delete_state: default
 pks-nsx-t-precheck_post_deploy_state: default
-pks-nsx-t-precheck_pre_delete_state: default
 smoke-tests_post_deploy_state: default
-smoke-tests_pre_delete_state: default
 upgrade-all-service-instances_post_deploy_state: default
-upgrade-all-service-instances_pre_delete_state: default
 wavefront-alert-creation_post_deploy_state: default
-wavefront-alert-creation_pre_delete_state: default
-wavefront-alert-deletion_post_deploy_state: default
 wavefront-alert-deletion_pre_delete_state: default
 pivotal-container-service_instance_type: automatic
 pivotal-container-service_persistent_disk_size: automatic
