@@ -1,4 +1,4 @@
-pivnet-api-token: ((pivnet_token))
+pivnet-api-token: ((pivnet-api-token))
 pivnet-file-glob: "*.pivotal"
 pivnet-product-slug: "harbor-container-registry"
 product-version: "1.7.4"
