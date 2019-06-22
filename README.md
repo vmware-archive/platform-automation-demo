@@ -14,7 +14,7 @@ fly -t lab unpause-pipeline -p deploy-om-and-director
 
 ## PAS
 
-fly -t lab set-pipeline -p deploy-cf -c environments/vsphere/cf-pipeline.yml -l environments/vsphere/cf.yml -n
+fly -t lab set-pipeline -p deploy-cf -c environments/vsphere/cf-pipeline.yml -l environments/vsphere/common.yml -n
 
 fly -t lab unpause-pipeline -p deploy-cf
 
