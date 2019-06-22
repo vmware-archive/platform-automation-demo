@@ -26,8 +26,8 @@ resources:
   source:
     branch: master
     uri: git@github.com:doddatpivotal/platform-automation-example.git
-    private_key: ((configuration_git_repo.private_key))
-    
+    private_key: ((platform_automation_example_git_repo.private_key))
+
 - name: director-configuration
   type: git
   source:
@@ -35,7 +35,7 @@ resources:
     uri: git@github.com:doddatpivotal/platform-automation-example.git
     paths:
     - "environments/((iaas))/((foundation))/config-director"
-    private_key: ((configuration_git_repo.private_key))
+    private_key: ((platform_automation_example_git_repo.private_key))
 
 jobs:
 - name: validate-director-configuration
@@ -61,7 +61,7 @@ jobs:
       CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
       CREDHUB_CLIENT: concourse_to_credhub
       CREDHUB_SECRET: ((concourse_to_credhub_secret))
-      PREFIX: '/concourse/((foundation))'
+      PREFIX: '/((foundation))-foundation'
       INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config-director/secrets"
     input_mapping:
       files: director-configuration
@@ -73,19 +73,19 @@ jobs:
       trigger: true
       passed: ["validate-director-configuration"]
     - get: state
-    - get: pcf-automation-image
+    - get: platform-automation-image
       resource: platform-automation
       params:
         unpack: true
         globs: ["*image*"]
-    - get: pcf-automation-tasks
+    - get: platform-automation-tasks
       resource: platform-automation
       params:
         unpack: true
         globs: ["*tasks*"]
   - task: credhub-interpolate
-    image: pcf-automation-image
-    file: configuration/fixes/tasks/credhub-interpolate.yml
+    image: platform-automation-image
+    file: director-configuration/proposed-tasks/credhub-interpolate.yml
     params: *director_credhub_interpolate_params
     input_mapping:
       files: director-configuration
@@ -106,14 +106,9 @@ jobs:
       STATE_FILE: environments/((iaas))/((foundation))/state/state.yml
       OPSMAN_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/opsman.yml
       VARS_FILES: |
-        vars/environments/((iaas))/common-director/opsman.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/opsman.yml
-        secrets/environments/((iaas))/((foundation))/config-director/secrets/opsman.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/pivnet.yml
-
-    tags:
-    - {{foundation}}
 
     ensure: &make-state-commit
       do:
@@ -141,8 +136,8 @@ jobs:
     file: platform-automation-tasks/tasks/configure-authentication.yml
     attempts: 20
     input_mapping:
-      env: interpolated-files
-      config: interpolated-files
+      env: configuration
+      config: configuration
     params:
       ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
       AUTH_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/secrets/auth.yml
@@ -166,8 +161,8 @@ jobs:
         secrets/environments/((iaas))/((foundation))/config-director/secrets/director.yml
 
   - task: apply-director-changes
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/apply-director-changes.yml
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/apply-director-changes.yml
     input_mapping:
       env: configuration
     params:
@@ -179,12 +174,12 @@ jobs:
     - get: director-configuration
       trigger: true
       passed: [ install-opsman ]
-    - get: pcf-automation-image
+    - get: platform-automation-image
       resource: platform-automation
       params:
         unpack: true
         globs: ["*image*"]
-    - get: pcf-automation-tasks
+    - get: platform-automation-tasks
       resource: platform-automation
       params:
         unpack: true
@@ -196,8 +191,8 @@ jobs:
     input_mapping:
       files: director-configuration      
   - task: export-installation
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/export-installation.yml
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/export-installation.yml
     input_mapping:
       env: interpolated-files
     params:
@@ -272,8 +267,8 @@ jobs:
 
 
 
-    image: pcf-automation-image
-    file: pcf-automation-tasks/tasks/apply-changes.yml
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/apply-changes.yml
     input_mapping:
       env: configuration
     params:
