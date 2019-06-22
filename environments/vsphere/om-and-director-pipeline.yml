@@ -15,10 +15,9 @@ resources:
 - name: installation
   type: s3
   source:
-
     access_key_id: ((s3_access_key_id))
-    bucket: ((s3.buckets.installation))
-    region_name: ((s3.region_name))
+    bucket: ((s3_buckets_installation))
+    region_name: ((s3_region_name))
     secret_access_key: ((s3_secret_access_key))
     regexp: ((foundation))/(.*)-installation.zip
 
@@ -27,6 +26,7 @@ resources:
   source:
     branch: master
     uri: git@github.com:doddatpivotal/platform-automation-example.git
+    private_key: ((configuration_git_repo.private_key))
     
 - name: director-configuration
   type: git
