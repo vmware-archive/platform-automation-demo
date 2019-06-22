@@ -67,11 +67,11 @@ jobs:
       params:
         unpack: true
         globs: ["*tasks*"]
-        
+
   - task: credhub-interpolate
     image: platform-automation-image
     file: configuration/proposed-tasks/credhub-interpolate.yml
-    params: &credhub_interpolate_params
+    params: *credhub_interpolate_params
     input_mapping:
       files: configuration
     output_mapping:
@@ -82,9 +82,9 @@ jobs:
     config:
       platform: linux
       inputs:
-        - name: configuration
+        - name: interpolated-files
       params:
-        ENV_FILE: configuration/((foundation))/config-director/secrets/env.yml
+        ENV_FILE: interpolated-files/environments/((foundation))/config/secrets/env.yml
         CORE_DOMAIN: ((core_domain))
         CREDHUB_CLIENT: concourse_to_credhub
         CREDHUB_SECRET: ((concourse_to_credhub_secret))
