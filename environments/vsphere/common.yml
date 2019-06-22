@@ -9,6 +9,7 @@ s3:
     state: lab-winterfell-live-platform-automation-state
 credhub_server: https://ci.lab.winterfell.live:8844
 foundation: lab 
+iaas: vsphere
 core_domain: "lab.winterfell.live"
 cloud_controller_system_domain: "sys.lab.winterfell.live"
 cloud_controller_apps_domain: "apps.lab.winterfell.live"

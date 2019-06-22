@@ -6,7 +6,7 @@ resource_types:
     tags: latest-final
 
 resources:
-- name: pcf-automation
+- name: platform-automation
   type: pivnet
   source:
     api_token: ((pivnet_token))
@@ -28,16 +28,6 @@ resources:
     branch: master
     uri: git@github.com:doddatpivotal/platform-automation-example.git
     
-- name: configuration
-  type: git
-  source:
-    branch: master
-    uri: git@github.com:doddatpivotal/platform-automation-example.git
-    paths:
-    - "environments/((iaas))/((foundation))/pipeline.yml"
-    - "environments/((iaas))/((foundation))/config"
-    private_key: ((configuration_git_repo.private_key))
-
 - name: director-configuration
   type: git
   source:
@@ -53,6 +43,10 @@ jobs:
   - aggregate:
     - get: director-configuration
     - get: platform-automation-image
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*image*"]    
     - get: platform-automation-tasks
       resource: platform-automation
       params:
@@ -63,10 +57,10 @@ jobs:
     image: platform-automation-image
     file: director-configuration/proposed-tasks/credhub-interpolate.yml
     params: &director_credhub_interpolate_params
-      CREDHUB_SERVER: ((concourse_url))
-      CREDHUB_CA_CERT: ((concourse_credhub_ca))
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
       CREDHUB_CLIENT: concourse_to_credhub
-      CREDHUB_SECRET: ((concourse_credhub_client_secret))
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
       PREFIX: '/concourse/((foundation))'
       INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config-director/secrets"
     input_mapping:
@@ -80,8 +74,12 @@ jobs:
       passed: ["validate-director-configuration"]
     - get: state
     - get: pcf-automation-image
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
     - get: pcf-automation-tasks
-      resource: pcf-automation
+      resource: platform-automation
       params:
         unpack: true
         globs: ["*tasks*"]
@@ -167,7 +165,7 @@ jobs:
         vars/environments/((iaas))/((foundation))/config-director/vars/director.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/director.yml
 
-- task: apply-director-changes
+  - task: apply-director-changes
     image: pcf-automation-image
     file: pcf-automation-tasks/tasks/apply-director-changes.yml
     input_mapping:
@@ -182,12 +180,12 @@ jobs:
       trigger: true
       passed: [ install-opsman ]
     - get: pcf-automation-image
-      resource: pcf-automation
+      resource: platform-automation
       params:
         unpack: true
         globs: ["*image*"]
     - get: pcf-automation-tasks
-      resource: pcf-automation
+      resource: platform-automation
       params:
         unpack: true
         globs: ["*tasks*"]
@@ -204,7 +202,7 @@ jobs:
       env: interpolated-files
     params:
       ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
-    - put: installation
+  - put: installation
     params:
       file: installation/installation-*.zip
 
@@ -216,6 +214,10 @@ jobs:
       passed: [ export-installation ]
     - get: state
     - get: platform-automation-image
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*image*"]    
     - get: platform-automation-tasks
       resource: platform-automation
       params:

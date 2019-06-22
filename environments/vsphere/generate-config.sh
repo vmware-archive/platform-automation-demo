@@ -1,7 +1,7 @@
 #!/bin/bash -e
 : ${PIVNET_TOKEN?"Need to set PIVNET_TOKEN"}
 
-INITIAL_FOUNDATION=sbx
+INITIAL_FOUNDATION=lab
 if [ ! $# -eq 1 ]; then
   echo "Must supply product name as arg"
   exit 1
