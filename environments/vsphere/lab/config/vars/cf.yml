@@ -27,8 +27,8 @@ ha_proxy/skip_cert_verify: true
 stack_migration_acknowledgement: X
 
 nfsbrokerpush_post_deploy_state: on
-nfsbrokerpush_pre_delete_state: on
-
+deploy-notifications_post_deploy_state: off
+deploy-notifications-ui_post_deploy_state: off
 
 istio_control_instances: 0
 istio_router_instances: 0
