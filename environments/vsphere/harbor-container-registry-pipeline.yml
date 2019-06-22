@@ -17,7 +17,9 @@ resources:
   source:
     uri: git@github.com:doddatpivotal/platform-automation-example.git
     private_key: ((platform_automation_example_git_repo.private_key))
-
+    paths:
+    - "environments/((iaas))/((foundation))/harbor-container-registry-pipeline.yml"
+    - "environments/((iaas))/((foundation))/config"
 jobs:
 
 - name: validate-tile-configuration
@@ -84,7 +86,7 @@ jobs:
       inputs:
         - name: interpolated-files
       params:
-        ENV_FILE: interpolated-files/environments/((foundation))/config/secrets/env.yml
+        ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
         CORE_DOMAIN: ((core_domain))
         CREDHUB_CLIENT: concourse_to_credhub
         CREDHUB_SECRET: ((concourse_to_credhub_secret))
@@ -115,6 +117,7 @@ jobs:
   - aggregate:
     - get: configuration
       passed: [ generate-certs ]    
+      trigger: true
     - get: platform-automation-image
       resource: platform-automation
       params:
