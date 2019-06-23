@@ -36,12 +36,11 @@ fly -t lab set-pipeline -p deploy-rabbit -c environments/vsphere/p-rabbitmq-pipe
 
 fly -t lab unpause-pipeline -p deploy-rabbit
 
-## Rabbit MQ
+## MySql
 
-fly -t lab set-pipeline -p deploy-mysql -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product pivotal-mysql -n
+fly -t lab set-pipeline -p deploy-mysql -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=pivotal-mysql -n
 
 fly -t lab unpause-pipeline -p deploy-mysql
-
 
 ## Setting up for a new tile
 
