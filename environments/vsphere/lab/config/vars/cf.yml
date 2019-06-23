@@ -35,3 +35,5 @@ istio_router_instances: 0
 route_syncer_instances: 0
 tcp_router_instances: 0
 backup_restore_instances: 0
+
+secure_service_instance_credentials: true
