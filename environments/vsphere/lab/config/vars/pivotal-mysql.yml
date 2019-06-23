@@ -1,4 +1,4 @@
-deprecated_bindings_string: 
+deprecated_bindings_string: X
 global_recipient_email: dpfeffer@pivotal.io
 network_name: deployment
 plan1_selector/single_node/az_multi_select: [az1]
