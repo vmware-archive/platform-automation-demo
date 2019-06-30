@@ -20,12 +20,40 @@ resources:
     paths:
     - "environments/((iaas))/((foundation))/((product))-pipeline.yml"
     - "environments/((iaas))/((foundation))/config"
+
+- name: lock
+  type: pool
+  source:
+    branch: master
+    uri: git@github.com:doddatpivotal/platform-automation-example-locks.git
+    private_key: ((platform_automation_example_locks_git_repo.private_key))
+    pool: ((foundation))
+    retry_delay: 1m
+
 jobs:
+
+- name: force-unlock
+  serial: true
+  plan:
+  - get: lock
+  - put: lock
+    params:
+      release: lock
+
+- name: lock-tiles
+  serial: true
+  plan:
+  - aggregate:
+    - put: lock
+      params: {acquire: true}
+    - get: configuration
 
 - name: validate-tile-configuration
   plan:
   - aggregate:
     - get: configuration
+      passed: [ lock-tiles ]
+      trigger: true
     - get: platform-automation-image
       resource: platform-automation
       params:
@@ -146,3 +174,13 @@ jobs:
       CONFIG_FILE: environments/((iaas))/((foundation))/config/templates/((product)).yml
       ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
 
+- name: unlock-tile
+  serial: true
+  plan:
+  - get: configuration
+    trigger: true
+    passed: [ configure-and-apply ]
+  - get: lock
+  - put: lock
+    params:
+      release: lock

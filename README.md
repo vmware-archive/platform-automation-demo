@@ -32,7 +32,7 @@ fly -t lab unpause-pipeline -p deploy-pks
 
 ## Rabbit MQ
 
-fly -t lab set-pipeline -p deploy-rabbit -c environments/vsphere/p-rabbitmq-pipeline.yml -l environments/vsphere/common.yml -n
+fly -t lab set-pipeline -p deploy-rabbit -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=p-rabbitmq -n
 
 fly -t lab unpause-pipeline -p deploy-rabbit
 
@@ -41,6 +41,12 @@ fly -t lab unpause-pipeline -p deploy-rabbit
 fly -t lab set-pipeline -p deploy-mysql -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=pivotal-mysql -n
 
 fly -t lab unpause-pipeline -p deploy-mysql
+
+## Generating Certs
+
+fly -t lab set-pipeline -p generate-certs -c environments/vsphere/generate-certs-pipeline.yml -l environments/vsphere/common.yml -n
+
+fly -t lab unpause-pipeline -p generate-certs
 
 ## Setting up for a new tile
 

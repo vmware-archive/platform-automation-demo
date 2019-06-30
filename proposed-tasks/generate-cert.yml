@@ -1,0 +1,29 @@
+---
+platform: linux
+
+inputs:
+  - name: interpolated-files
+
+params:
+  ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+  CREDHUB_CLIENT: concourse_to_credhub
+  CREDHUB_SECRET: ((concourse_to_credhub_secret))
+  CREDHUB_SERVER: ((credhub_server))
+  CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+  DOMAINS: "*.((core_domain))"
+  CRED_NAME: 
+
+run:
+  path: bash
+  args:
+    - -c
+    - |
+      p-automator -v
+
+      curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+      chmod +x jq
+
+      CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
+      echo $CERTIFICATE | ./jq ".certificate" -r > key.certificate
+      echo $CERTIFICATE | ./jq ".key" -r > key.private_key
+      credhub set -t certificate -n $CRED_NAME -c ./key.certificate -p ./key.private_key

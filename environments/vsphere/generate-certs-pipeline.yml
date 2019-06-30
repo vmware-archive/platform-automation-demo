@@ -1,0 +1,60 @@
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tags: latest-final
+
+resources:
+- name: platform-automation
+  type: pivnet
+  source:
+    api_token: ((pivnet_token))
+    product_slug: platform-automation
+
+- name: configuration
+  type: git
+  source:
+    uri: git@github.com:doddatpivotal/platform-automation-example.git
+    private_key: ((platform_automation_example_git_repo.private_key))
+
+jobs:
+
+- name: generate-harbor-certificates
+  plan:
+  - aggregate:
+    - get: configuration
+    - get: platform-automation-image
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: platform-automation-tasks
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+
+  - task: credhub-interpolate
+    image: platform-automation-image
+    file: configuration/proposed-tasks/credhub-interpolate.yml
+    params: &credhub_interpolate_params
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+      PREFIX: '/((foundation))-foundation'
+      INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config/secrets"
+    input_mapping:
+      files: configuration
+    output_mapping:
+      interpolated-files: interpolated-files
+
+  - task: generate-cert
+    image: platform-automation-image
+    file: configuration/proposed-tasks/generate-cert.yml
+    params:
+      DOMAINS: "*.((core_domain))"
+      CRED_NAME: "/((foundation))-foundation/harbor-container-registry/server_cert_key"
+    input_mapping:
+      interpolated-files: interpolated-files
