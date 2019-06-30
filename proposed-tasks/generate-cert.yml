@@ -5,12 +5,12 @@ inputs:
   - name: interpolated-files
 
 params:
-  ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+  ENV_FILE: 
   CREDHUB_CLIENT: concourse_to_credhub
-  CREDHUB_SECRET: ((concourse_to_credhub_secret))
-  CREDHUB_SERVER: ((credhub_server))
-  CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
-  DOMAINS: "*.((core_domain))"
+  CREDHUB_SECRET: 
+  CREDHUB_SERVER: 
+  CREDHUB_CA_CERT: 
+  DOMAINS: 
   CRED_NAME: 
 
 run:

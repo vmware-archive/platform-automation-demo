@@ -20,7 +20,7 @@ resources:
 
 jobs:
 
-- name: generate-harbor-certificates
+- name: generate-all-certs
   plan:
   - aggregate:
     - get: configuration
@@ -50,11 +50,58 @@ jobs:
     output_mapping:
       interpolated-files: interpolated-files
 
-  - task: generate-cert
+  - task: generate-harbor-container-registry-cert
     image: platform-automation-image
     file: configuration/proposed-tasks/generate-cert.yml
     params:
+      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
       DOMAINS: "*.((core_domain))"
       CRED_NAME: "/((foundation))-foundation/harbor-container-registry/server_cert_key"
+    input_mapping:
+      interpolated-files: interpolated-files
+
+  - task: generate-pivotal-container-service-cert
+    image: platform-automation-image
+    file: configuration/proposed-tasks/generate-cert.yml
+    params:
+      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+      DOMAINS: "*.pks.((core_domain)),*.api.pks.((core_domain))"
+      CRED_NAME: "/((foundation))-foundation/pivotal-container-service/pks_tls"
+    input_mapping:
+      interpolated-files: interpolated-files
+
+  - task: generate-cf-cert-0
+    image: platform-automation-image
+    file: configuration/proposed-tasks/generate-cert.yml
+    params:
+      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+      DOMAINS: "*.((core_domain)),*.((cloud_controller_system_domain)),*.((cloud_controller_apps_domain)),*.login.((cloud_controller_system_domain)),*.uaa.((cloud_controller_system_domain))"
+      CRED_NAME: "/((foundation))-foundation/cf/networking_poe_ssl_certs_0_certificate"
+    input_mapping:
+      interpolated-files: interpolated-files
+
+  - task: generate-cf-cert-1
+    image: platform-automation-image
+    file: configuration/proposed-tasks/generate-cert.yml
+    params:
+      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+      CREDHUB_CLIENT: concourse_to_credhub
+      CREDHUB_SECRET: ((concourse_to_credhub_secret))
+      CREDHUB_SERVER: ((credhub_server))
+      CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
+      DOMAINS: "*.login.((cloud_controller_system_domain)),*.uaa.((cloud_controller_system_domain))"
+      CRED_NAME: "/((foundation))-foundation/cf/uaa_service_provider_key_credentials"
     input_mapping:
       interpolated-files: interpolated-files

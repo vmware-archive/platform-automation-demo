@@ -14,19 +14,19 @@ fly -t lab unpause-pipeline -p deploy-om-and-director
 
 ## PAS
 
-fly -t lab set-pipeline -p deploy-cf -c environments/vsphere/cf-pipeline.yml -l environments/vsphere/common.yml -n
+fly -t lab set-pipeline -p deploy-cf -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=cf -n
 
 fly -t lab unpause-pipeline -p deploy-cf
 
 ## Harbor
 
-fly -t lab set-pipeline -p deploy-harbor -c environments/vsphere/harbor-container-registry-pipeline.yml -l environments/vsphere/common.yml -n
+fly -t lab set-pipeline -p deploy-harbor -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=harbor-container-registry -n
 
 fly -t lab unpause-pipeline -p deploy-harbor
 
 ## PKS
 
-fly -t lab set-pipeline -p deploy-pks -c environments/vsphere/pivotal-container-service-pipeline.yml -l environments/vsphere/common.yml -n
+fly -t lab set-pipeline -p deploy-pks -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=pivotal-container-service -n
 
 fly -t lab unpause-pipeline -p deploy-pks
 

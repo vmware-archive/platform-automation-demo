@@ -101,7 +101,6 @@ jobs:
           - -c
           - |
             p-automator -v
-            # set -eux
 
             curl -L -o jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
             chmod +x jq
@@ -111,12 +110,13 @@ jobs:
             echo $CERTIFICATE | ./jq ".certificate" -r > networking_poe_ssl_certs_0_certificate.certificate
             echo $CERTIFICATE | ./jq ".key" -r > networking_poe_ssl_certs_0_certificate.private_key
             export OM_VAR_CRED_1_NAME="${PREFIX}/cf/networking_poe_ssl_certs_0_certificate" 
+            credhub set -t certificate -n $OM_VAR_CRED_1_NAME -c ./networking_poe_ssl_certs_0_certificate.certificate -p ./networking_poe_ssl_certs_0_certificate.private_key
+
             DOMAINS="*.login.$CLOUD_CONTROLLER_SYSTEM_DOMAIN,*.uaa.$CLOUD_CONTROLLER_SYSTEM_DOMAIN"
             CERTIFICATE=`om --env "${ENV_FILE}" generate-certificate -d $DOMAINS`
             echo $CERTIFICATE | ./jq ".certificate" -r > uaa_service_provider_key_credentials.certificate
             echo $CERTIFICATE | ./jq ".key" -r > uaa_service_provider_key_credentials.private_key
             export OM_VAR_CRED_2_NAME="${PREFIX}/cf/uaa_service_provider_key_credentials" 
-            credhub set -t certificate -n $OM_VAR_CRED_1_NAME -c ./networking_poe_ssl_certs_0_certificate.certificate -p ./networking_poe_ssl_certs_0_certificate.private_key
             credhub set -t certificate -n $OM_VAR_CRED_2_NAME -c ./uaa_service_provider_key_credentials.certificate -p ./uaa_service_provider_key_credentials.private_key
 
 - name: download-stage-tile-stemcell
