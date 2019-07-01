@@ -58,23 +58,90 @@ Following jobs within the `ad-hoc-jobs` group
 1. `force-unlock` - Releases lock on the foundation.  Used when there is a failure at somepoint in the pipeline
 2. `export-staged-config` - Exports the current staged config for the tile and puts it into the configured s3 bucket. This could be useful when you are first getting used to tile configuraiton and are unsure about optional and feature operations files
 
+## Directory Structure
+
+```ascii
+├── environments
+│   ├── vsphere
+│   │   ├── foundation-1
+│   │   │   ├── config-common
+│   │   │   │   ├── secrets
+│   │   │   │   │   └── env.yml
+│   │   │   │   │   └── pivnet.yml
+│   │   │   ├── config
+│   │   │   │   ├── cf
+│   │   │   │   │     cf-template.yml
+│   │   │   │   │     cf-vars.yml
+│   │   │   │   │     cf-defaults.yml
+│   │   │   │   │     cf-secrets.yml
+│   │   │   │   │     cf-version.yml
+│   │   │   │   │     cf-stemcell-version.yml
+│   │   │   │   │     cf-operation
+│   │   │   │   └── ...
+│   │   │   ├── config-director
+│   │   │   │   ├── secrets
+│   │   │   │   │   └── director.yml
+│   │   │   │   │   └── opsman.yml
+│   │   │   │   │   └── auth.yml
+│   │   │   │   ├── templates
+│   │   │   │   │   └── director.yml
+│   │   │   │   │   └── opsman.yml
+│   │   │   │   ├── vars
+│   │   │   │   │   └── director.yml
+│   │   │   │   │   └── opsman.yml
+│   │   │   │   ├── versions
+│   │   │   │   │   └── opsman.yml
+│   │   │   ├── state
+│   │   │   │   └── state.yml
+├── pipelines
+│   └── ...
+├── proposed-tasks
+│   └── ...
+├── scripts
+│   └── ...
+```
+
 ## Automation Activities
 
 ### Setting up for a new tile
 
 When creating configuration for a product for the first time
 
-- Start with the example platformation automation config
-- Copy version file and update
-- Copy config script and update based upon product name
-- Run tile config generator
-- Review options and update interpolate
-- Run the tile config generator again
-- Run `om interpolate` passing in --config template --vars-files defaults to identify what values - need to be set
-- Create a vars file for the remaining values (or add them to credhub)
+1. Configuration Setup
+  1. Create `environments/<iaas>/<foundation>/config/<product> folder
+  2. Go to pivnet and identify product version and stemcell version you want to use
+  3. Copy <product>-version.yml and <product>-stemcell-version.yml from another products config directory and put it in new folder
+  4. Update the version files appropriately
+  5. Run `./scripts/generate-config.sh <product> <iaas>`.  This will generate tile-config folder for the product as well as operation, template, defaults, vars, and secreate files in the product folder
+2. Customization
+  1. Review features and options in the tile-config folder for the product
+  2. Add desired features and options to the products operations file `<product>-operations`
+  3. Re-run `./scripts/generate-config.sh <product> <iaas>`.  This will now update template and defaults files for the product
+  4. Run `./scripts/validate-config.sh <product> <iaas> <foundation>`.  This will identify variables that need to be satisfied.
+    1. Sensitive variables should be added to secrets file while referencing credhub credential name.
+    2. Standard variables should be put into var file
+  5. Review the default values.  Any values you want to override, add to the products vars file
+  6. Re-run `./scripts/validate-config.sh <product> <iaas> <foundation>` to ensure all variables are satisfied
+3. Credentials
+  1. Add all required credentials into credhub
+4. Deploy
+  1. Commit the configuration changes and push to code repo
+  2. Fly the pipeline
+    1. fly standard-product-pipeline.yml passing in the product name.
+    2. Update `./scripts/fly-pipelines.sh` script appropriately
+
+>Note: There is a helper pipeline, `generate-certs-pipeline.yml`, to generate self-signed certs.
 
 ## Updating a version of a tile
 
-1. Update the product version
-2. Run the scripts and identify any changes to the configurations
-3. Run om interpolate passing in the tile config, defaults, and vars to see if there are any new vars you have to supply
+1. Bump the versions
+  1. Update the <product>-version.yml
+  2. Update the <product>-stemcell-version.yml
+2. Inspect Deferences
+  1. Run `./scripts/validate-config.sh <product> <iaas> <foundation>`.  This may result in updated template, config, or default files.
+  2. Identify if any changes were made via `git diff`
+    1. Yes: manually review and make any necessary changes
+    2. No: continue
+  3. Run `./scripts/validate-config.sh <product> <iaas> <foundation>` to ensure all variables are satisfied
+4. Deploy
+  1. Commit the configuration changes and push to code repo
