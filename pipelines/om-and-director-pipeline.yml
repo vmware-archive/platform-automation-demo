@@ -83,7 +83,7 @@ jobs:
 
   - task: credhub-interpolate
     image: platform-automation-image
-    file: director-configuration/proposed-tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params: &director_credhub_interpolate_params
       CREDHUB_SERVER: ((credhub_server))
       CREDHUB_CA_CERT: ((credhub_ca_cert.certificate))
@@ -113,7 +113,7 @@ jobs:
         globs: ["*tasks*"]
   - task: credhub-interpolate
     image: platform-automation-image
-    file: director-configuration/proposed-tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params: *director_credhub_interpolate_params
     input_mapping:
       files: director-configuration
@@ -212,7 +212,7 @@ jobs:
         globs: ["*tasks*"]
   - task: credhub-interpolate
     image: platform-automation-image
-    file: director-configuration/proposed-tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params: *director_credhub_interpolate_params
     input_mapping:
       files: director-configuration      
@@ -249,7 +249,7 @@ jobs:
 
   - task: credhub-interpolate
     image: platform-automation-image
-    file: director-configuration/proposed-tasks/credhub-interpolate.yml
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
     params: *director_credhub_interpolate_params
     input_mapping:
       files: director-configuration
