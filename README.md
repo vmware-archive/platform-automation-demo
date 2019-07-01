@@ -11,7 +11,7 @@ I chose this approache because:
 - Allows for identification of any tile changes associated with a new version (patch or minor) of the tile prior to attempting to run the pipeline
 - Gives me good insight into the configuration dependencies with tile options and features
 
-Of note, there are differences in Caleb's repo:
+Key differences from Caleb's repo:
 
 - Caleb has setup his structure for *promoting* configuration amoung foundations.  Think sandbox, non-prod, production.  I've kept the directory structure, but removed the scripts as I only have one foundation
 - Due to the multiple foundations, he has a concept of common configuration across foundations, I removed this
@@ -20,6 +20,16 @@ Of note, there are differences in Caleb's repo:
 - I have seperate pipelines for each product
 - I've added helper pipeline to generate self signed certs
 - Caleb has an approach that seperates out the execution of errands from the apply changes for a tile.  This was explained to me as way to have the pipeline be more resiliant to errand failures and allows for re-execution of errands without having to re-install the product.  I may consider this in the future, but have not followed the approach right now due to simplicity.
+
+Key differences from [Platform Automation for PCF](http://docs.pivotal.io/platform-automation/v3.0/) reference pipelines:
+
+- This assumes that concourse has internet access (not an air-gapped environment)
+- No timed triggers
+- Use of custom aggregated tasks
+- Each product has a seperate pipeline
+- Use of lock resources
+- Uses templated config file with mutliple variable files based upon forward engineering approach
+- Different directory structure
 
 ## Repo Directory Structure
 
