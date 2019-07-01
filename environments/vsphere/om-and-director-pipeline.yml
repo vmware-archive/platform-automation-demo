@@ -37,11 +37,39 @@ resources:
     - "environments/((iaas))/((foundation))/config-director"
     private_key: ((platform_automation_example_git_repo.private_key))
 
+- name: lock
+  type: pool
+  source:
+    branch: master
+    uri: git@github.com:doddatpivotal/platform-automation-example-locks.git
+    private_key: ((platform_automation_example_locks_git_repo.private_key))
+    pool: ((foundation))
+    retry_delay: 1m
+
 jobs:
+
+- name: force-unlock
+  serial: true
+  plan:
+  - get: lock
+  - put: lock
+    params:
+      release: lock
+
+- name: lock-director
+  serial: true
+  plan:
+  - aggregate:
+    - put: lock
+      params: {acquire: true}
+    - get: director-configuration
+      
 - name: validate-director-configuration
   plan:
   - aggregate:
     - get: director-configuration
+      trigger: true
+      passed: ["lock-director"]
     - get: platform-automation-image
       resource: platform-automation
       params:
@@ -259,3 +287,15 @@ jobs:
       env: interpolated-files
     params:
       ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+
+- name: unlock-director
+  serial: true
+  plan:
+  - get: director-configuration
+    trigger: true
+    passed:
+    - "upgrade-opsman"
+  - get: lock
+  - put: lock
+    params:
+      release: lock

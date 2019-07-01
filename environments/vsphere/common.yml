@@ -1,10 +1,6 @@
 s3_region_name: us-east-2
-s3_buckets_pcf_automation: lab-winterfell-live-platform-automation-for-pcf
 s3_buckets_product: lab-winterfell-live-platform-automation-product
-s3_buckets_stemcell: lab-winterfell-live-platform-automation-stemcell
 s3_buckets_installation: lab-winterfell-live-platform-automation-installation
-s3_buckets_pcf_automation_output: lab-winterfell-live-platform-automation-output
-s3_buckets_state: lab-winterfell-live-platform-automation-state
 credhub_server: https://ci.lab.winterfell.live:8844
 foundation: lab
 iaas: vsphere

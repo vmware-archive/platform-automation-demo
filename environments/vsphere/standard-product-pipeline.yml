@@ -1,3 +1,16 @@
+groups:
+- name: deployment-pipeline
+  jobs: 
+    - lock-tiles
+    - validate-tile-configuration
+    - download-stage-tile-stemcell
+    - configure-and-apply
+    - unlock-tile
+- name: ad-hoc-jobs
+  jobs: 
+    - force-unlock
+    - export-staged-config
+
 resource_types:
 - name: pivnet
   type: docker-image
@@ -29,6 +42,15 @@ resources:
     private_key: ((platform_automation_example_locks_git_repo.private_key))
     pool: ((foundation))
     retry_delay: 1m
+
+- name: staged-config
+  type: s3
+  source:
+    access_key_id: ((s3_access_key_id))
+    bucket: ((s3_buckets_product))
+    region_name: ((s3_region_name))
+    secret_access_key: ((s3_secret_access_key))
+    versioned_file: ((product)).yml
 
 jobs:
 
@@ -184,3 +206,39 @@ jobs:
   - put: lock
     params:
       release: lock
+
+- name: export-staged-config
+  plan:
+  - aggregate:
+    - get: platform-automation-image
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*image*"]
+    - get: platform-automation-tasks
+      resource: platform-automation
+      params:
+        unpack: true
+        globs: ["*tasks*"]
+    - get: configuration
+  - task: credhub-interpolate
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/credhub-interpolate.yml
+    params: *credhub_interpolate_params
+    input_mapping:
+      files: configuration
+    output_mapping:
+      interpolated-files: interpolated-files
+  - task: staged-config
+    image: platform-automation-image
+    file: platform-automation-tasks/tasks/staged-config.yml
+    params:
+      PRODUCT_NAME: ((product)) 
+      ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
+    input_mapping:
+      env: interpolated-files
+    output_mapping:
+      generated-config: generated-config
+  - put: staged-config
+    params:
+      file: generated-config/((product)).yml

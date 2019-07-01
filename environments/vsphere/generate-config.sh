@@ -49,3 +49,9 @@ fi
 if [ -f ${wrkdir}/resource-vars.yml ]; then
   cat ${wrkdir}/resource-vars.yml >> ${INITIAL_FOUNDATION}/config/defaults/${product}.yml
 fi
+
+mkdir -p ${INITIAL_FOUNDATION}/config/secrets
+touch ${INITIAL_FOUNDATION}/config/secrets/${product}.yml
+
+mkdir -p ${INITIAL_FOUNDATION}/config/vars
+touch ${INITIAL_FOUNDATION}/config/vars/${product}.yml

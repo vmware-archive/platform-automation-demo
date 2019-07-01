@@ -49,6 +49,8 @@ run:
 
     set +e
     staged_version=$(bosh int ${staged_products} --path /name=${expected_product}/version)
+    # strip any build information from the staged version
+    staged_version=$(echo $staged_version | cut -d'-' -f 1')
     set -e
 
     vars_files_args=("")
