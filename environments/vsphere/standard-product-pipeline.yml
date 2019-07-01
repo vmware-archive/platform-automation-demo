@@ -33,6 +33,7 @@ resources:
     paths:
     - "environments/((iaas))/((foundation))/((product))-pipeline.yml"
     - "environments/((iaas))/((foundation))/config"
+    - "proposed-tasks"
 
 - name: lock
   type: pool
