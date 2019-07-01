@@ -28,7 +28,7 @@ if [ ! -f ${wrkdir}/product.yml ]; then
   exit 1
 fi
 
-ops_files="environments/${iaas}/config/${product}/${product}-operations"
+ops_files="environments/${iaas}/${INITIAL_FOUNDATION}/config/${product}/${product}-operations"
 touch ${ops_files}
 
 ops_files_args=("")

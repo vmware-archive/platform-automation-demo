@@ -31,8 +31,7 @@ resources:
     uri: git@github.com:doddatpivotal/platform-automation-example.git
     private_key: ((platform_automation_example_git_repo.private_key))
     paths:
-    - "environments/((iaas))/((foundation))/((product))-pipeline.yml"
-    - "environments/((iaas))/((foundation))/config"
+    - "environments/((iaas))/((foundation))/config/((product))"
     - "proposed-tasks"
 
 - name: lock
