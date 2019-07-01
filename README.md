@@ -2,53 +2,65 @@
 
 Example Repository for using platform-automation
 
-## Login
+## Fly Pipelines
 
-fly -t lab login -k
+Use the `./scripts/fly-pipelines.sh` script to set and unpause all pipelines.  Optionally, you can view that script to extract the commands to fly or unpause a specific pipeline.  The scirpt assumes you have already logged into concourse.  If not, use `fly -t lab login -k` to login.
 
-## Ops Manager and Director
+## Pipelines Explained
 
-fly -t lab set-pipeline -p lab-deploy-om-and-director -c environments/vsphere/om-and-director-pipeline.yml -l environments/vsphere/common.yml
+### General Concepts
 
-fly -t lab unpause-pipeline -p deploy-om-and-director
+- Each pipeline leverages locks to ensure that only one pipeline is working on the foundation at any given point.  If a pipeline is triggered while another pipeline has the lock, then it will poll every 1 minute waiting for the lock to be released.  Check out info on the concourse [pool-resource](https://github.com/concourse/pool-resource).  The corresponding lock repository used in my lab is [platform-automation-example-locks](https://github.com/doddatpivotal/platform-automation-example-locks)
 
-## PAS
+### Ops Manager and Director
 
-fly -t lab set-pipeline -p deploy-cf -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=cf -n
+The ops manager and director pipeline is a single pipeline used for both installation and upgrade of ops manager and director pair.
 
-fly -t lab unpause-pipeline -p deploy-cf
+1. `lock-director` - Claim the lock for the specific foundation.  Waits untile the lock is unclaimed before it progresses.
+2. `validate-director-configuration` - Validation the configuration.  Essentially just executing an canary credhub interpolation task which establishes re-usable parameters and ensures secrets are in correct location
+3. `install-opsman` - Checks to see if opsman is aready installed.  If so, skips download and creation.  If not does download and installs.  Ensures that the current version is configured as expected and applies changes.  This is so that you don't introduce configuration changes and new version at one time.  If install did occur, then it puts state.yml file in the config directory
+4. `export-installation` - Exports the opsmanager and tile configuration and pushes it to s3 bucket
+5. `upgrade-opsman` - If existing opsman version is different than current, it will download and upgrade opsman.  Else it will skip.  Will always apply director changes, which will go fast if there were no changes
+6. `unlock-director` - Releases the lock on the foundation.
 
-## Harbor
+The following notable configuration files exist:
 
-fly -t lab set-pipeline -p deploy-harbor -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=harbor-container-registry -n
+- `state.yml` - Stores an id associated with the opsmanager.  Required for opsman upgrades.  This file must exist and can be blank for an intial install.  The pipeline will update the file after the pipeline is run.  Located in `enviornment/<iaas>/<foundation>/state` folder
+- `enviornment/<iaas>/<foundation>/config-director` folder - Contains configuration files used by the pipeline.  Secret mappings are stored in the `secrets` folder and this directory has the credhub interpolate task run against it.
+- `...\versions\opsman.yml` contains opsman version information and is where you will bump versions
 
-fly -t lab unpause-pipeline -p deploy-harbor
+### Product Tiles
 
-## PKS
+There is a single standard product pipeline configuration that is used for all product tiles.  This enables re-use and consistancy.  Each tile uses the same configuration with a different pipeline name and product variable.  This pipline is used for both installation and upgrade of the tile.
 
-fly -t lab set-pipeline -p deploy-pks -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=pivotal-container-service -n
+Two groups are defined in the pipeline.  `deployment-pipeline` is the primary pipeline, while `ad-hoc-jobs` contains one-off jobs that can be executed.
 
-fly -t lab unpause-pipeline -p deploy-pks
+Following jobs within the `deployment-pipeline` group
 
-## Rabbit MQ
+1. `lock-tiles` - Claim the lock for the specific foundation.  Waits untile the lock is unclaimed before it progresses.
+2. `validate-tile-configuration` - Validation the configuration.  Essentially just executing an canary credhub interpolation task which establishes re-usable parameters and ensures secrets are in correct location
+3. `download-stage-tile-stemcell` - This job has an custom aggregate task that combines a number of platform automation commands.  It checks to see if the desired stemcell and tile version have already been uploaded and staged.  If not, it downloads, stages, and assigns the stemcell
+4. `configure-and-apply` - Configures the tile and selectively applies only changes to that product.  Again, uses a custom task.
+5. `unlock-tile` - Releases the lock on the foundation.
 
-fly -t lab set-pipeline -p deploy-rabbit -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=p-rabbitmq -n
+The following notable configuration files exist:
 
-fly -t lab unpause-pipeline -p deploy-rabbit
+- `enviornment/<iaas>/<foundation>/config` folder - Contains configuration files used by the pipeline.  Secret mappings are stored in the `secrets` folder and this directory has the credhub interpolate task run against it.
+- `versions` - this folder contains `<product>.yml` and `<product>-stemcell.yml` files with configuration information for the product and its desired stemcell version
+- `templates` - this folder contains the resulting interpolated template based on operations files that have been applied to the output of om config-template. This is created by scripts/generate-config.sh
+- `defaults` - this folder contains the default values for a given tile. This is generated by om config-template
+- `vars` - this folder contains environment specific variables per product that is being deployed.
+- `secrets` - this folder contains the templates that can be interpolated using credhub interpolate to be used as secrets inputs to other tasks
+- `versions` - this folder contains both the product version and stemcell version per product.
 
-## MySql
+Following jobs within the `ad-hoc-jobs` group
 
-fly -t lab set-pipeline -p deploy-mysql -c environments/vsphere/standard-product-pipeline.yml -l environments/vsphere/common.yml -v product=pivotal-mysql -n
+1. `force-unlock` - Releases lock on the foundation.  Used when there is a failure at somepoint in the pipeline
+2. `export-staged-config` - Exports the current staged config for the tile and puts it into the configured s3 bucket. This could be useful when you are first getting used to tile configuraiton and are unsure about optional and feature operations files
 
-fly -t lab unpause-pipeline -p deploy-mysql
+## Automation Activities
 
-## Generating Certs
-
-fly -t lab set-pipeline -p generate-certs -c environments/vsphere/generate-certs-pipeline.yml -l environments/vsphere/common.yml -n
-
-fly -t lab unpause-pipeline -p generate-certs
-
-## Setting up for a new tile
+### Setting up for a new tile
 
 When creating configuration for a product for the first time
 

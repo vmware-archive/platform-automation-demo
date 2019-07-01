@@ -44,7 +44,7 @@ jobs:
       CREDHUB_CLIENT: concourse_to_credhub
       CREDHUB_SECRET: ((concourse_to_credhub_secret))
       PREFIX: '/((foundation))-foundation'
-      INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config/secrets"
+      INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/common-config/secrets"
     input_mapping:
       files: configuration
     output_mapping:
@@ -54,7 +54,7 @@ jobs:
     image: platform-automation-image
     file: configuration/proposed-tasks/generate-cert.yml
     params:
-      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config-common/secrets/env.yml
       CREDHUB_CLIENT: concourse_to_credhub
       CREDHUB_SECRET: ((concourse_to_credhub_secret))
       CREDHUB_SERVER: ((credhub_server))
@@ -68,7 +68,7 @@ jobs:
     image: platform-automation-image
     file: configuration/proposed-tasks/generate-cert.yml
     params:
-      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config-common/secrets/env.yml
       CREDHUB_CLIENT: concourse_to_credhub
       CREDHUB_SECRET: ((concourse_to_credhub_secret))
       CREDHUB_SERVER: ((credhub_server))
@@ -82,7 +82,7 @@ jobs:
     image: platform-automation-image
     file: configuration/proposed-tasks/generate-cert.yml
     params:
-      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config-common/secrets/env.yml
       CREDHUB_CLIENT: concourse_to_credhub
       CREDHUB_SECRET: ((concourse_to_credhub_secret))
       CREDHUB_SERVER: ((credhub_server))
@@ -96,7 +96,7 @@ jobs:
     image: platform-automation-image
     file: configuration/proposed-tasks/generate-cert.yml
     params:
-      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config/secrets/env.yml
+      ENV_FILE: interpolated-files/environments/((iaas))/((foundation))/config-common/secrets/env.yml
       CREDHUB_CLIENT: concourse_to_credhub
       CREDHUB_SECRET: ((concourse_to_credhub_secret))
       CREDHUB_SERVER: ((credhub_server))

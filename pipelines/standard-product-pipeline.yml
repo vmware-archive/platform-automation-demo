@@ -97,7 +97,7 @@ jobs:
       CREDHUB_CLIENT: concourse_to_credhub
       CREDHUB_SECRET: ((concourse_to_credhub_secret))
       PREFIX: '/((foundation))-foundation'
-      INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config/secrets"
+      INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config-common/secrets environments/((iaas))/((foundation))/config/((product))/((product))-secrets.yml"
     input_mapping:
       files: configuration
 
@@ -137,10 +137,10 @@ jobs:
       env: interpolated-files
       secrets: interpolated-files
     params:
-      DOWNLOAD_CONFIG_FILE: environments/((iaas))/((foundation))/config/versions/((product)).yml
-      DOWNLOAD_STEMCELL_CONFIG_FILE: environments/((iaas))/((foundation))/config/versions/((product))-stemcell.yml
-      CONFIG_FILE: environments/((iaas))/((foundation))/config/templates/((product)).yml
-      ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
+      DOWNLOAD_CONFIG_FILE: environments/((iaas))/((foundation))/config/((product))/((product))-version.yml
+      DOWNLOAD_STEMCELL_CONFIG_FILE: environments/((iaas))/((foundation))/config/((product))/((product))-stemcell-version.yml
+      CONFIG_FILE: environments/((iaas))/((foundation))/config/((product))/((product))-template.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
       VARS_FILES: secrets/environments/((iaas))/((foundation))/config/secrets/pivnet.yml
 
 - name: configure-and-apply
@@ -179,12 +179,12 @@ jobs:
       vars: configuration
       secrets: interpolated-files
     params:
-      CONFIG_FILE: environments/((iaas))/((foundation))/config/templates/((product)).yml
+      CONFIG_FILE: environments/((iaas))/((foundation))/config/((product))/((product))-template.yml
       VARS_FILES: |
-        vars/environments/((iaas))/((foundation))/config/defaults/((product)).yml
-        vars/environments/((iaas))/((foundation))/config/vars/((product)).yml
-        secrets/environments/((iaas))/((foundation))/config/secrets/((product)).yml
-      ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
+        vars/environments/((iaas))/((foundation))/config/((product))/((product))-defaults.yml
+        vars/environments/((iaas))/((foundation))/config/((product))/((product))-vars.yml
+        secrets/environments/((iaas))/((foundation))/config/((product))/((product))-secrets.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
 
   - task: apply-product-changes
     image: platform-automation-image
@@ -194,8 +194,8 @@ jobs:
       config: configuration
       env: interpolated-files
     params:
-      CONFIG_FILE: environments/((iaas))/((foundation))/config/templates/((product)).yml
-      ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
+      CONFIG_FILE: environments/((iaas))/((foundation))/config/((product))/((product))-template.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
 
 - name: unlock-tile
   serial: true
@@ -235,7 +235,7 @@ jobs:
     file: platform-automation-tasks/tasks/staged-config.yml
     params:
       PRODUCT_NAME: ((product)) 
-      ENV_FILE: environments/((iaas))/((foundation))/config/secrets/env.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
     input_mapping:
       env: interpolated-files
     output_mapping:

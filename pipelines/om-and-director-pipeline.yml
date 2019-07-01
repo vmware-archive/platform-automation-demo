@@ -90,7 +90,7 @@ jobs:
       CREDHUB_CLIENT: concourse_to_credhub
       CREDHUB_SECRET: ((concourse_to_credhub_secret))
       PREFIX: '/((foundation))-foundation'
-      INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config-director/secrets"
+      INTERPOLATION_PATHS: "environments/((iaas))/((foundation))/config-common/secrets environments/((iaas))/((foundation))/config-director/secrets"
     input_mapping:
       files: director-configuration
 
@@ -134,10 +134,9 @@ jobs:
       STATE_FILE: environments/((iaas))/((foundation))/state/state.yml
       OPSMAN_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/opsman.yml
       VARS_FILES: |
-        vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/opsman.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/opsman.yml
-        secrets/environments/((iaas))/((foundation))/config-director/secrets/pivnet.yml
+        secrets/environments/((iaas))/((foundation))/config-common/secrets/pivnet.yml
 
     ensure: &make-state-commit
       do:
@@ -168,7 +167,7 @@ jobs:
       env: interpolated-files
       config: interpolated-files
     params:
-      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
       AUTH_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/secrets/auth.yml
 
 
@@ -181,10 +180,9 @@ jobs:
       vars: director-configuration
       secrets: interpolated-files
     params:
-      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
       DIRECTOR_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/director.yml
       VARS_FILES: |
-        vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/director.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/director.yml
 
@@ -194,7 +192,7 @@ jobs:
     input_mapping:
       env: interpolated-files
     params:
-      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
 
 - name: export-installation
   plan:
@@ -224,7 +222,7 @@ jobs:
     input_mapping:
       env: interpolated-files
     params:
-      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
   - put: installation
     params:
       file: installation/installation-*.zip
@@ -272,13 +270,12 @@ jobs:
       STATE_FILE: environments/((iaas))/((foundation))/state/state.yml
       OPSMAN_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/opsman.yml
       VARS_FILES: |
-        vars/environments/((iaas))/((foundation))/config-director/vars/infra.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/opsman.yml
         vars/environments/((iaas))/((foundation))/config-director/vars/director.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/director.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/opsman.yml
-        secrets/environments/((iaas))/((foundation))/config-director/secrets/pivnet.yml
-      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+        secrets/environments/((iaas))/((foundation))/config-common/secrets/pivnet.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
     ensure: *make-state-commit
   - task: apply-director-changes
     image: platform-automation-image
@@ -286,7 +283,7 @@ jobs:
     input_mapping:
       env: interpolated-files
     params:
-      ENV_FILE: environments/((iaas))/((foundation))/config-director/secrets/env.yml
+      ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
 
 - name: unlock-director
   serial: true
