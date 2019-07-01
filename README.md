@@ -1,4 +1,4 @@
-# platform-automation-example
+# Platform Automation Example
 
 Example repository for using [Platform Automation for PCF](http://docs.pivotal.io/platform-automation/v3.0/).  I am using this repo for my personal lab environment.  
 
@@ -127,43 +127,43 @@ This pipeline contians tasks to generate the requried certs for the tiles and pl
 When creating configuration for a product for the first time
 
 1. Configuration Setup
-  1. Create `environments/<iaas>/<foundation>/config/<product> folder
-  2. Go to pivnet and identify product version and stemcell version you want to use
-  3. Copy <product>-version.yml and <product>-stemcell-version.yml from another products config directory and put it in new folder
-  4. Update the version files appropriately
-  5. Run `./scripts/generate-config.sh <product> <iaas>`.  This will generate tile-config folder for the product as well as operation, template, defaults, vars, and secreate files in the product folder
+    1. Create `environments/<iaas>/<foundation>/config/<product> folder
+    2. Go to pivnet and identify product version and stemcell version you want to use
+    3. Copy <product>-version.yml and <product>-stemcell-version.yml from another products config directory and put it in new folder
+    4. Update the version files appropriately
+    5. Run `./scripts/generate-config.sh <product> <iaas>`.  This will generate tile-config folder for the product as well as operation, template, defaults, vars, and secreate files in the product folder
 2. Customization
-  1. Review features and options in the tile-config folder for the product
-  2. Add desired features and options to the products operations file `<product>-operations`
-  3. Re-run `./scripts/generate-config.sh <product> <iaas>`.  This will now update template and defaults files for the product
-  4. Run `./scripts/validate-config.sh <product> <iaas> <foundation>`.  This will identify variables that need to be satisfied.
-    1. Sensitive variables should be added to secrets file while referencing credhub credential name.
-    2. Standard variables should be put into var file
-  5. Review the default values.  Any values you want to override, add to the products vars file
-  6. Re-run `./scripts/validate-config.sh <product> <iaas> <foundation>` to ensure all variables are satisfied
+    1. Review features and options in the tile-config folder for the product
+    2. Add desired features and options to the products operations file `<product>-operations`
+    3. Re-run `./scripts/generate-config.sh <product> <iaas>`.  This will now update template and defaults files for the product
+    4. Run `./scripts/validate-config.sh <product> <iaas> <foundation>`.  This will identify variables that need to be satisfied.
+        1. Sensitive variables should be added to secrets file while referencing credhub credential name.
+        2. Standard variables should be put into var file
+    5. Review the default values.  Any values you want to override, add to the products vars file
+    6. Re-run `./scripts/validate-config.sh <product> <iaas> <foundation>` to ensure all variables are satisfied
 3. Credentials
-  1. Add all required credentials into credhub
+    1. Add all required credentials into credhub
 4. Deploy
-  1. Commit the configuration changes and push to code repo
-  2. Fly the pipeline
-    1. fly standard-product-pipeline.yml passing in the product name.
-    2. Update `./scripts/fly-pipelines.sh` script appropriately
+    1. Commit the configuration changes and push to code repo
+    2. Fly the pipeline
+        1. fly standard-product-pipeline.yml passing in the product name.
+        2. Update `./scripts/fly-pipelines.sh` script appropriately
 
 >Note: There is a helper pipeline, `generate-certs-pipeline.yml`, to generate self-signed certs.
 
 ## Updating a version of a tile
 
 1. Bump the versions
-  1. Update the <product>-version.yml
-  2. Update the <product>-stemcell-version.yml
+    1. Update the <product>-version.yml
+    2. Update the <product>-stemcell-version.yml
 2. Inspect Deferences
-  1. Run `./scripts/validate-config.sh <product> <iaas> <foundation>`.  This may result in updated template, config, or default files.
-  2. Identify if any changes were made via `git diff`
-    1. Yes: manually review and make any necessary changes
-    2. No: continue
-  3. Run `./scripts/validate-config.sh <product> <iaas> <foundation>` to ensure all variables are satisfied
-4. Deploy
-  1. Commit the configuration changes and push to code repo
+    1. Run `./scripts/validate-config.sh <product> <iaas> <foundation>`.  This may result in updated template, config, or default files.
+    2. Identify if any changes were made via `git diff`
+        1. Yes: manually review and make any necessary changes
+        2. No: continue
+    3. Run  `./scripts/validate-config.sh <product> <iaas> <foundation>` to ensure all variables are satisfied
+3. Deploy
+    1. Commit the configuration changes and push to code repo
 
 ## Proposed Tasks
 
