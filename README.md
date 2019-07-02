@@ -120,7 +120,7 @@ Two groups are defined in the pipeline.  `deployment-pipeline` is the primary pi
 
 Following jobs within the `deployment-pipeline` group
 
-![deploy-tile](/docs/tile.png)
+![deploy-tile](/docs/deploy-tile.png)
 
 1. `lock-tiles` - Claim the lock for the specific foundation.  Waits untile the lock is unclaimed before it progresses.
 2. `validate-tile-configuration` - Validation the configuration.  Essentially just executing an canary credhub interpolation task which establishes re-usable parameters and ensures secrets are in correct location
