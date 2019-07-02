@@ -10,6 +10,7 @@
 - View Dodd's platform automation scripts and configuration (heavy on the demo)
 - Setup platform automation for your lab (home or public cloud)
 - Choose from PAS, MySql, RabbitMQ, PKS, and/or Harbor tiles
+- Ask questions and learn from each other
 - Have fun!
 
 ## Collaboration Suggestions
@@ -46,6 +47,8 @@
 
 - prerequites
   - concourse + uaa + credhub deployed
+  - paved iaas
+  - object store (eg. s3)
 - if you already have OM with at least one product deployed...
   - suggest creating automation to exactly replace the existing deployed product (same version, same config)
   - suggest starting with a product that deploys quickly (like harbor, rabbitmq, pks)

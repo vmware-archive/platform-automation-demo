@@ -90,11 +90,14 @@ Key differences from [Platform Automation for PCF](http://docs.pivotal.io/platfo
 
 ### General Concepts
 
-- Each pipeline leverages locks to ensure that only one pipeline is working on the foundation at any given point.  If a pipeline is triggered while another pipeline has the lock, then it will poll every 1 minute waiting for the lock to be released.  Check out info on the concourse [pool-resource](https://github.com/concourse/pool-resource).  The corresponding lock repository used in my lab is [platform-automation-example-locks](https://github.com/doddatpivotal/platform-automation-example-locks)
+- `Locks` - Each pipeline leverages locks to ensure that only one pipeline is working on the foundation at any given point.  If a pipeline is triggered while another pipeline has the lock, then it will poll every 1 minute waiting for the lock to be released.  Check out info on the concourse [pool-resource](https://github.com/concourse/pool-resource).  The corresponding lock repository used in my lab is [platform-automation-example-locks](https://github.com/doddatpivotal/platform-automation-example-locks)
+- `Building blocks` - Platform Automation for PCF privides a *secure container image* with tools for interacting with PCF, *common tasks* to be performed against ops manager, and a set of *documentation*.  Creation of automation is an iterative process that requires feedback and adjustements.  Pipelines may start out similar accross organizations, but ultimately they should be tuned provide benefit of the users and resolve toil.  This is an engineering discipline and benefits from the same practices common to software development.  Please use all the tools available through Platform Automation for PCF and create something efficent and useful for you
 
 ### Ops Manager and Director Pipeline
 
 The ops manager and director pipeline is a single pipeline used for both installation and upgrade of ops manager and director pair.
+
+![deploy-om-and-director](/docs/deploy-om-and-director.png)
 
 1. `lock-director` - Claim the lock for the specific foundation.  Waits untile the lock is unclaimed before it progresses.
 2. `validate-director-configuration` - Validation the configuration.  Essentially just executing an canary credhub interpolation task which establishes re-usable parameters and ensures secrets are in correct location
@@ -116,6 +119,8 @@ There is a single standard product pipeline configuration that is used for all p
 Two groups are defined in the pipeline.  `deployment-pipeline` is the primary pipeline, while `ad-hoc-jobs` contains one-off jobs that can be executed.
 
 Following jobs within the `deployment-pipeline` group
+
+![deploy-tile](/docs/tile.png)
 
 1. `lock-tiles` - Claim the lock for the specific foundation.  Waits untile the lock is unclaimed before it progresses.
 2. `validate-tile-configuration` - Validation the configuration.  Essentially just executing an canary credhub interpolation task which establishes re-usable parameters and ensures secrets are in correct location
@@ -201,3 +206,11 @@ When creating configuration for a product for the first time
 ## Fly Pipelines
 
 Use the `./scripts/fly-pipelines.sh` script to set and unpause all pipelines.  Optionally, you can view that script to extract the commands to fly or unpause a specific pipeline.  The scirpt assumes you have already logged into concourse.  If not, use `fly -t lab login -k` to login.
+
+## Left Out
+
+As this is a lab automation configuration there are certain things left out and not accounted for.  Here are a few notables.
+
+- `Risk of individual product selective deploy` - Given that each product has its own pipeline and selectively deployed, there is risk that dependencies may not be observed.  A tile can reference another as dependent.  When a full apply changes is triggered, ops manager recognizes the dependencies and deploys in the proper order
+- `Upgrade Planner` - Pivotal is in the process of creating an Upgrade Planner tool that provides guidance on the order and process to upgrade from one configuration to another.  This is tremdous insight and is not incorporated into this automation.  It is up to the user (me) to run the upgrade planner off-line and follow the recommendations by triggering pipelines in order
+- `Pivnet Triggered Pipelnes` - Given the pivnet concourse resource there is potential to drive changes to the configuration based upon newly relased patched versions of products or stemcells.  This configuration does not account for any pivnet release triggered pipelines
