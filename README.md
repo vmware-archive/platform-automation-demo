@@ -185,8 +185,8 @@ When creating configuration for a product for the first time
 1. Bump the versions
     1. Update the <product>-version.yml
     2. Update the <product>-stemcell-version.yml
-2. Inspect Deferences
-    1. Run `./scripts/validate-config.sh <product> <iaas> <foundation>`.  This may result in updated template, config, or default files.
+2. Re-generate config and inspect any differences
+    1. Run `./scripts/generate-config.sh <product> <iaas>`.  This may result in updated template file, tile-config folder, or default files.
     2. Identify if any changes were made via `git diff`
         1. Yes: manually review and make any necessary changes
         2. No: continue
