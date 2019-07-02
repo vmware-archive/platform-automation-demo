@@ -19,7 +19,8 @@ Key differences from Caleb's repo:
 - I've moved the scripts outside of the environments directory.  This just made more sense to me and allowed me to easily run the scripts from the root
 - I have seperate pipelines for each product
 - I've added helper pipeline to generate self signed certs
-- Caleb has an approach that seperates out the execution of errands from the apply changes for a tile.  This was explained to me as way to have the pipeline be more resiliant to errand failures and allows for re-execution of errands without having to re-install the product.  I may consider this in the future, but have not followed the approach right now due to simplicity.
+- Caleb has an approach that seperates out the execution of errands from the apply changes for a tile.  This was explained to me as way to have the pipeline be more resiliant to errand failures and allows for re-execution of errands without having to re-install the product.  I may consider this in the future, but have not followed the approach right now due to simplicity
+- Caleb's reference demonstrates use of bosh add-ons like clam-av
 
 Key differences from [Platform Automation for PCF](http://docs.pivotal.io/platform-automation/v3.0/) reference pipelines:
 
@@ -30,6 +31,17 @@ Key differences from [Platform Automation for PCF](http://docs.pivotal.io/platfo
 - Use of lock resources
 - Uses templated config file with mutliple variable files based upon forward engineering approach
 - Different directory structure
+
+## Current Configuration
+
+- Configuration in this repository is for a lab environment
+- For simplicity there there is only 1 AZ configured
+- Following tiles are configured:
+  - cf
+  - harbor-container-registry
+  - p-rabbitmq
+  - pivotal-container-services
+  - pivotal-mysql
 
 ## Repo Directory Structure
 
@@ -158,6 +170,8 @@ When creating configuration for a product for the first time
     2. Fly the pipeline
         1. fly standard-product-pipeline.yml passing in the product name.
         2. Update `./scripts/fly-pipelines.sh` script appropriately
+
+>Note: The credhub credentials required by this reference repo were generated using [this redacted script](https://github.com/doddatpivotal/homelab-concourse-setup/blob/master/scripts/seed-credhub.redacted.sh)
 
 >Note: There is a helper pipeline, `generate-certs-pipeline.yml`, to generate self-signed certs.
 
