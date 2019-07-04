@@ -140,7 +140,7 @@ jobs:
       DOWNLOAD_STEMCELL_CONFIG_FILE: environments/((iaas))/((foundation))/config/((product))/((product))-stemcell-version.yml
       CONFIG_FILE: environments/((iaas))/((foundation))/config/((product))/((product))-template.yml
       ENV_FILE: environments/((iaas))/((foundation))/config-common/secrets/env.yml
-      VARS_FILES: secrets/environments/((iaas))/((foundation))/config/secrets/pivnet.yml
+      VARS_FILES: secrets/environments/((iaas))/((foundation))/config-common/secrets/pivnet.yml
 
 - name: configure-and-apply
   serial: true
