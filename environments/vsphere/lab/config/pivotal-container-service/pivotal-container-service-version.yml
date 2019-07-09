@@ -1,4 +1,4 @@
 pivnet-file-glob: "*.pivotal"
 pivnet-product-slug: "pivotal-container-service"
-product-version: "1.4.0"
+product-version: "1.4.1"
 stemcell-iaas: "vsphere"
