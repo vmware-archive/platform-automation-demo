@@ -1,4 +1,4 @@
 pivnet-api-token: ((pivnet-api-token))
 pivnet-file-glob: "ops-manager-vsphere-*.ova"
 pivnet-product-slug: "ops-manager"
-product-version: "2.6.2"
+product-version: "2.6.3"
