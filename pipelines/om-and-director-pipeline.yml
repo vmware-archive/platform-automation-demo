@@ -136,6 +136,8 @@ jobs:
       OPSMAN_CONFIG_FILE: environments/((iaas))/((foundation))/config-director/templates/opsman.yml
       VARS_FILES: |
         vars/environments/((iaas))/((foundation))/config-director/vars/opsman.yml
+        vars/environments/((iaas))/((foundation))/config-director/vars/director.yml
+        secrets/environments/((iaas))/((foundation))/config-director/secrets/director.yml
         secrets/environments/((iaas))/((foundation))/config-director/secrets/opsman.yml
         secrets/environments/((iaas))/((foundation))/config-common/secrets/pivnet.yml
 
