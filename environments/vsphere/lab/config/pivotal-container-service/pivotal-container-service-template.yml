@@ -88,10 +88,16 @@ product-properties:
     value: Plan Active
   .properties.plan2_selector.active.description:
     value: ((plan2_selector/active/description))
+  .properties.plan2_selector.active.errand_vm_type:
+    value: ((plan2_selector/active/errand_vm_type))
   .properties.plan2_selector.active.master_az_placement:
     value: ((plan2_selector/active/master_az_placement))
   .properties.plan2_selector.active.master_instances:
     value: ((plan2_selector/active/master_instances))
+  .properties.plan2_selector.active.master_persistent_disk_type:
+    value: ((plan2_selector/active/master_persistent_disk_type))
+  .properties.plan2_selector.active.master_vm_type:
+    value: ((plan2_selector/active/master_vm_type))
   .properties.plan2_selector.active.max_worker_instances:
     value: ((plan2_selector/active/max_worker_instances))
   .properties.plan2_selector.active.name:
@@ -100,6 +106,10 @@ product-properties:
     value: ((plan2_selector/active/worker_az_placement))
   .properties.plan2_selector.active.worker_instances:
     value: ((plan2_selector/active/worker_instances))
+  .properties.plan2_selector.active.worker_persistent_disk_type:
+    value: ((plan2_selector/active/worker_persistent_disk_type))
+  .properties.plan2_selector.active.worker_vm_type:
+    value: ((plan2_selector/active/worker_vm_type))
   .properties.plan3_selector:
     value: Plan Inactive
   .properties.plan4_selector:

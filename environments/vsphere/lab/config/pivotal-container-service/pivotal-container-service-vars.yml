@@ -45,7 +45,6 @@ plan2_selector/active/master_persistent_disk_type: "10240"
 plan2_selector/active/master_vm_type: medium.disk
 plan2_selector/active/worker_persistent_disk_type: "51200"
 plan2_selector/active/worker_vm_type: medium.disk
-plan2_selector/active/allow_privileged_containers: false
 plan2_selector/active/disable_deny_escalating_exec: false
 plan2_selector/active/master_instances: 1
 plan2_selector/active/max_worker_instances: 50
