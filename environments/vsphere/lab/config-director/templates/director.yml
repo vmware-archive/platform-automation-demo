@@ -63,6 +63,7 @@ properties-configuration:
     nsx_networking_enabled: false
   security_configuration:
     generate_vm_passwords: true
+    security_tokens_include_opsmanager_root_ca_in_trusted_certificates: true
   syslog_configuration:
     enabled: false
 
