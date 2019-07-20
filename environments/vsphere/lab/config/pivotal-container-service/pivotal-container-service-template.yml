@@ -61,8 +61,6 @@ product-properties:
     value: Plan Active
   .properties.plan1_selector.active.addons_spec:
     value: ((plan1_selector/active/addons_spec))
-  .properties.plan1_selector.active.allow_privileged_containers:
-    value: ((plan1_selector/active/allow_privileged_containers))
   .properties.plan1_selector.active.description:
     value: ((plan1_selector/active/description))
   .properties.plan1_selector.active.errand_vm_type:
@@ -92,6 +90,11 @@ product-properties:
     value: Plan Active
   .properties.plan2_selector.active.addons_spec:
     value: ((plan2_selector/active/addons_spec))
+  .properties.plan2_selector.active.admission_plugins:
+    value:
+    - deny_escalating_exec
+  .properties.plan2_selector.active.allow_privileged_containers:
+    value: ((plan2_selector/active/allow_privileged_containers))
   .properties.plan2_selector.active.description:
     value: ((plan2_selector/active/description))
   .properties.plan2_selector.active.errand_vm_type:
