@@ -23,8 +23,8 @@ service_network_name: services
 singleton_availability_zone: az1
 
 
-plan1_selector/active/name: "very-small-non-priv"
-plan1_selector/active/description: "1 master, 1 worker with privileged containers"
+plan1_selector/active/name: "small-standard"
+plan1_selector/active/description: "1 master, 1 worker denying privileged containers"
 plan1_selector/active/master_az_placement: [az1]
 plan1_selector/active/worker_az_placement: [az1]
 plan1_selector/active/errand_vm_type: micro
@@ -41,8 +41,8 @@ plan1_selector/active/addons_spec: |
     annotations:
       storageclass.beta.kubernetes.io/is-default-class: "true"
   provisioner: kubernetes.io/vsphere-volume
-plan2_selector/active/name: "very-small-priv"
-plan2_selector/active/description: "1 master, 1 worker with non-privileged containers"
+plan2_selector/active/name: "small-priv"
+plan2_selector/active/description: "1 master, 1 worker allowing privileged containers"
 plan2_selector/active/master_az_placement: [az1]
 plan2_selector/active/worker_az_placement: [az1]
 plan2_selector/active/errand_vm_type: micro

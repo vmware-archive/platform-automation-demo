@@ -19,6 +19,5 @@ optional/add-plan2_selector-active-worker_vm_type.yml
 optional/add-plan2_selector-active-worker_persistent_disk_type.yml
 optional/add-plan2_selector-active-errand_vm_type.yml
 optional/add-plan2_selector-active-addons_spec.yml
-features/plan2_selector-active-admission_plugins_deny_escalating_exec.yml
 features/wavefront-enabled.yml
 optional/add-wavefront-enabled-wavefront_alert_targets.yml
