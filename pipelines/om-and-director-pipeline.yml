@@ -1,3 +1,16 @@
+groups:
+- name: deployment-pipeline
+  jobs: 
+    - lock-director
+    - validate-director-configuration
+    - install-opsman
+    - export-installation
+    - upgrade-opsman
+    - unlock-director
+- name: ad-hoc-jobs
+  jobs: 
+    - force-unlock
+    
 resource_types:
 - name: pivnet
   type: docker-image
