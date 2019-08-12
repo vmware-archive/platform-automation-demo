@@ -23,6 +23,6 @@ deployment_gateway: 192.168.7.1
 
 services_network: VM Network
 services_network_cidr: 192.168.7.0/24
-services_network_reserved: 192.168.7.0-192.168.7.159,192.168.7.180-192.168.7.255
+services_network_reserved: 192.168.7.0-192.168.7.149,192.168.7.180-192.168.7.255
 services_gateway: 192.168.7.1
 
