@@ -154,11 +154,11 @@ This pipeline contians tasks to generate the requried certs for the tiles and pl
 When creating configuration for a product for the first time
 
 1. Configuration Setup
-    1. Create `environments/<iaas>/<foundation>/config/<product> folder
+    1. Create `environments/<iaas>/<foundation>/config/<product> folder.  ** <product> is the product name identified by pivnet.  If you select a product from the pivnet search you are taking to the product page.  You can get the <product> identifier by looking at the Url.  For instance, for Pivotal Cloud Cache the url is https://network.pivotal.io/products/p-cloudcache/ and the <product> id value is *p-cloudcache* **
     2. Go to pivnet and identify product version and stemcell version you want to use
     3. Copy <product>-version.yml and <product>-stemcell-version.yml from another products config directory and put it in new folder
     4. Update the version files appropriately
-    5. Run `./scripts/generate-config.sh <product> <iaas>`.  This will generate tile-config folder for the product as well as operation, template, defaults, vars, and secreate files in the product folder
+    5. Run `./scripts/generate-config.sh <product> <iaas>`.  This will generate tile-config folder for the product as well as operation, template, defaults, vars, and secrets files in the product folder.  ** Do not manually edit template and default files!  They should only be changed by running the genreate-config.sh script. **
 2. Customization
     1. Review features and options in the tile-config folder for the product
     2. Add desired features and options to the products operations file `<product>-operations`
@@ -179,6 +179,8 @@ When creating configuration for a product for the first time
 >Note: The credhub credentials required by this reference repo were generated using [this redacted script](https://github.com/doddatpivotal/homelab-concourse-setup/blob/master/scripts/seed-credhub.redacted.sh)
 
 >Note: There is a helper pipeline, `generate-certs-pipeline.yml`, to generate self-signed certs.
+
+>Note: The following files are generated throught generate-config.sh script and should not be manually edited: 
 
 ## Updating a version of a tile
 
