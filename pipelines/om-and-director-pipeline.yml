@@ -180,7 +180,7 @@ jobs:
   - task: configure-authentication
     image: platform-automation-image
     file: platform-automation-tasks/tasks/configure-authentication.yml
-    attempts: 20
+    attempts: 2
     input_mapping:
       env: interpolated-files
       config: interpolated-files
