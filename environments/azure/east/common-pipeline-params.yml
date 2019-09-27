@@ -7,3 +7,7 @@ iaas: azure
 core_domain: "east.s1p.koundinya.cc"
 cloud_controller_system_domain: "sys.east.s1p.koundinya.cc"
 cloud_controller_apps_domain: "apps.east.s1p.koundinya.cc"
+configuration_repo: "git@github.com:doddatpivotal/platform-automation-example.git"
+configuration_locks_repo: git@github.com:doddatpivotal/platform-automation-example-locks.git
+git_author_email: "dpfeffer+homelab@pivotal.io"
+git_author_name: "dpfeffer+home"

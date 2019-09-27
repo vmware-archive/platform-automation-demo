@@ -5,3 +5,7 @@ credhub_server: https://104.196.101.207:8844
 foundation: lab
 iaas: aws
 core_domain: "pcf-aws.jagapps.co"
+configuration_repo: "git@github.com:doddatpivotal/platform-automation-example.git"
+configuration_locks_repo: git@github.com:doddatpivotal/platform-automation-example-locks.git
+git_author_email: "dpfeffer+homelab@pivotal.io"
+git_author_name: "dpfeffer+home"

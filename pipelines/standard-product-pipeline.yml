@@ -28,7 +28,7 @@ resources:
 - name: configuration
   type: git
   source:
-    uri: git@github.com:doddatpivotal/platform-automation-example.git
+    uri: ((configuration_repo))
     private_key: ((platform_automation_example_git_repo.private_key))
     paths:
     - "environments/((iaas))/((foundation))/config/((product))"
@@ -38,7 +38,7 @@ resources:
   type: pool
   source:
     branch: master
-    uri: git@github.com:doddatpivotal/platform-automation-example-locks.git
+    uri: ((configuration_locks_repo))
     private_key: ((platform_automation_example_locks_git_repo.private_key))
     pool: ((foundation))
     retry_delay: 1m

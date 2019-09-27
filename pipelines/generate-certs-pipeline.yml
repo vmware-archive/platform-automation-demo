@@ -15,7 +15,7 @@ resources:
 - name: configuration
   type: git
   source:
-    uri: git@github.com:doddatpivotal/platform-automation-example.git
+    uri: ((configuration_repo))
     private_key: ((platform_automation_example_git_repo.private_key))
 
 jobs:
