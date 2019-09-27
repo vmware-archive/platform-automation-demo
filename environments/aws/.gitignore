@@ -1,0 +1,4 @@
+*-tcg
+.envrc
+*-config
+tile-configs

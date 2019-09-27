@@ -1,0 +1,9 @@
+clair_updater_interval: 0
+no_proxy: 127.0.0.1,localhost,ui,registry
+with_clair: true
+with_notary: true
+smoke-testing_post_deploy_state: default
+uaa-deregistration_pre_delete_state: default
+harbor-app_instance_type: automatic
+harbor-app_persistent_disk_size: automatic
+smoke-testing_instance_type: automatic

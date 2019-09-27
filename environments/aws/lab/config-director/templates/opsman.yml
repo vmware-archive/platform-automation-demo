@@ -1,0 +1,24 @@
+---
+opsman-configuration:
+  aws:
+    region: ((aws_region))
+    vm_name: ((opsman_vm_name)) # defaults Ops Manager-vm
+    boot_disk_size: 200 # default 200
+    vpc_subnet_id: ((aws_public_subnet_id_0))
+    security_group_id: ((opsman_security_group_id))
+    key_pair_name: ((opsman_keypair_name))
+    instance_type: ((opsman_instance_type))
+    # At least one IP address (public or private)
+    # needs to be assigned to the VM.
+    # It is also permissable to assign both.
+    public_ip: ((opsman_public_ip))
+    private_ip: ((opsman_private_ip))
+    # Required if use_instance_profile is false
+    # omit if using Instance Profiles
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    # If using Instance Profiles (omit if using AWS Credentials)
+    use_instance_profile: false # default false
+    iam_instance_profile_name: pcf-aws_ops_manager
+    # Optional, necessary if a role is needed to authorize the instance profile
+    # assume_role: arn:aws:iam::453136613866:role/pcf-aws_om_role

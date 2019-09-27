@@ -1,0 +1,17 @@
+---
+opsman-configuration:
+  azure:
+    subscription_id: ((azure_subscription_id))
+    resource_group: ((azure_resource_group))
+    tenant_id: ((azure_tenant_id))
+    client_id: ((azure_client_id))
+    client_secret: ((azure_client_secret))
+    location: ((azure_region))
+    container: opsmanagerimage
+    network_security_group: ((ops_manager_security_group))
+    vpc_subnet: ((infrastructure-subnet))
+    storage_account: ((ops_manager_storage_account))                      # used for the Ops Manager image
+    vm_name: ((opsman_vm_name))
+    ssh_public_key: ((opsman_ssh_public_key))
+    private_ip: ((ops_manager_private_ip))
+    public_ip: ((ops_manager_public_ip))

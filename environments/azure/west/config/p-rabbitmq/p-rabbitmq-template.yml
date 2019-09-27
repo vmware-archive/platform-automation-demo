@@ -1,0 +1,99 @@
+errand-config:
+  broker-deregistrar:
+    pre-delete-state: ((broker-deregistrar_pre_delete_state))
+  broker-registrar:
+    post-deploy-state: ((broker-registrar_post_deploy_state))
+  delete-all-service-instances:
+    pre-delete-state: ((delete-all-service-instances_pre_delete_state))
+  deregister-broker:
+    pre-delete-state: ((deregister-broker_pre_delete_state))
+  on-demand-broker-smoke-tests:
+    post-deploy-state: ((on-demand-broker-smoke-tests_post_deploy_state))
+  recreate-all-service-instances:
+    post-deploy-state: ((recreate-all-service-instances_post_deploy_state))
+  register-broker:
+    post-deploy-state: ((register-broker_post_deploy_state))
+  smoke-tests:
+    post-deploy-state: ((smoke-tests_post_deploy_state))
+  upgrade-all-service-instances:
+    post-deploy-state: ((upgrade-all-service-instances_post_deploy_state))
+network-properties:
+  network:
+    name: ((network_name))
+  other_availability_zones:
+  - name: ((singleton_availability_zone))
+  service_network:
+    name: ((service_network_name))
+  singleton_availability_zone:
+    name: ((singleton_availability_zone))
+product-name: p-rabbitmq
+product-properties:
+  .on-demand-broker.canaries:
+    value: ((on-demand-broker/canaries))
+  .on-demand-broker.global_service_instance_quota:
+    value: ((on-demand-broker/global_service_instance_quota))
+  .on-demand-broker.max_in_flight:
+    value: ((on-demand-broker/max_in_flight))
+  .properties.enable_tls_selector:
+    value: disabled
+  .properties.global_settings_secure_bindings:
+    value: "No"
+  .properties.global_settings_shareable_instances:
+    value: "No"
+  .properties.metrics_polling_interval:
+    value: ((metrics_polling_interval))
+  .properties.multitenant_support:
+    value: disabled
+  .properties.on_demand_broker_plan_1_cf_service_access:
+    value: ((on_demand_broker_plan_1_cf_service_access))
+  .properties.on_demand_broker_plan_1_description:
+    value: ((on_demand_broker_plan_1_description))
+  .properties.on_demand_broker_plan_1_disk_limit_acknowledgement:
+    value:
+    - acknowledge
+  .properties.on_demand_broker_plan_1_features:
+    value: ((on_demand_broker_plan_1_features))
+  .properties.on_demand_broker_plan_1_instance_quota:
+    value: ((on_demand_broker_plan_1_instance_quota))
+  .properties.on_demand_broker_plan_1_name:
+    value: ((on_demand_broker_plan_1_name))
+  .properties.on_demand_broker_plan_1_paid:
+    value: ((on_demand_broker_plan_1_paid))
+  .properties.on_demand_broker_plan_1_rabbitmq_az_placement:
+    value: ((on_demand_broker_plan_1_rabbitmq_az_placement))
+  .properties.on_demand_broker_plan_1_rabbitmq_cluster_partition_handling_strategy:
+    value: ((on_demand_broker_plan_1_rabbitmq_cluster_partition_handling_strategy))
+  .properties.on_demand_broker_plan_1_rabbitmq_number_of_nodes:
+    value: ((on_demand_broker_plan_1_rabbitmq_number_of_nodes))
+  .properties.on_demand_broker_plan_2_selector:
+    value: disabled
+  .properties.on_demand_broker_plan_3_selector:
+    value: disabled
+  .properties.on_demand_broker_plan_4_selector:
+    value: disabled
+  .properties.on_demand_broker_plan_5_selector:
+    value: disabled
+  .properties.syslog_selector:
+    selected_option: disabled
+    value: disabled
+resource-config:
+  on-demand-broker:
+    instance_type:
+      id: ((on-demand-broker_instance_type))
+    instances: ((on-demand-broker_instances))
+    persistent_disk:
+      size_mb: ((on-demand-broker_persistent_disk_size))
+  rabbitmq-broker:
+    instance_type:
+      id: ((rabbitmq-broker_instance_type))
+    instances: ((rabbitmq-broker_instances))
+  rabbitmq-haproxy:
+    instance_type:
+      id: ((rabbitmq-haproxy_instance_type))
+    instances: ((rabbitmq-haproxy_instances))
+  rabbitmq-server:
+    instance_type:
+      id: ((rabbitmq-server_instance_type))
+    instances: ((rabbitmq-server_instances))
+    persistent_disk:
+      size_mb: ((rabbitmq-server_persistent_disk_size))

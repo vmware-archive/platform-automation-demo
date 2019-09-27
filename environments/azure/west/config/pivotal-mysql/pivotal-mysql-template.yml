@@ -1,0 +1,108 @@
+errand-config:
+  delete-all-service-instances-and-deregister-broker:
+    pre-delete-state: ((delete-all-service-instances-and-deregister-broker_pre_delete_state))
+  register-broker:
+    post-deploy-state: ((register-broker_post_deploy_state))
+  smoke-tests:
+    post-deploy-state: ((smoke-tests_post_deploy_state))
+  upgrade-all-service-instances:
+    post-deploy-state: ((upgrade-all-service-instances_post_deploy_state))
+  validate-before-upgrade-instances:
+    post-deploy-state: ((validate-before-upgrade-instances_post_deploy_state))
+network-properties:
+  network:
+    name: ((network_name))
+  other_availability_zones:
+  - name: ((singleton_availability_zone))
+  service_network:
+    name: ((service_network_name))
+  singleton_availability_zone:
+    name: ((singleton_availability_zone))
+product-name: pivotal-mysql
+product-properties:
+  .properties.allow_lower_case_table_names_via_config_param:
+    value: ((allow_lower_case_table_names_via_config_param))
+  .properties.audit_logging_enabled:
+    value: ((audit_logging_enabled))
+  .properties.backups_selector:
+    selected_option: s3
+    value: S3 Backups
+  .properties.backups_selector.s3.access_key_id:
+    value:
+      secret: ((backups_selector/s3/access_key_id))
+  .properties.backups_selector.s3.bucket_name:
+    value: ((backups_selector/s3/bucket_name))
+  .properties.backups_selector.s3.cron_schedule:
+    value: ((backups_selector/s3/cron_schedule))
+  .properties.backups_selector.s3.enable_email_alerts:
+    value: ((backups_selector/s3/enable_email_alerts))
+  .properties.backups_selector.s3.path:
+    value: ((backups_selector/s3/path))
+  .properties.backups_selector.s3.secret_access_key:
+    value:
+      secret: ((backups_selector/s3/secret_access_key))
+  .properties.canary_instances:
+    value: ((canary_instances))
+  .properties.deprecated_bindings_string:
+    value: ((deprecated_bindings_string))
+  .properties.enable_lower_case_table_names:
+    value: ((enable_lower_case_table_names))
+  .properties.enable_read_only_admin:
+    value: ((enable_read_only_admin))
+  .properties.enable_secure_binding_credentials:
+    value: ((enable_secure_binding_credentials))
+  .properties.enable_tls_selector:
+    value: disabled
+  .properties.global_recipient_email:
+    value: ((global_recipient_email))
+  .properties.global_service_instance_limit:
+    value: ((global_service_instance_limit))
+  .properties.local_infile:
+    value: ((local_infile))
+  .properties.mysql_metrics_frequency:
+    value: ((mysql_metrics_frequency))
+  .properties.plan1_selector:
+    value: single_node
+  .properties.plan1_selector.single_node.access_dropdown:
+    value: ((plan1_selector/single_node/access_dropdown))
+  .properties.plan1_selector.single_node.az_multi_select:
+    value: ((plan1_selector/single_node/az_multi_select))
+  .properties.plan1_selector.single_node.description:
+    value: ((plan1_selector/single_node/description))
+  .properties.plan1_selector.single_node.name:
+    value: ((plan1_selector/single_node/name))
+  .properties.plan1_selector.single_node.paid_plan:
+    value: ((plan1_selector/single_node/paid_plan))
+  .properties.plan2_selector:
+    selected_option: inactive
+    value: Inactive
+  .properties.plan3_selector:
+    selected_option: inactive
+    value: Inactive
+  .properties.plan4_selector:
+    value: Inactive
+  .properties.plan5_selector:
+    value: Inactive
+  .properties.plan6_selector:
+    value: Inactive
+  .properties.plan7_selector:
+    value: Inactive
+  .properties.plan8_selector:
+    value: Inactive
+  .properties.plan9_selector:
+    value: Inactive
+  .properties.request_timeout:
+    value: ((request_timeout))
+  .properties.simultaneous_upgrades:
+    value: ((simultaneous_upgrades))
+  .properties.syslog_migration_selector:
+    value: disabled
+  .properties.userstat:
+    value: ((userstat))
+  .properties.wait_timeout:
+    value: ((wait_timeout))
+resource-config:
+  dedicated-mysql-broker:
+    instance_type:
+      id: ((dedicated-mysql-broker_instance_type))
+    instances: ((dedicated-mysql-broker_instances))

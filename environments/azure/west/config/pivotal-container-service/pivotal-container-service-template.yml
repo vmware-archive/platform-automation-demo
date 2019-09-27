@@ -1,0 +1,193 @@
+errand-config:
+  delete-all-clusters:
+    pre-delete-state: ((delete-all-clusters_pre_delete_state))
+  pks-nsx-t-precheck:
+    post-deploy-state: ((pks-nsx-t-precheck_post_deploy_state))
+  smoke-tests:
+    post-deploy-state: ((smoke-tests_post_deploy_state))
+  upgrade-all-service-instances:
+    post-deploy-state: ((upgrade-all-service-instances_post_deploy_state))
+  wavefront-alert-creation:
+    post-deploy-state: ((wavefront-alert-creation_post_deploy_state))
+  wavefront-alert-deletion:
+    pre-delete-state: ((wavefront-alert-deletion_pre_delete_state))
+network-properties:
+  network:
+    name: ((network_name))
+  other_availability_zones:
+  - name: ((singleton_availability_zone))
+  service_network:
+    name: ((service_network_name))
+  singleton_availability_zone:
+    name: ((singleton_availability_zone))
+product-name: pivotal-container-service
+product-properties:
+  .pivotal-container-service.pks_tls:
+    value:
+      cert_pem: ((pivotal-container-service/pks_tls/certificate))
+      private_key_pem: ((pivotal-container-service/pks_tls/privatekey))
+  .properties.cloud_provider:
+    selected_option: vsphere
+    value: vSphere
+  .properties.cloud_provider.vsphere.vcenter_dc:
+    value: ((cloud_provider/vsphere/vcenter_dc))
+  .properties.cloud_provider.vsphere.vcenter_ds:
+    value: ((cloud_provider/vsphere/vcenter_ds))
+  .properties.cloud_provider.vsphere.vcenter_ip:
+    value: ((cloud_provider/vsphere/vcenter_ip))
+  .properties.cloud_provider.vsphere.vcenter_master_creds:
+    value:
+      identity: ((cloud_provider/vsphere/vcenter_master_creds_identity))
+      password: ((cloud_provider/vsphere/vcenter_master_creds_password))
+  .properties.cloud_provider.vsphere.vcenter_vms:
+    value: ((cloud_provider/vsphere/vcenter_vms))
+  .properties.log_sink_resources_deploy:
+    value: ((log_sink_resources_deploy))
+  .properties.metric_sink_resources_deploy:
+    value: ((metric_sink_resources_deploy))
+  .properties.network_selector:
+    value: flannel
+  .properties.network_selector.flannel.pod_network_cidr:
+    value: ((network_selector/flannel/pod_network_cidr))
+  .properties.network_selector.flannel.service_cluster_cidr:
+    value: ((network_selector/flannel/service_cluster_cidr))
+  .properties.pks-vrli:
+    value: disabled
+  .properties.pks-vrops:
+    value: disabled
+  .properties.pks_api_hostname:
+    value: ((pks_api_hostname))
+  .properties.plan1_selector:
+    value: Plan Active
+  .properties.plan1_selector.active.addons_spec:
+    value: ((plan1_selector/active/addons_spec))
+  .properties.plan1_selector.active.description:
+    value: ((plan1_selector/active/description))
+  .properties.plan1_selector.active.errand_vm_type:
+    value: ((plan1_selector/active/errand_vm_type))
+  .properties.plan1_selector.active.master_az_placement:
+    value: ((plan1_selector/active/master_az_placement))
+  .properties.plan1_selector.active.master_instances:
+    value: ((plan1_selector/active/master_instances))
+  .properties.plan1_selector.active.master_persistent_disk_type:
+    value: ((plan1_selector/active/master_persistent_disk_type))
+  .properties.plan1_selector.active.master_vm_type:
+    value: ((plan1_selector/active/master_vm_type))
+  .properties.plan1_selector.active.max_worker_instances:
+    value: ((plan1_selector/active/max_worker_instances))
+  .properties.plan1_selector.active.name:
+    value: ((plan1_selector/active/name))
+  .properties.plan1_selector.active.worker_az_placement:
+    value: ((plan1_selector/active/worker_az_placement))
+  .properties.plan1_selector.active.worker_instances:
+    value: ((plan1_selector/active/worker_instances))
+  .properties.plan1_selector.active.worker_persistent_disk_type:
+    value: ((plan1_selector/active/worker_persistent_disk_type))
+  .properties.plan1_selector.active.worker_vm_type:
+    value: ((plan1_selector/active/worker_vm_type))
+  .properties.plan2_selector:
+    selected_option: active
+    value: Plan Active
+  .properties.plan2_selector.active.addons_spec:
+    value: ((plan2_selector/active/addons_spec))
+  .properties.plan2_selector.active.admission_plugins:
+    value:
+    - deny_escalating_exec
+  .properties.plan2_selector.active.allow_privileged_containers:
+    value: ((plan2_selector/active/allow_privileged_containers))
+  .properties.plan2_selector.active.description:
+    value: ((plan2_selector/active/description))
+  .properties.plan2_selector.active.errand_vm_type:
+    value: ((plan2_selector/active/errand_vm_type))
+  .properties.plan2_selector.active.master_az_placement:
+    value: ((plan2_selector/active/master_az_placement))
+  .properties.plan2_selector.active.master_instances:
+    value: ((plan2_selector/active/master_instances))
+  .properties.plan2_selector.active.master_persistent_disk_type:
+    value: ((plan2_selector/active/master_persistent_disk_type))
+  .properties.plan2_selector.active.master_vm_type:
+    value: ((plan2_selector/active/master_vm_type))
+  .properties.plan2_selector.active.max_worker_instances:
+    value: ((plan2_selector/active/max_worker_instances))
+  .properties.plan2_selector.active.name:
+    value: ((plan2_selector/active/name))
+  .properties.plan2_selector.active.worker_az_placement:
+    value: ((plan2_selector/active/worker_az_placement))
+  .properties.plan2_selector.active.worker_instances:
+    value: ((plan2_selector/active/worker_instances))
+  .properties.plan2_selector.active.worker_persistent_disk_type:
+    value: ((plan2_selector/active/worker_persistent_disk_type))
+  .properties.plan2_selector.active.worker_vm_type:
+    value: ((plan2_selector/active/worker_vm_type))
+  .properties.plan3_selector:
+    value: Plan Inactive
+  .properties.plan4_selector:
+    value: Plan Inactive
+  .properties.plan5_selector:
+    value: Plan Inactive
+  .properties.plan6_selector:
+    value: Plan Inactive
+  .properties.plan7_selector:
+    value: Plan Inactive
+  .properties.plan8_selector:
+    value: Plan Inactive
+  .properties.plan9_selector:
+    value: Plan Inactive
+  .properties.plan10_selector:
+    value: Plan Inactive
+  .properties.proxy_selector:
+    value: Disabled
+  .properties.syslog_selector:
+    value: disabled
+  .properties.telemetry_selector:
+    selected_option: disabled
+    value: disabled
+  .properties.uaa:
+    selected_option: ldap
+    value: ldap
+  .properties.uaa.ldap.credentials:
+    value:
+      identity: ((uaa/ldap/credentials_identity))
+      password: ((uaa/ldap/credentials_password))
+  .properties.uaa.ldap.external_groups_whitelist:
+    value: ((uaa/ldap/external_groups_whitelist))
+  .properties.uaa.ldap.first_name_attribute:
+    value: ((uaa/ldap/first_name_attribute))
+  .properties.uaa.ldap.group_search_base:
+    value: ((uaa/ldap/group_search_base))
+  .properties.uaa.ldap.group_search_filter:
+    value: ((uaa/ldap/group_search_filter))
+  .properties.uaa.ldap.last_name_attribute:
+    value: ((uaa/ldap/last_name_attribute))
+  .properties.uaa.ldap.ldap_referrals:
+    value: ((uaa/ldap/ldap_referrals))
+  .properties.uaa.ldap.mail_attribute_name:
+    value: ((uaa/ldap/mail_attribute_name))
+  .properties.uaa.ldap.search_base:
+    value: ((uaa/ldap/search_base))
+  .properties.uaa.ldap.search_filter:
+    value: ((uaa/ldap/search_filter))
+  .properties.uaa.ldap.url:
+    value: ((uaa/ldap/url))
+  .properties.uaa_oidc:
+    value: ((uaa_oidc))
+  .properties.uaa_pks_cli_access_token_lifetime:
+    value: ((uaa_pks_cli_access_token_lifetime))
+  .properties.uaa_pks_cli_refresh_token_lifetime:
+    value: ((uaa_pks_cli_refresh_token_lifetime))
+  .properties.wavefront:
+    selected_option: enabled
+    value: enabled
+  .properties.wavefront.enabled.wavefront_api_url:
+    value: ((wavefront/enabled/wavefront_api_url))
+  .properties.wavefront.enabled.wavefront_token:
+    value:
+      secret: ((wavefront/enabled/wavefront_token))
+  .properties.worker_max_in_flight:
+    value: ((worker_max_in_flight))
+resource-config:
+  pivotal-container-service:
+    instance_type:
+      id: ((pivotal-container-service_instance_type))
+    persistent_disk:
+      size_mb: ((pivotal-container-service_persistent_disk_size))

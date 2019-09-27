@@ -1,0 +1,4 @@
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: "p-cloudcache*.pivotal"
+pivnet-product-slug: "p-cloudcache"
+product-version: "1.8.1"

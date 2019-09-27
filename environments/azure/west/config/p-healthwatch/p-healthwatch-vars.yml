@@ -1,0 +1,7 @@
+network_name: pas
+singleton_availability_zone: zone-1
+az2_name: zone-2
+az3_name: zone-3
+service_network_name: services
+healthwatch-forwarder/foundation_name: west
+healthwatch-forwarder/health_check_az: zone-1

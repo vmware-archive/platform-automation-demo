@@ -1,0 +1,9 @@
+features/cloud_provider-azure.yml
+network/3-az-configuration.yml
+features/oidc_selector-disabled.yml
+features/telemetry_selector-disabled.yml
+features/telemetry_installation_purpose_selector-not_provided.yml
+optional/add-plan1_selector-active-allow_privileged_containers.yml
+features/plan2_selector-active.yml
+optional/add-plan2_selector-active-allow_privileged_containers.yml
+resource/pivotal-container-service_elb_names.yml

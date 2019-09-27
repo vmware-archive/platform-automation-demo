@@ -1,0 +1,5 @@
+---
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: "reliability-view-pas-*.pivotal"
+pivnet-product-slug: reliability_view_pcf
+product-version: "0.4.0"

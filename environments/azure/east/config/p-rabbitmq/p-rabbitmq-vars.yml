@@ -1,0 +1,7 @@
+network_name: deployment
+on_demand_broker_plan_1_rabbitmq_az_placement: [az1]
+service_network_name: services
+singleton_availability_zone: az1
+rabbitmq-broker_instances: 0
+rabbitmq-haproxy_instances: 0
+rabbitmq-server_instances: 0

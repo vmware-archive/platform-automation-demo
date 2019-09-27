@@ -1,0 +1,37 @@
+pks_api_hostname: pksapi.vimana.s1p.koundinya.cc
+network_name: infrastructure
+
+cloud_provider/azure/subscription_id: "07feece3-65c6-4c2a-bae0-5ca575a8129a"
+cloud_provider/azure/tenant_id: "29248f74-371f-4db2-9a50-c62a6877a0c1"
+cloud_provider/azure/location: eastus
+cloud_provider/azure/resource_group_name: east
+cloud_provider/azure/azure_cloud_name: AzurePublicCloud
+cloud_provider/azure/vnet_resource_group_name: east
+cloud_provider/azure/vnet_name: east-virtual-network
+cloud_provider/azure/default_security_group: east-pks-api-sg
+cloud_provider/azure/primary_availability_set: zone-1
+cloud_provider/azure/azure_master_managed_identity: pks-master
+cloud_provider/azure/azure_worker_managed_identity: pks-worker
+
+
+service_network_name: services
+singleton_availability_zone: zone-1
+az2_name: zone-2
+az3_name: zone-3
+
+plan1_selector/active/name: "small-priv"
+plan1_selector/active/description: "1 master, 1 worker allowing privileged containers"
+plan1_selector/active/master_az_placement: [zone-1]
+plan1_selector/active/worker_az_placement: [zone-1, zone-2, zone-3]
+plan1_selector/active/allow_privileged_containers: true
+
+plan2_selector/active/name: "medium-priv"
+plan2_selector/active/description: "3 master, 1 worker allowing privileged containers"
+plan2_selector/active/master_az_placement: [zone-1, zone-2, zone-3]
+plan2_selector/active/worker_az_placement: [zone-1, zone-2, zone-3]
+plan2_selector/active/allow_privileged_containers: true
+plan2_selector/active/master_instances: 3
+plan2_selector/active/worker_instances: 3
+plan2_selector/active/max_worker_instances: 20
+
+pivotal-container-service_elb_names: [east-pks-lb]

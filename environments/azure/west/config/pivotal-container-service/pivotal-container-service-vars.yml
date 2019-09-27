@@ -1,0 +1,64 @@
+pks_api_hostname: api.pks.lab.winterfell.live
+network_name: infrastructure
+cloud_provider/vsphere/vcenter_master_creds_identity: administrator@vsphere.local
+cloud_provider/vsphere/vcenter_ip: 192.168.7.105
+cloud_provider/vsphere/vcenter_dc: Datacenter
+cloud_provider/vsphere/vcenter_ds: datastore1
+cloud_provider/vsphere/vcenter_vms: pks_vms
+wavefront/enabled/wavefront_api_url: https://surf.wavefront.com/api
+wavefront/enabled/wavefront_alert_targets: dpfeffer@pivotal.io
+uaa_oidc: true
+uaa/ldap/url: ldap://ldap.jumpcloud.com:389
+uaa/ldap/credentials_identity: uid=servicebind,ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
+uaa/ldap/search_base: ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
+uaa/ldap/search_filter: (&(objectClass=inetOrgPerson)(uid={0}))
+uaa/ldap/group_search_base: ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
+uaa/ldap/group_search_filter: member={0}
+uaa/ldap/first_name_attribute: givenName
+uaa/ldap/last_name_attribute: sn
+uaa/ldap/mail_attribute_name: mail
+uaa/ldap/ldap_referrals:
+uaa/ldap/external_groups_whitelist: pks_*
+service_network_name: services
+singleton_availability_zone: az1
+
+
+plan1_selector/active/name: "small-standard"
+plan1_selector/active/description: "1 master, 1 worker denying privileged containers"
+plan1_selector/active/master_az_placement: [az1]
+plan1_selector/active/worker_az_placement: [az1]
+plan1_selector/active/errand_vm_type: micro
+plan1_selector/active/master_persistent_disk_type: "10240"
+plan1_selector/active/master_vm_type: medium.disk
+plan1_selector/active/worker_persistent_disk_type: "51200"
+plan1_selector/active/worker_vm_type: medium.disk
+plan1_selector/active/worker_instances: 1
+plan1_selector/active/addons_spec: |
+  apiVersion: storage.k8s.io/v1
+  kind: StorageClass
+  metadata:
+    name: standard
+    annotations:
+      storageclass.beta.kubernetes.io/is-default-class: "true"
+  provisioner: kubernetes.io/vsphere-volume
+plan2_selector/active/name: "small-priv"
+plan2_selector/active/description: "1 master, 1 worker allowing privileged containers"
+plan2_selector/active/master_az_placement: [az1]
+plan2_selector/active/worker_az_placement: [az1]
+plan2_selector/active/errand_vm_type: micro
+plan2_selector/active/master_persistent_disk_type: "10240"
+plan2_selector/active/master_vm_type: medium.disk
+plan2_selector/active/worker_persistent_disk_type: "51200"
+plan2_selector/active/worker_vm_type: medium.disk
+plan2_selector/active/allow_privileged_containers: true
+plan2_selector/active/master_instances: 1
+plan2_selector/active/max_worker_instances: 50
+plan2_selector/active/worker_instances: 1
+plan2_selector/active/addons_spec: |
+  apiVersion: storage.k8s.io/v1
+  kind: StorageClass
+  metadata:
+    name: standard
+    annotations:
+      storageclass.beta.kubernetes.io/is-default-class: "true"
+  provisioner: kubernetes.io/vsphere-volume

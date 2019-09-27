@@ -1,0 +1,193 @@
+---
+az-configuration:
+- name: ((az1))
+- name: ((az2))
+- name: ((az3))
+
+properties-configuration:
+  iaas_configuration:
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    security_group: ((vms_security_group_id))
+    key_pair_name: ((opsman_keypair_name))
+    ssh_private_key: ((opsman_ssh_private_key))
+    region: ((aws_region))
+    encrypted: false
+    kms_key_arn:
+  director_configuration:
+    ntp_servers_string: ((ntp_servers))
+    resurrector_enabled: true
+    director_hostname:
+    max_threads:
+    custom_ssh_banner:
+    opentsdb_ip:
+    director_worker_count: 5
+    post_deploy_enabled: true
+    bosh_recreate_on_next_deploy: false
+    retry_bosh_deploys: false
+    keep_unreachable_vms: false
+    skip_director_drain: true
+    job_configuration_on_tmpfs: false
+    database_type: internal
+    blobstore_type: local
+    local_blobstore_options:
+      tls_enabled: true
+    hm_pager_duty_options:
+      enabled: false
+    hm_emailer_options:
+      enabled: false
+    identification_tags:
+  dns_configuration:
+    excluded_recursors:
+    recursor_selection:
+    recursor_timeout:
+    handlers: []
+  security_configuration:
+    generate_vm_passwords: true
+    trusted_certificates:
+  syslog_configuration:
+    enabled: false
+
+network-assignment:
+  network:
+    name: infrastructure
+  singleton_availability_zone:
+    name: ((az1))
+
+networks-configuration:
+  icmp_checks_enabled: false
+  networks:
+  - name: infrastructure
+    subnets:
+    - iaas_identifier: ((aws_infrastructure_subnet_id_0))
+      cidr: ((aws_infrastructure_subnet_cidr_0))
+      reserved_ip_ranges: ((aws_infrastructure_subnet_reserv_0))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_infrastructure_subnet_gateway_0))
+      availability_zone_names:
+      - ((az1))
+    - iaas_identifier: ((aws_infrastructure_subnet_id_1))
+      cidr: ((aws_infrastructure_subnet_cidr_1))
+      reserved_ip_ranges: ((aws_infrastructure_subnet_reserv_1))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_infrastructure_subnet_gateway_1))
+      availability_zone_names:
+      - ((az2))
+    - iaas_identifier: ((aws_infrastructure_subnet_id_2))
+      cidr: ((aws_infrastructure_subnet_cidr_2))
+      reserved_ip_ranges: ((aws_infrastructure_subnet_reserv_2))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_infrastructure_subnet_gateway_2))
+      availability_zone_names:
+      - ((az3))
+  - name: pas
+    subnets:
+    - iaas_identifier: ((aws_pas_subnet_id_0))
+      cidr: ((aws_pas_subnet_cidr_0))
+      reserved_ip_ranges: ((aws_pas_subnet_reserv_0))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_pas_subnet_gateway_0))
+      availability_zone_names:
+      - ((az1))
+    - iaas_identifier: ((aws_pas_subnet_id_1))
+      cidr: ((aws_pas_subnet_cidr_1))
+      reserved_ip_ranges: ((aws_pas_subnet_reserv_1))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_pas_subnet_gateway_1))
+      availability_zone_names:
+      - ((az2))
+    - iaas_identifier: ((aws_pas_subnet_id_2))
+      cidr: ((aws_pas_subnet_cidr_2))
+      reserved_ip_ranges: ((aws_pas_subnet_reserv_2))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_pas_subnet_gateway_2))
+      availability_zone_names:
+      - ((az3))
+  - name: services
+    subnets:
+    - iaas_identifier: ((aws_services_subnet_id_0))
+      cidr: ((aws_services_subnet_cidr_0))
+      reserved_ip_ranges: ((aws_services_subnet_reserv_0))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_services_subnet_gateway_0))
+      availability_zone_names:
+      - ((az1))
+    - iaas_identifier: ((aws_services_subnet_id_1))
+      cidr: ((aws_services_subnet_cidr_1))
+      reserved_ip_ranges: ((aws_services_subnet_reserv_1))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_services_subnet_gateway_1))
+      availability_zone_names:
+      - ((az2))
+    - iaas_identifier: ((aws_services_subnet_id_2))
+      cidr: ((aws_services_subnet_cidr_2))
+      reserved_ip_ranges: ((aws_services_subnet_reserv_2))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_services_subnet_gateway_2))
+      availability_zone_names:
+      - ((az3))
+  - name: pks
+    subnets:
+    - iaas_identifier: ((aws_pks_subnet_id_0))
+      cidr: ((aws_pks_subnet_cidr_0))
+      reserved_ip_ranges: ((aws_pks_subnet_reserv_0))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_pks_subnet_gateway_0))
+      availability_zone_names:
+      - ((az1))
+    - iaas_identifier: ((aws_pks_subnet_id_1))
+      cidr: ((aws_pks_subnet_cidr_1))
+      reserved_ip_ranges: ((aws_pks_subnet_reserv_1))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_pks_subnet_gateway_1))
+      availability_zone_names:
+      - ((az2))
+    - iaas_identifier: ((aws_pks_subnet_id_2))
+      cidr: ((aws_pks_subnet_cidr_2))
+      reserved_ip_ranges: ((aws_pks_subnet_reserv_2))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_pks_subnet_gateway_2))
+      availability_zone_names:
+      - ((az3))
+  - name: pks-services
+    subnets:
+    - iaas_identifier: ((aws_pks-services_subnet_id_0))
+      cidr: ((aws_pks-services_subnet_cidr_0))
+      reserved_ip_ranges: ((aws_pks-services_subnet_reserv_0))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_pks-services_subnet_gateway_0))
+      availability_zone_names:
+      - ((az1))
+    - iaas_identifier: ((aws_pks-services_subnet_id_1))
+      cidr: ((aws_pks-services_subnet_cidr_1))
+      reserved_ip_ranges: ((aws_pks-services_subnet_reserv_1))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_pks-services_subnet_gateway_1))
+      availability_zone_names:
+      - ((az2))
+    - iaas_identifier: ((aws_pks-services_subnet_id_2))
+      cidr: ((aws_pks-services_subnet_cidr_2))
+      reserved_ip_ranges: ((aws_pks-services_subnet_reserv_2))
+      dns: ((aws_vpc_dns))
+      gateway: ((aws_pks-services_subnet_gateway_2))
+      availability_zone_names:
+      - ((az3))
+
+resource-configuration:
+  compilation:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: false
+  director:
+    instances: automatic
+    persistent_disk:
+      size_mb: "51200"
+    instance_type:
+      id: automatic
+    internet_connected: false
+
+vmextensions-configuration:
+  - name: pks-api-lb-security-groups
+    cloud_properties:
+      security_groups: ["pks_api_lb_security_group", "vms_security_group"]

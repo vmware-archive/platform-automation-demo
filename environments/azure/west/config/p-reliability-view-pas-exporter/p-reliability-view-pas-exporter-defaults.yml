@@ -1,0 +1,11 @@
+pas_exporter_scrape_port: 9090
+smoke-test_post_deploy_state: default
+pas-exporter-counter_instance_type: automatic
+pas-exporter-counter_instances: automatic
+pas-exporter-counter_persistent_disk_size: automatic
+pas-exporter-gauge_instance_type: automatic
+pas-exporter-gauge_instances: automatic
+pas-exporter-gauge_persistent_disk_size: automatic
+pas-exporter-timer_instance_type: automatic
+pas-exporter-timer_instances: automatic
+pas-exporter-timer_persistent_disk_size: automatic

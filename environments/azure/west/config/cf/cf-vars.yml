@@ -1,0 +1,41 @@
+cloud_controller/apps_domain: apps.west.s1p.koundinya.cc
+cloud_controller/system_domain: sys.west.s1p.koundinya.cc
+#router/static_ips: 192.168.7.31
+#control/static_ips: 192.168.7.32
+mysql_monitor/recipient_email: ksrinivasarao@pivotal.io
+credhub_key_encryption_passwords_0/name: credhub-encryption-key
+credhub_key_encryption_passwords_0/primary: true
+networking_poe_ssl_certs_0/name: pas-cert
+#uaa/ldap/url: ldap://ldap.jumpcloud.com:389
+#uaa/ldap/credentials_identity: uid=servicebind,ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
+#uaa/ldap/search_base: ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
+#uaa/ldap/search_filter: (&(objectClass=inetOrgPerson)(uid={0}))
+#uaa/ldap/group_search_base: ou=Users,o=5c390cd9c556772e64d4fbb5,dc=jumpcloud,dc=com
+#uaa/ldap/group_search_filter: member={0}
+#uaa/ldap/first_name_attribute: givenName
+#uaa/ldap/last_name_attribute: sn
+#uaa/ldap/mail_attribute_name: mail
+#uaa/ldap/external_groups_whitelist: pks_*
+#uaa/ldap/ldap_referrals:
+
+network_name: pas
+az2_name: zone-2
+az3_name: zone-3
+
+security_acknowledgement: X
+singleton_availability_zone: zone-1
+ha_proxy/skip_cert_verify: true
+
+nfsbrokerpush_post_deploy_state: on
+deploy-notifications_post_deploy_state: off
+deploy-notifications-ui_post_deploy_state: off
+
+istio_control_instances: 0
+istio_router_instances: 0
+route_syncer_instances: 0
+tcp_router_instances: 0
+backup_restore_instances: 0
+
+secure_service_instance_credentials: true
+
+router_elb_names: ["west-web-lb"]

@@ -1,0 +1,9 @@
+s3_region_name: us-east-1
+s3_buckets_product: moda-platform-automation-product
+s3_buckets_installation: moda-platform-automation-installation
+credhub_server: https://credhub.vimana.s1p.koundinya.cc
+foundation: west
+iaas: azure
+core_domain: "west.s1p.koundinya.cc"
+cloud_controller_system_domain: "sys.west.s1p.koundinya.cc"
+cloud_controller_apps_domain: "apps.west.s1p.koundinya.cc"

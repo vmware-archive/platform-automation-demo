@@ -1,0 +1,5 @@
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: "*.pivotal"
+pivnet-product-slug: "harbor-container-registry"
+product-version: "1.8.1"
+stemcell-iaas: "vsphere"

@@ -1,0 +1,100 @@
+---
+network-assignment:
+  network:
+    name: infrastructure
+  other_availability_zones: []
+  singleton_availability_zone:
+    name: zone-1
+networks-configuration:
+  icmp_checks_enabled: false
+  networks:
+  - name: infrastructure
+    subnets:
+    - iaas_identifier: ((vnet-name))/((infra-subnet-name))
+      cidr: ((infra-cidr))
+      dns: 168.63.129.16
+      gateway: ((infra-gw))
+      reserved_ip_ranges: ((infra-reserved-range))
+      availability_zone_names:
+      - zone-1
+      - zone-2
+      - zone-3
+  - name: pas
+    subnets:
+    - iaas_identifier: ((vnet-name))/((pas-subnet-name))
+      cidr: ((pas-cidr))
+      dns: 168.63.129.16
+      gateway: ((pas-gw))
+      reserved_ip_ranges: ((pas-reserved-range))
+      availability_zone_names:
+      - zone-1
+      - zone-2
+      - zone-3
+  - name: services
+    subnets:
+    - iaas_identifier: ((vnet-name))/((services-subnet-name))
+      cidr: ((services-cidr))
+      dns: 168.63.129.16
+      gateway: ((services-gw))
+      reserved_ip_ranges: ((services-reserved-range))
+      availability_zone_names:
+      - zone-1
+      - zone-2
+      - zone-3
+properties-configuration:
+  iaas_configuration:
+    subscription_id: ((azure_subscription_id))
+    tenant_id: ((azure_tenant_id))
+    client_id: ((azure_client_id))
+    client_secret: ((azure_client_secret))
+    resource_group_name: ((azure_resource_group))
+    default_security_group: ((bosh_deployed_vms_security_group_name))
+    ssh_public_key: ((opsman_ssh_public_key))
+    ssh_private_key: ((opsman_ssh_private_key))
+    ops_manager_ssh_private_key: ((opsman_ssh_private_key))
+    bosh_storage_account_name: ((bosh_root_storage_account))
+  director_configuration:
+    blobstore_type: local
+    bosh_recreate_on_next_deploy: false
+    bosh_recreate_persistent_disks_on_next_deploy: false
+    database_type: internal
+    director_worker_count: 5
+    encryption:
+      keys: []
+      providers: []
+    hm_emailer_options:
+      enabled: false
+    hm_pager_duty_options:
+      enabled: false
+    identification_tags: {}
+    job_configuration_on_tmpfs: false
+    keep_unreachable_vms: false
+    local_blobstore_options:
+      tls_enabled: true
+    ntp_servers_string: 0.us.pool.ntp.org, 1.us.pool.ntp.org, 2.us.pool.ntp.org, 3.us.pool.ntp.org
+    post_deploy_enabled: true
+    resurrector_enabled: true
+    retry_bosh_deploys: false
+    skip_director_drain: false
+  dns_configuration:
+    excluded_recursors: []
+    handlers: []
+  security_configuration:
+    opsmanager_root_ca_trusted_certs: true
+  syslog_configuration:
+    enabled: false
+resource-configuration:
+  compilation:
+    instances: automatic
+    instance_type:
+      id: automatic
+    internet_connected: false
+  director:
+    instances: automatic
+    persistent_disk:
+      size_mb: automatic
+    instance_type:
+      id: automatic
+    internet_connected: false
+vmextensions-configuration: []
+vmtypes-configuration: {}

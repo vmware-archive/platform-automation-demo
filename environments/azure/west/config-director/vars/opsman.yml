@@ -1,0 +1,12 @@
+opsman_vm_name: "pivotal-ops-manager"
+ops_manager_private_ip: "10.1.8.4"
+ops_manager_public_ip: "13.77.140.142"
+opsman_host: "opsman.west.s1p.koundinya.cc"
+azure_subscription_id: "07feece3-65c6-4c2a-bae0-5ca575a8129a"
+azure_tenant_id: "29248f74-371f-4db2-9a50-c62a6877a0c1"
+azure_client_id: "4c231c7f-1c78-466e-88ce-1da41b954c38"
+azure_resource_group: "west"
+azure_region: "westus2"
+infrastructure-subnet: "/subscriptions/07feece3-65c6-4c2a-bae0-5ca575a8129a/resourceGroups/west/providers/Microsoft.Network/virtualNetworks/west-virtual-network/subnets/west-infrastructure-subnet"
+ops_manager_storage_account: "8i6qrvlqzv65kps8z5av"                     # used for the Ops Manager image; obtain from terraform output/state or Azure Portal
+ops_manager_security_group: "west-ops-manager-security-group"

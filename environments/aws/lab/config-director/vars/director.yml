@@ -1,0 +1,7 @@
+az1: us-east-1d
+az2: us-east-1e
+az3: us-east-1f
+
+vms_security_group_id: sg-0167a7e1f1f023418
+
+ntp_servers: 0.amazon.pool.ntp.org, 1.amazon.pool.ntp.org, 2.amazon.pool.ntp.org, 3.amazon.pool.ntp.org

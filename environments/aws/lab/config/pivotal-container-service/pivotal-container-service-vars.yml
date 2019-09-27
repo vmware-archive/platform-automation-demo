@@ -1,0 +1,56 @@
+pks_api_hostname: api.pks.pcf-aws.jagapps.co
+network_name: pks
+service_network_name: pks-services
+singleton_availability_zone: us-east-1d
+
+cloud_provider/aws/iam_instance_profile_master: pcf-aws_pks-master
+cloud_provider/aws/iam_instance_profile_worker: pcf-aws_pks-worker
+
+uaa/ldap/url: ldaps://ldap.jumpcloud.com:636
+uaa/ldap/credentials_identity: uid=pksbindjaime,ou=Users,o=5ca651a9852eac5d7270fe5a,dc=jumpcloud,dc=com
+uaa/ldap/search_base: ou=Users,o=5ca651a9852eac5d7270fe5a,dc=jumpcloud,dc=com
+uaa/ldap/search_filter: uid={0}
+uaa/ldap/group_search_base: ou=Users,o=5ca651a9852eac5d7270fe5a,dc=jumpcloud,dc=com
+uaa/ldap/group_search_filter: member={0}
+uaa/ldap/first_name_attribute: givenName
+uaa/ldap/last_name_attribute: sn
+uaa/ldap/mail_attribute_name: mail
+uaa/ldap/ldap_referrals:
+uaa/ldap/external_groups_whitelist: admins,clusteradmins,auditors,developers
+oidc_selector/enabled/username_prefix: 'oidc:'
+oidc_selector/enabled/username_claim: user_name
+oidc_selector/enabled/groups_prefix: 'oidc:'
+oidc_selector/enabled/groups_claim: roles
+
+az2_name: us-east-1e
+az3_name: us-east-1f
+
+pivotal-container-service_elb_names: [alb:pcf-aws-pks-tg-8443,alb:pcf-aws-pks-tg-9021]
+pivotal-container-service_additional_vm_extensions: [pks-api-lb-security-groups]
+
+plan1_selector/active/name: "small"
+plan1_selector/active/description: "1 master, 3 workers with privileged containers"
+plan1_selector/active/master_az_placement: [us-east-1d]
+plan1_selector/active/worker_az_placement: [us-east-1d,us-east-1f]
+plan1_selector/active/errand_vm_type: t3.micro
+plan1_selector/active/master_persistent_disk_type: "20480"
+plan1_selector/active/master_vm_type: m5.large
+plan1_selector/active/worker_persistent_disk_type: "102400"
+plan1_selector/active/worker_vm_type: m5.large
+plan1_selector/active/allow_privileged_containers: true
+plan1_selector/active/worker_instances: 3
+
+plan2_selector/active/name: "medium"
+plan2_selector/active/description: "3 masters, 3 workers with privileged containers"
+plan2_selector/active/master_az_placement: [us-east-1d,us-east-1f]
+plan2_selector/active/worker_az_placement: [us-east-1d,us-east-1f]
+plan2_selector/active/errand_vm_type: t3.micro
+plan2_selector/active/master_persistent_disk_type: "20480"
+plan2_selector/active/master_vm_type: m5.large
+plan2_selector/active/worker_persistent_disk_type: "102400"
+plan2_selector/active/worker_vm_type: m5.large
+plan2_selector/active/allow_privileged_containers: true
+plan2_selector/active/disable_deny_escalating_exec: true
+plan2_selector/active/master_instances: 3
+plan2_selector/active/max_worker_instances: 50
+plan2_selector/active/worker_instances: 3

@@ -1,0 +1,10 @@
+deprecated_bindings_string: X
+global_recipient_email: dpfeffer@pivotal.io
+network_name: deployment
+plan1_selector/single_node/az_multi_select: [az1]
+service_network_name: services
+singleton_availability_zone: az1
+backups_selector/s3/bucket_name: winterfell-live-mysql-backup
+backups_selector/s3/cron_schedule: 0 */8 * * *
+backups_selector/s3/enable_email_alerts: false
+backups_selector/s3/path: mysql

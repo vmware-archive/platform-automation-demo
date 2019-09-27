@@ -1,0 +1,7 @@
+s3_region_name: us-east-1
+s3_buckets_product: jagapps-automation
+s3_buckets_installation: jagapps-automation
+credhub_server: https://104.196.101.207:8844
+foundation: lab
+iaas: aws
+core_domain: "pcf-aws.jagapps.co"

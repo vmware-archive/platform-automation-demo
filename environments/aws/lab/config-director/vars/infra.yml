@@ -1,0 +1,82 @@
+aws_region: us-east-1
+
+aws_vpc_dns: 10.0.0.2
+
+aws_public_subnet_id_0: subnet-0e942f995cb959372
+aws_public_subnet_id_1: subnet-0fa80b8b860225742
+aws_public_subnet_id_2: subnet-0dce589bbbb020ed8
+
+aws_infrastructure_subnet_id_0: subnet-07e3b5305c63ce820
+aws_infrastructure_subnet_cidr_0: 10.0.16.0/28
+aws_infrastructure_subnet_reserv_0: 10.0.16.0-10.0.16.4
+aws_infrastructure_subnet_gateway_0: 10.0.16.1
+
+aws_infrastructure_subnet_id_1: subnet-08254dcfb2d15643e
+aws_infrastructure_subnet_cidr_1: 10.0.16.16/28
+aws_infrastructure_subnet_reserv_1: 10.0.16.16-10.0.16.20
+aws_infrastructure_subnet_gateway_1: 10.0.16.17
+
+aws_infrastructure_subnet_id_2: subnet-0b611b627809fde09
+aws_infrastructure_subnet_cidr_2: 10.0.16.32/28
+aws_infrastructure_subnet_reserv_2: 10.0.16.32-10.0.16.36
+aws_infrastructure_subnet_gateway_2: 10.0.16.33
+
+aws_pas_subnet_id_0: subnet-01f9d349442cbb114
+aws_pas_subnet_cidr_0: 10.0.4.0/24
+aws_pas_subnet_reserv_0: 10.0.4.0-10.0.4.4
+aws_pas_subnet_gateway_0: 10.0.4.1
+
+aws_pas_subnet_id_1: subnet-0b0f69905d5dad109
+aws_pas_subnet_cidr_1: 10.0.5.0/24
+aws_pas_subnet_reserv_1: 10.0.5.0-10.0.5.4
+aws_pas_subnet_gateway_1: 10.0.5.1
+
+aws_pas_subnet_id_2: subnet-0581c0e4664e7691d
+aws_pas_subnet_cidr_2: 10.0.6.0/24
+aws_pas_subnet_reserv_2: 10.0.6.0-10.0.6.4
+aws_pas_subnet_gateway_2: 10.0.6.1
+
+aws_services_subnet_id_0: subnet-0f5faba9354531860
+aws_services_subnet_cidr_0: 10.0.8.0/24
+aws_services_subnet_reserv_0: 10.0.8.0-10.0.8.3
+aws_services_subnet_gateway_0: 10.0.8.1
+
+aws_services_subnet_id_1: subnet-0f85795186655005b
+aws_services_subnet_cidr_1: 10.0.9.0/24
+aws_services_subnet_reserv_1: 10.0.9.0-10.0.9.3
+aws_services_subnet_gateway_1: 10.0.9.1
+
+aws_services_subnet_id_2: subnet-0136932a04e589900
+aws_services_subnet_cidr_2: 10.0.10.0/24
+aws_services_subnet_reserv_2: 10.0.10.0-10.0.10.3
+aws_services_subnet_gateway_2: 10.0.10.1
+
+aws_pks_subnet_id_0: subnet-069240327283a050c
+aws_pks_subnet_cidr_0: 10.0.20.0/24
+aws_pks_subnet_reserv_0: 10.0.20.0-10.0.20.4
+aws_pks_subnet_gateway_0: 10.0.20.1
+
+aws_pks_subnet_id_1: subnet-08f779a97abe50b07
+aws_pks_subnet_cidr_1: 10.0.21.0/24
+aws_pks_subnet_reserv_1: 10.0.21.0-10.0.21.4
+aws_pks_subnet_gateway_1: 10.0.21.1
+
+aws_pks_subnet_id_2: subnet-0d3654ec69230722e
+aws_pks_subnet_cidr_2: 10.0.22.0/24
+aws_pks_subnet_reserv_2: 10.0.22.0-10.0.22.4
+aws_pks_subnet_gateway_2: 10.0.22.1
+
+aws_pks-services_subnet_id_0: subnet-0d8c569c780d02aa6
+aws_pks-services_subnet_cidr_0: 10.0.24.0/24
+aws_pks-services_subnet_reserv_0: 10.0.24.0-10.0.24.4
+aws_pks-services_subnet_gateway_0: 10.0.24.1
+
+aws_pks-services_subnet_id_1: subnet-0c4c214f283b4b1fc
+aws_pks-services_subnet_cidr_1: 10.0.25.0/24
+aws_pks-services_subnet_reserv_1: 10.0.25.0-10.0.25.4
+aws_pks-services_subnet_gateway_1: 10.0.25.1
+
+aws_pks-services_subnet_id_2: subnet-095ab83d15e8427d1
+aws_pks-services_subnet_cidr_2: 10.0.26.0/24
+aws_pks-services_subnet_reserv_2: 10.0.26.0-10.0.26.4
+aws_pks-services_subnet_gateway_2: 10.0.26.1

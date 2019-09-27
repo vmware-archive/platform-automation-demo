@@ -1,0 +1,6 @@
+---
+pivnet-api-token: ((pivnet-api-token))
+#pivnet-file-glob: "*-vsphere-*"
+pivnet-file-glob: "*-azure-*"
+pivnet-product-slug: "stemcells-ubuntu-xenial"
+product-version: "250.106"

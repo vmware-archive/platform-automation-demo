@@ -1,0 +1,5 @@
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: "*.pivotal"
+pivnet-product-slug: "p-rabbitmq"
+product-version: "1.16.3"
+stemcell-iaas: "vsphere"

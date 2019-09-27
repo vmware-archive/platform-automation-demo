@@ -1,0 +1,170 @@
+errand-config:
+  delete-all-clusters:
+    pre-delete-state: ((delete-all-clusters_pre_delete_state))
+  pks-nsx-t-precheck:
+    post-deploy-state: ((pks-nsx-t-precheck_post_deploy_state))
+  smoke-tests:
+    post-deploy-state: ((smoke-tests_post_deploy_state))
+  upgrade-all-service-instances:
+    post-deploy-state: ((upgrade-all-service-instances_post_deploy_state))
+  wavefront-alert-creation:
+    post-deploy-state: ((wavefront-alert-creation_post_deploy_state))
+  wavefront-alert-deletion:
+    pre-delete-state: ((wavefront-alert-deletion_pre_delete_state))
+network-properties:
+  network:
+    name: ((network_name))
+  other_availability_zones:
+  - name: ((singleton_availability_zone))
+  - name: ((az2_name))
+  - name: ((az3_name))
+  service_network:
+    name: ((service_network_name))
+  singleton_availability_zone:
+    name: ((singleton_availability_zone))
+product-name: pivotal-container-service
+product-properties:
+  .pivotal-container-service.pks_tls:
+    value:
+      cert_pem: ((pivotal-container-service/pks_tls/certificate))
+      private_key_pem: ((pivotal-container-service/pks_tls/privatekey))
+  .properties.bosh-metric-sink-node-exporter:
+    value: ((bosh-metric-sink-node-exporter))
+  .properties.bosh-metric-sink-outputs:
+    value: ((bosh-metric-sink-outputs))
+  .properties.cloud_provider:
+    selected_option: azure
+    value: Azure
+  .properties.cloud_provider.azure.azure_cloud_name:
+    value: ((cloud_provider/azure/azure_cloud_name))
+  .properties.cloud_provider.azure.azure_master_managed_identity:
+    value: ((cloud_provider/azure/azure_master_managed_identity))
+  .properties.cloud_provider.azure.azure_worker_managed_identity:
+    value: ((cloud_provider/azure/azure_worker_managed_identity))
+  .properties.cloud_provider.azure.default_security_group:
+    value: ((cloud_provider/azure/default_security_group))
+  .properties.cloud_provider.azure.location:
+    value: ((cloud_provider/azure/location))
+  .properties.cloud_provider.azure.primary_availability_set:
+    value: ((cloud_provider/azure/primary_availability_set))
+  .properties.cloud_provider.azure.resource_group_name:
+    value: ((cloud_provider/azure/resource_group_name))
+  .properties.cloud_provider.azure.subscription_id:
+    value: ((cloud_provider/azure/subscription_id))
+  .properties.cloud_provider.azure.tenant_id:
+    value: ((cloud_provider/azure/tenant_id))
+  .properties.cloud_provider.azure.vnet_name:
+    value: ((cloud_provider/azure/vnet_name))
+  .properties.cloud_provider.azure.vnet_resource_group_name:
+    value: ((cloud_provider/azure/vnet_resource_group_name))
+  .properties.log_sink_resources_deploy:
+    value: ((log_sink_resources_deploy))
+  .properties.metric_sink_resources_deploy:
+    value: ((metric_sink_resources_deploy))
+  .properties.network_selector:
+    value: flannel
+  .properties.network_selector.flannel.pod_network_cidr:
+    value: ((network_selector/flannel/pod_network_cidr))
+  .properties.network_selector.flannel.service_cluster_cidr:
+    value: ((network_selector/flannel/service_cluster_cidr))
+  .properties.node_exporter_deploy:
+    value: ((node_exporter_deploy))
+  .properties.oidc_selector:
+    selected_option: disabled
+    value: disabled
+  .properties.pks-vrli:
+    value: disabled
+  .properties.pks-vrops:
+    value: disabled
+  .properties.pks_api_hostname:
+    value: ((pks_api_hostname))
+  .properties.plan1_selector:
+    value: Plan Active
+  .properties.plan1_selector.active.allow_privileged_containers:
+    value: ((plan1_selector/active/allow_privileged_containers))
+  .properties.plan1_selector.active.description:
+    value: ((plan1_selector/active/description))
+  .properties.plan1_selector.active.master_az_placement:
+    value: ((plan1_selector/active/master_az_placement))
+  .properties.plan1_selector.active.master_instances:
+    value: ((plan1_selector/active/master_instances))
+  .properties.plan1_selector.active.max_worker_instances:
+    value: ((plan1_selector/active/max_worker_instances))
+  .properties.plan1_selector.active.name:
+    value: ((plan1_selector/active/name))
+  .properties.plan1_selector.active.worker_az_placement:
+    value: ((plan1_selector/active/worker_az_placement))
+  .properties.plan1_selector.active.worker_instances:
+    value: ((plan1_selector/active/worker_instances))
+  .properties.plan2_selector:
+    selected_option: active
+    value: Plan Active
+  .properties.plan2_selector.active.allow_privileged_containers:
+    value: ((plan2_selector/active/allow_privileged_containers))
+  .properties.plan2_selector.active.description:
+    value: ((plan2_selector/active/description))
+  .properties.plan2_selector.active.master_az_placement:
+    value: ((plan2_selector/active/master_az_placement))
+  .properties.plan2_selector.active.master_instances:
+    value: ((plan2_selector/active/master_instances))
+  .properties.plan2_selector.active.max_worker_instances:
+    value: ((plan2_selector/active/max_worker_instances))
+  .properties.plan2_selector.active.name:
+    value: ((plan2_selector/active/name))
+  .properties.plan2_selector.active.worker_az_placement:
+    value: ((plan2_selector/active/worker_az_placement))
+  .properties.plan2_selector.active.worker_instances:
+    value: ((plan2_selector/active/worker_instances))
+  .properties.plan3_selector:
+    value: Plan Inactive
+  .properties.plan4_selector:
+    value: Plan Inactive
+  .properties.plan5_selector:
+    value: Plan Inactive
+  .properties.plan6_selector:
+    value: Plan Inactive
+  .properties.plan7_selector:
+    value: Plan Inactive
+  .properties.plan8_selector:
+    value: Plan Inactive
+  .properties.plan9_selector:
+    value: Plan Inactive
+  .properties.plan10_selector:
+    value: Plan Inactive
+  .properties.plan11_selector:
+    value: Plan Inactive
+  .properties.plan12_selector:
+    value: Plan Inactive
+  .properties.plan13_selector:
+    value: Plan Inactive
+  .properties.proxy_selector:
+    value: Disabled
+  .properties.syslog_selector:
+    value: disabled
+  .properties.telemetry_installation_purpose_selector:
+    selected_option: not_provided
+    value: not_provided
+  .properties.telemetry_selector:
+    selected_option: disabled
+    value: disabled
+  .properties.uaa:
+    value: internal
+  .properties.uaa_pks_cli_access_token_lifetime:
+    value: ((uaa_pks_cli_access_token_lifetime))
+  .properties.uaa_pks_cli_refresh_token_lifetime:
+    value: ((uaa_pks_cli_refresh_token_lifetime))
+  .properties.uaa_pks_cluster_client_access_token_lifetime:
+    value: ((uaa_pks_cluster_client_access_token_lifetime))
+  .properties.uaa_pks_cluster_client_refresh_token_lifetime:
+    value: ((uaa_pks_cluster_client_refresh_token_lifetime))
+  .properties.wavefront:
+    value: disabled
+  .properties.worker_max_in_flight:
+    value: ((worker_max_in_flight))
+resource-config:
+  pivotal-container-service:
+    elb_names: ((pivotal-container-service_elb_names))
+    instance_type:
+      id: ((pivotal-container-service_instance_type))
+    persistent_disk:
+      size_mb: ((pivotal-container-service_persistent_disk_size))

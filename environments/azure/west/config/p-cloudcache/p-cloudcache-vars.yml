@@ -1,0 +1,10 @@
+network_name: pas
+singleton_availability_zone: zone-1
+az2_name: zone-2
+az3_name: zone-3
+service_network_name: services
+confirm_tls_setup: X
+dev_plan_enable_service_plan/enable/service_instance_azs: ["zone-1", "zone-2", "zone-3"]
+plan1_enable_service_plan/enable/service_instance_azs: ["zone-1", "zone-2", "zone-3"]
+plan2_enable_service_plan/enable/service_instance_azs: ["zone-1", "zone-2", "zone-3"]
+small_footprint_enable_service_plan/enable/service_instance_azs: ["zone-1", "zone-2", "zone-3"]

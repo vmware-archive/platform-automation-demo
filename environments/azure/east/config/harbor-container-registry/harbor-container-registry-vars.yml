@@ -1,0 +1,4 @@
+hostname: harbor.lab.winterfell.live
+network_name: infrastructure
+singleton_availability_zone: az1
+clair_updater_interval: 1

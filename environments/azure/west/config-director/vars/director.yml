@@ -1,0 +1,23 @@
+vnet-name: "west-virtual-network"
+
+infra-subnet-name: "west-infrastructure-subnet"
+infra-cidr: "10.1.8.0/26"
+infra-gw: "10.1.8.1"
+infra-reserved-range: "10.1.8.1-10.1.8.9"
+
+pas-subnet-name: "west-pas-subnet"
+pas-cidr: "10.1.0.0/22"
+pas-gw: "10.1.0.1"
+pas-reserved-range: "10.1.0.1-10.1.0.9"
+
+services-subnet-name: "west-services-subnet"
+services-cidr: "10.1.4.0/22"
+services-gw: "10.1.4.1"
+services-reserved-range: "10.1.4.1-10.1.4.9"
+
+azure_subscription_id: "07feece3-65c6-4c2a-bae0-5ca575a8129a"
+azure_tenant_id: "29248f74-371f-4db2-9a50-c62a6877a0c1"
+azure_client_id: "4c231c7f-1c78-466e-88ce-1da41b954c38"
+azure_resource_group: "west"
+bosh_deployed_vms_security_group_name: "west-bosh-deployed-vms-security-group"
+bosh_root_storage_account: "m8k3g2k11ytee4homb90"

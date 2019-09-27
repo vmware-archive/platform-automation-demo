@@ -1,0 +1,4 @@
+pivnet-api-token: ((pivnet-api-token))
+pivnet-file-glob: "ops-manager-azure*.yml"
+pivnet-product-slug: ops-manager
+product-version-regex: ^2\.6\.\d+$

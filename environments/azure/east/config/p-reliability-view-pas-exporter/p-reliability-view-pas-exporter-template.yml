@@ -1,0 +1,35 @@
+errand-config:
+  smoke-test:
+    post-deploy-state: ((smoke-test_post_deploy_state))
+network-properties:
+  network:
+    name: ((network_name))
+  other_availability_zones:
+  - name: ((singleton_availability_zone))
+  - name: ((az2_name))
+  - name: ((az3_name))
+  singleton_availability_zone:
+    name: ((singleton_availability_zone))
+product-name: p-reliability-view-pas-exporter
+product-properties:
+  .properties.pas_exporter_scrape_port:
+    value: ((pas_exporter_scrape_port))
+resource-config:
+  pas-exporter-counter:
+    instance_type:
+      id: ((pas-exporter-counter_instance_type))
+    instances: ((pas-exporter-counter_instances))
+    persistent_disk:
+      size_mb: ((pas-exporter-counter_persistent_disk_size))
+  pas-exporter-gauge:
+    instance_type:
+      id: ((pas-exporter-gauge_instance_type))
+    instances: ((pas-exporter-gauge_instances))
+    persistent_disk:
+      size_mb: ((pas-exporter-gauge_persistent_disk_size))
+  pas-exporter-timer:
+    instance_type:
+      id: ((pas-exporter-timer_instance_type))
+    instances: ((pas-exporter-timer_instances))
+    persistent_disk:
+      size_mb: ((pas-exporter-timer_persistent_disk_size))
